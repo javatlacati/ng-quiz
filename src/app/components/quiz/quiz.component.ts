@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-quiz',
@@ -9,14 +10,17 @@ import Question from "../../model/Question";
 })
 export class QuizComponent implements OnInit {
 
+  questionsData: Question[] = []
   preguntaActual = 1
   selectedAnswer: { value: number, label: string } | null = null
   completedQuiz = false
 
-  constructor() {
+  constructor(private router: Router, private activatedroute: ActivatedRoute) {
+
   }
 
   ngOnInit(): void {
+    this.questionsData = history.state as Question[];
   }
 
   createItems(choices: string[]): { label: string; value: number }[] {
@@ -28,47 +32,47 @@ export class QuizComponent implements OnInit {
     })
   }
 
-  verifyCompletion(questions:Question[]): void {
-    // console.log(JSON.stringify(questions))
-    // console.log(questions[0].constructor.name)
-    // console.log(`completedness:${JSON.stringify(questions.map(q => q._userAnswer))}`)
+  verifyCompletion(questions: Question[]): void {
+    console.log(JSON.stringify(questions))
+    console.log(questions[0].constructor.name)
+    console.log(`completedness:${JSON.stringify(questions.map(q => q.userAnswer))}`)
     this.completedQuiz = questions.every((aQuestion) => aQuestion.userAnswer.length > 0);
-    // console.log(`completed:${this.completedQuiz}`)
+    console.log(`completed:${this.completedQuiz}`)
   }
 
-  // questionChanged() {
-  //   let daQuestion = this.$route.params.questions[this.preguntaActual - 1] as unknown as Question;
-  //   let savedAnswer: string = daQuestion['_userAnswer'];
-  //   // console.log(`saved user answer: ${savedAnswer}`)
-  //   if (savedAnswer === '') {
-  //     this.selectedAnswer = null
-  //   } else {
-  //     let className = daQuestion.constructor.name;
-  //     // console.log(`className:${className}`)
-  //     switch (className) {
-  //       case 'MultipleChoiceQuestion':
-  //         let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
-  //         // console.log(`saved answer value:${daQuestionElementElement}`)
-  //         // console.log(`saved answer value:${daQuestionElementElement}`)
-  //         this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
-  //         break;
-  //     }
-  //   }
-  // }
+  questionChanged() {
+    let daQuestion = this.questionsData[this.preguntaActual - 1] as unknown as Question;
+    let savedAnswer: string = daQuestion['_userAnswer'];
+    console.log(`saved user answer: ${savedAnswer}`)
+    if (savedAnswer === '') {
+      this.selectedAnswer = null
+    } else {
+      let className = daQuestion.constructor.name;
+      console.log(`className:${className}`)
+      switch (className) {
+        case 'MultipleChoiceQuestion':
+          // @ts-ignore
+          let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
+          console.log(`saved answer value:${daQuestionElementElement}`)
+          this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
+          break;
+      }
+    }
+  }
 
   navigateToPreviousQuestion() {
     this.preguntaActual = Math.max((this.preguntaActual | 0) - 1, 1)
-    // this.questionChanged()
+    this.questionChanged()
   }
 
-  // navigateToNextQuestion() {
-  //   this.preguntaActual = Math.min(this.preguntaActual + 1, this.questionsData.length)
-  //   this.questionChanged()
-  // }
+  navigateToNextQuestion() {
+    this.preguntaActual = Math.min(this.preguntaActual + 1, this.questionsData.length)
+    this.questionChanged()
+  }
 
-  // goToResults(questions) {
-  //   console.log(`questions sent:${JSON.stringify(questions)}`)
-  //   this.$router.push({name: 'Resultado', params: {questions} as any})
-  // }
+  goToResults(questions: Question[]) {
+    console.log(`questions sent:${JSON.stringify(questions)}`)
+    //this.$router.push({name: 'Resultado', params: {questions} as any})
+  }
 
 }

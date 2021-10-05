@@ -49,7 +49,7 @@
           </div>
         </mat-step>
         <mat-step>
-          <button mat-flat-button color="primary">Proceed to Quiz</button>
+          <button mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button (click)="stepper.reset()">Reset</button>

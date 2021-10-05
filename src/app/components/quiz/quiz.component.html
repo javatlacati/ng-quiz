@@ -1,8 +1,14 @@
 <div class="quiz">
   <ng-container>
     <mat-card>
-<!--      <div class="overline mb-4">{{questionsData[preguntaActual-1]._category}} <small>({{questionsData[preguntaActual-1].constructor.name}})</small>-->
-<!--      </div>-->
+      <mat-list>
+        <div class="overline mb-4">{{questionsData[preguntaActual - 1]['_category']}}
+          <small>({{questionsData[preguntaActual - 1]['constructor']['name']}})</small>
+        </div>
+        <mat-list-item>
+          {{questionsData[preguntaActual - 1]['_text']}}
+        </mat-list-item>
+      </mat-list>
     </mat-card>
   </ng-container>
 </div>

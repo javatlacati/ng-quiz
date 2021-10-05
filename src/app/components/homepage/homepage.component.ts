@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import DatasetLoader from "../../model/DatasetLoader";
 import Question from "../../model/Question";
 import {HttpClient} from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-homepage',
@@ -24,7 +25,7 @@ export class HomepageComponent implements OnInit {
   secondFormGroup!: FormGroup;
   thirdFormGroup!: FormGroup;
 
-  constructor(private httpClient: HttpClient, private _formBuilder: FormBuilder) {
+  constructor(private httpClient: HttpClient, private _formBuilder: FormBuilder, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -42,8 +43,20 @@ export class HomepageComponent implements OnInit {
   // computed
   get questionCategories(): string[] {
     const categories = [...new Set(this.questions.map(question => question.category))]
-     // console.log(JSON.stringify(categories))
+    // console.log(JSON.stringify(categories))
     return categories
   }
 
+  goToQuiz() {
+    if (this.questions && this.questions.length > 0) {
+      let questionsToBePassed = this.questions
+        .map((a) => ({sort: Math.random(), value: a}))
+        .sort((a, b) => a.sort - b.sort)
+        .map((a) => a.value)
+      if (this.maxQuestions !== -1) {
+        questionsToBePassed = questionsToBePassed.slice(0, this.maxQuestions)
+      }
+      this.router.navigate(['/quiz'], {state: questionsToBePassed})
+    }
+  }
 }
