@@ -1,0 +1,61 @@
+<ng-container>
+  <mat-card>
+    <mat-card-title>Configure your exam session</mat-card-title>
+    <mat-card-content>
+      {{errorMessage}}
+      <mat-stepper linear="true" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Select the categories</ng-template>
+            <mat-form-field appearance="fill">
+              <mat-select placeholder="Select Item" multiple formControlName="firstCtrl" [ngModel]="categorySelection">
+                <mat-option *ngFor="let category of questionCategories" [value]="category">
+                  {{category}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Select The level of difficulty</ng-template>
+            <mat-form-field appearance="fill">
+              <mat-select placeholder="Select Item" multiple formControlName="secondCtrl"
+                          [ngModel]="difficultySelection">
+                <mat-option *ngFor="let difficulty of questionDifficulties" [value]="difficulty">
+                  {{difficulty}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="thirdFormGroup">
+          <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
+            <mat-label>Number of questions</mat-label>
+            <mat-slider formControlName="thirdCtrl" thumbLabel tickInterval="1" [min]="-1"
+                        [max]="questions.length" [ngModel]="maxQuestions"></mat-slider>
+          </form>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <button mat-flat-button color="primary">Proceed to Quiz</button>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
