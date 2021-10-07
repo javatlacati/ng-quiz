@@ -2,13 +2,29 @@
   <ng-container>
     <mat-card>
       <mat-list>
-        <div class="overline mb-4">{{questionsData[preguntaActual - 1]['_category']}}
-          <small>({{questionsData[preguntaActual - 1]['constructor']['name']}})</small>
+        <div class="overline mb-4">{{laPreguntaActual.category}}
+          <small>({{laPreguntaActual.constructor.name}})</small>
         </div>
-        <mat-list-item>
-          {{questionsData[preguntaActual - 1]['_text']}}
-        </mat-list-item>
+        <div [innerHTML]="laPreguntaActual.display()"></div>
       </mat-list>
+      <form [formGroup]="firstFormGroup">
+        <div *ngIf="'MultipleChoiceQuestion'===laPreguntaActual.constructor.name">
+<!--          <mat-select-->
+<!--            [ngModel]="selectedAnswer" formControlName="firstCtrl">-->
+<!--            <mat-option *ngFor="let choice of createItems(laPreguntaActual)"-->
+<!--                        [value]="choice">{{choice.label}}</mat-option>-->
+<!--          </mat-select>-->
+        </div>
+        <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===laPreguntaActual.constructor.name">
+          <textarea matInput [value]="selectedAnswer?.label"
+                    placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+        </mat-form-field>
+      </form>
+      <mat-paginator [length]="questionsData.length"
+                     [pageSize]="1"
+                     (page)="handleQuestionChange($event)"
+                     aria-label="Select question">
+      </mat-paginator>
     </mat-card>
   </ng-container>
 </div>

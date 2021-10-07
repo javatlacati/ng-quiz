@@ -18,6 +18,8 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
+import {QuestionSubscription} from "./subscriptions/QuestionSubscription";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -27,22 +29,23 @@ import {MatListModule} from "@angular/material/list";
     ResultadoComponent,
     FeedbackComponent
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatCardModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatSliderModule,
-    MatListModule
-  ],
-  providers: [],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatCardModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatSliderModule,
+        MatListModule,
+        MatPaginatorModule
+    ],
+  providers: [QuestionSubscription],
   bootstrap: [AppComponent]
 })
 export class AppModule {

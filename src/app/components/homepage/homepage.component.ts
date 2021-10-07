@@ -4,6 +4,9 @@ import Question from "../../model/Question";
 import {HttpClient} from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
+import {Subscription} from "rxjs";
+import {StepperSelectionEvent} from "@angular/cdk/stepper";
 
 @Component({
   selector: 'app-homepage',
@@ -25,10 +28,16 @@ export class HomepageComponent implements OnInit {
   secondFormGroup!: FormGroup;
   thirdFormGroup!: FormGroup;
 
-  constructor(private httpClient: HttpClient, private _formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private httpClient: HttpClient,
+    private _formBuilder: FormBuilder,
+    private router: Router,
+    private questionSuubscription: QuestionSubscription
+  ) {
   }
 
   ngOnInit(): void {
+
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
@@ -56,7 +65,17 @@ export class HomepageComponent implements OnInit {
       if (this.maxQuestions !== -1) {
         questionsToBePassed = questionsToBePassed.slice(0, this.maxQuestions)
       }
-      this.router.navigate(['/quiz'], {state: questionsToBePassed})
+      this.questionSuubscription.updateSharedQuestions(questionsToBePassed);
+      this.router.navigate(['/quiz'])
+    }
+  }
+
+  stepClick(evt: StepperSelectionEvent) {
+    let label = evt.selectedStep.label;
+    console.log(label)
+    console.log('category: ', this.categorySelection)
+    if (label === 'step3') {
+      this.questions = this.questions.filter(question => this.categorySelection.includes(question.category))
     }
   }
 }

@@ -3,9 +3,12 @@ import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
 import {ActivatedRoute, Router} from "@angular/router";
 import {map} from "rxjs/operators";
-import {NEVER, Observable} from "rxjs";
+import {NEVER, Observable, Subscription} from "rxjs";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
+import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-quiz',
@@ -16,33 +19,42 @@ export class QuizComponent implements OnInit {
 
   questionsData: Question[] = []
   preguntaActual = 1
+  laPreguntaActual: Question = new FillBlankQuestion("Yes");
   selectedAnswer: { value: number, label: string } | null = null
   completedQuiz = false
+  private subscription: Subscription | null = null;
 
-  constructor(private router: Router, private activatedroute: ActivatedRoute) {
+  firstFormGroup!: FormGroup
+
+  constructor(
+    private router: Router,
+    private activatedroute: ActivatedRoute,
+    private _formBuilder: FormBuilder,
+    private questionSuubscription: QuestionSubscription
+  ) {
 
   }
 
   ngOnInit(): void {
-    this.questionsData = (history.state as Question[]);
-    let qd = Array.from(history.state).map(aQuestion => {
-      let theQuestion = aQuestion as any;
-      if (theQuestion['_correctAnswers']) {
-        let multipleAnswerQuestion = new MultipleAnswerQuestion(theQuestion['vettedOrTrial']);
-        multipleAnswerQuestion.choices = theQuestion['_choices']
-        return multipleAnswerQuestion;
-      } else if (theQuestion['_choices']) {
-        let multiplChoiceQuestion = new MultipleChoiceQuestion(theQuestion['vettedOrTrial']);
-        multiplChoiceQuestion.choices = theQuestion['_choices']
-        return multiplChoiceQuestion;
-      } else {
-        return aQuestion as FillBlankQuestion;
-      }
+    this.subscription = this.questionSuubscription
+      .currentSharedQuestions
+      .subscribe((theQuestions: Question[]) => {
+        if (theQuestions.length > 0) {
+          this.laPreguntaActual = theQuestions[0];
+        }
+        return this.questionsData = theQuestions;
+      });
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
     });
-    console.log(JSON.stringify(qd))
   }
 
-  createItems(choices: string[]): { label: string; value: number }[] {
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
+  createItems(question: Question): { label: string; value: number }[] {
+    let choices: string[] = (question as MultipleChoiceQuestion).choices;
     return choices.map((choice, idx) => {
       return {
         value: idx,
@@ -59,39 +71,34 @@ export class QuizComponent implements OnInit {
     console.log(`completed:${this.completedQuiz}`)
   }
 
-  // questionChanged() {
-  //   let daQuestion = this.questionsData[this.preguntaActual - 1] as unknown as Question;
-  //   let savedAnswer: string = daQuestion['_userAnswer'];
-  //   console.log(`saved user answer: ${savedAnswer}`)
-  //   if (savedAnswer === '') {
-  //     this.selectedAnswer = null
-  //   } else {
-  //     let className = daQuestion.constructor.name;
-  //     console.log(`className:${className}`)
-  //     switch (className) {
-  //       case 'MultipleChoiceQuestion':
-  //         // @ts-ignore
-  //         let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
-  //         console.log(`saved answer value:${daQuestionElementElement}`)
-  //         this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
-  //         break;
-  //     }
-  //   }
-  // }
-  //
-  // navigateToPreviousQuestion() {
-  //   this.preguntaActual = Math.max((this.preguntaActual | 0) - 1, 1)
-  //   this.questionChanged()
-  // }
-  //
-  // navigateToNextQuestion() {
-  //   this.preguntaActual = Math.min(this.preguntaActual + 1, this.questionsData.length)
-  //   this.questionChanged()
-  // }
-  //
-  // goToResults(questions: Question[]) {
-  //   console.log(`questions sent:${JSON.stringify(questions)}`)
-  //   //this.$router.push({name: 'Resultado', params: {questions} as any})
-  // }
+  questionChanged() {
+    let daQuestion = this.questionsData[this.preguntaActual - 1] as unknown as Question;
+    let savedAnswer: string = daQuestion['_userAnswer'];
+    console.log(`saved user answer: ${savedAnswer}`)
+    if (savedAnswer === '') {
+      this.selectedAnswer = null
+    } else {
+      let className = daQuestion.constructor.name;
+      console.log(`className:${className}`)
+      switch (className) {
+        case 'MultipleChoiceQuestion':
+          // @ts-ignore
+          let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
+          console.log(`saved answer value:${daQuestionElementElement}`)
+          this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
+          break;
+      }
+    }
+  }
+
+  public handleQuestionChange(event?: PageEvent) {
+    this.preguntaActual = event?.pageIndex || 0;
+    this.laPreguntaActual = this.questionsData[this.preguntaActual];
+  }
+
+  goToResults(questions: Question[]) {
+    console.log(`questions sent:${JSON.stringify(questions)}`)
+    //this.$router.push({name: 'Resultado', params: {questions} as any})
+  }
 
 }
