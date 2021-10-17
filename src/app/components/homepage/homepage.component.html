@@ -4,12 +4,27 @@
     <mat-card-content>
       {{errorMessage}}
       <mat-stepper linear="true" #stepper (selectionChange)="stepClick($event)">
-        <mat-step [stepControl]="firstFormGroup">
+        <mat-step [stepControl]="zerothFormGroup" label="step0">
+          <form [formGroup]="zerothFormGroup">
+            <ng-template matStepLabel>Select The question set</ng-template>
+            <mat-form-field appearance="fill">
+              <mat-select placeholder="Select question set" multiple formControlName="zerothCtrl">
+                <mat-option *ngFor="let questionSet of questionSet" [value]="questionSet.filename">
+                  {{questionSet.displayValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="firstFormGroup" label="step1">
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Select the categories</ng-template>
             <mat-form-field appearance="fill">
               <mat-select placeholder="Select Item" multiple formControlName="firstCtrl" [ngModel]="categorySelection">
-                <mat-option *ngFor="let category of questionCategories" [value]="category">
+                <mat-option *ngFor="let category of categories" [value]="category">
                   {{category}}
                 </mat-option>
               </mat-select>
