@@ -32,7 +32,7 @@ export class QuizComponent implements OnInit {
     private router: Router,
     private activatedroute: ActivatedRoute,
     private _formBuilder: FormBuilder,
-    private questionSuubscription: QuestionSubscription
+    private questionSuubscription: QuestionSubscription,
   ) {
 
   }
@@ -49,6 +49,7 @@ export class QuizComponent implements OnInit {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
+    this.handleQuestionChange();
   }
 
   ngOnDestroy() {
@@ -94,7 +95,9 @@ export class QuizComponent implements OnInit {
     let subtype = this.laPreguntaActual.constructor.name;
     switch (subtype) {
       case 'FillBlankQuestion':
+        // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
         break;
+      case 'MultipleAnswerQuestion':
       case 'MultipleChoiceQuestion':
         let choices: string[] = (this.laPreguntaActual as MultipleChoiceQuestion).choices;
         this.currentQuestionOptions = choices.map((choice, idx) => {
@@ -107,8 +110,12 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  goToResults(questions: Question[]) {
-    console.log(`questions sent:${JSON.stringify(questions)}`)
+  goToResults() {
+    console.log(`questions sent:${JSON.stringify(this.questionsData)}`)
+    this.verifyCompletion(this.questionsData);
+    if(this.completedQuiz)
+    this.questionSuubscription.updateSharedQuestions(this.questionsData);
+    this.router.navigate(['/resultado'])
     //this.$router.push({name: 'Resultado', params: {questions} as any})
   }
 

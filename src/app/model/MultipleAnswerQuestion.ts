@@ -102,12 +102,12 @@ export default class MultipleAnswerQuestion extends MultipleChoiceQuestion {
    */
   display() {
 
-    let display = `${this._text}<br>`;
+    let display = `${this._text}<br><br>`;
 
-    for (let i = 0; i < this.choices.length; i++) {
-      let choiceNumber = i + 1;
-      display += `${choiceNumber}: ${this.choices[i]}<br>`;
-    }
+    // for (let i = 0; i < this.choices.length; i++) {
+    //   let choiceNumber = i + 1;
+    //   display += `${choiceNumber}: ${this.choices[i]}<br>`;
+    // }
 
     return display;
 

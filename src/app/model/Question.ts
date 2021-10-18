@@ -51,7 +51,7 @@ export default abstract class Question {
    * @return question text
    */
   display(): string {
-    return this._text;
+    return `${this._text}<br>`;
   }
 
   gradeQuestion(): boolean {

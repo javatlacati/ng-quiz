@@ -67,12 +67,12 @@ export default class MultipleChoiceQuestion extends Question {
   display(): string {
 
     let display = this._text;
-    display += "<br>";
+    display += "<br><br>";
 
-    for (let i = 0; i < this._choices.length; i++) {
-      let choiceNumber = i + 1;
-      display += `${choiceNumber}: ${this._choices[i]}<br>`;
-    }
+    // for (let i = 0; i < this._choices.length; i++) {
+    //   let choiceNumber = i + 1;
+    //   display += `${choiceNumber}: ${this._choices[i]}<br>`;
+    // }
 
     return display;
   }
