@@ -9,11 +9,10 @@
       </mat-list>
       <form [formGroup]="firstFormGroup">
         <div *ngIf="'MultipleChoiceQuestion'===laPreguntaActual.constructor.name">
-          <!--          <mat-select-->
-          <!--            [ngModel]="selectedAnswer" formControlName="firstCtrl">-->
-          <!--            <mat-option *ngFor="let choice of createItems(laPreguntaActual)"-->
-          <!--                        [value]="choice">{{choice.label}}</mat-option>-->
-          <!--          </mat-select>-->
+          <mat-select (selectionChange)="createItems($event.value)">
+            <mat-option *ngFor="let choice of currentQuestionOptions"
+                        [value]="choice.value">{{choice.label}}</mat-option>
+          </mat-select>
         </div>
         <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===laPreguntaActual.constructor.name">
           <textarea matInput [value]="selectedAnswer?.label"

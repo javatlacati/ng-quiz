@@ -26,6 +26,8 @@ export class QuizComponent implements OnInit {
 
   firstFormGroup!: FormGroup
 
+  currentQuestionOptions: { label: string; value: number }[] = []
+
   constructor(
     private router: Router,
     private activatedroute: ActivatedRoute,
@@ -53,14 +55,9 @@ export class QuizComponent implements OnInit {
     this.subscription?.unsubscribe();
   }
 
-  createItems(question: Question): { label: string; value: number }[] {
-    let choices: string[] = (question as MultipleChoiceQuestion).choices;
-    return choices.map((choice, idx) => {
-      return {
-        value: idx,
-        label: choice
-      }
-    })
+  createItems(selection: number): void {
+    console.log(selection)
+    // TODO update answer for preguntaActual
   }
 
   verifyCompletion(questions: Question[]): void {
@@ -94,6 +91,20 @@ export class QuizComponent implements OnInit {
   public handleQuestionChange(event?: PageEvent) {
     this.preguntaActual = event?.pageIndex || 0;
     this.laPreguntaActual = this.questionsData[this.preguntaActual];
+    let subtype = this.laPreguntaActual.constructor.name;
+    switch (subtype) {
+      case 'FillBlankQuestion':
+        break;
+      case 'MultipleChoiceQuestion':
+        let choices: string[] = (this.laPreguntaActual as MultipleChoiceQuestion).choices;
+        this.currentQuestionOptions = choices.map((choice, idx) => {
+          return {
+            value: idx,
+            label: choice
+          }
+        })
+        break;
+    }
   }
 
   goToResults(questions: Question[]) {
