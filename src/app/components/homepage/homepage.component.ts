@@ -15,9 +15,24 @@ import {QuestionDatasetEntry} from "../../model/QuestionDatasetEntry";
 })
 export class HomepageComponent implements OnInit {
 
-  questions: Question[] = [];//new DatasetLoader(this.httpClient).createQuestionsFromFile();
+  questions: Question[] = [];
   maxQuestions = -1;
-  questionSet: QuestionDatasetEntry[] = [{displayValue: 'vue', filename: 'vue.txt'}];
+  questionSet: QuestionDatasetEntry[] = [
+    {displayValue: 'Sample questions', filename: 'SampleQuiz.txt'},
+    // {displayValue: 'vue', filename: 'vue.txt'},
+    // {
+    //   displayValue: 'Appian',
+    //   filename: 'appian.txt'
+    // },
+    // {
+    //   displayValue: 'Java Webservices',
+    //   filename: 'java webservice.txt'
+    // },
+    // {
+    //   displayValue: 'Hybrid cloud',
+    //   filename: 'Hybrid cloud SRE Assessment.txt'
+    // }
+  ];
   categorySelection: string[] = [];
   categories: string[] = [];
   difficultySelection: string[] = [];
