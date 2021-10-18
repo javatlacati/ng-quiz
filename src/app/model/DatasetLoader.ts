@@ -19,6 +19,7 @@ export default class DatasetLoader {
       .toPromise().then(quizText => {
         if (quizText) {
           return quizText.split(/\r\n/g)
+            .filter(line=>line.trim().length>0)
             .map(line => this.parseQuestion(line));
         } else {
           return [];
@@ -63,7 +64,8 @@ export default class DatasetLoader {
       case "":
         break;
       default:
-        console.error(`Question type not recognized: ${tipoPregunta}`)
+        console.error(`Question type not recognized: ${tipoPregunta}`);
+        console.log('the line for it was:"', line, '"')
         break;
     }
     throw new Error("Question type not recognized")
