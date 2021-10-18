@@ -9,21 +9,22 @@
       </mat-list>
       <form [formGroup]="firstFormGroup">
         <div *ngIf="'MultipleChoiceQuestion'===laPreguntaActual.constructor.name">
-<!--          <mat-select-->
-<!--            [ngModel]="selectedAnswer" formControlName="firstCtrl">-->
-<!--            <mat-option *ngFor="let choice of createItems(laPreguntaActual)"-->
-<!--                        [value]="choice">{{choice.label}}</mat-option>-->
-<!--          </mat-select>-->
+          <!--          <mat-select-->
+          <!--            [ngModel]="selectedAnswer" formControlName="firstCtrl">-->
+          <!--            <mat-option *ngFor="let choice of createItems(laPreguntaActual)"-->
+          <!--                        [value]="choice">{{choice.label}}</mat-option>-->
+          <!--          </mat-select>-->
         </div>
         <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===laPreguntaActual.constructor.name">
           <textarea matInput [value]="selectedAnswer?.label"
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
         </mat-form-field>
+        <button *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)">Go to results</button>
       </form>
       <mat-paginator [length]="questionsData.length"
                      [pageSize]="1"
                      (page)="handleQuestionChange($event)"
-                     aria-label="Select question">
+                     aria-label="Select question" hidePageSize="true" showFirstLastButtons="true">
       </mat-paginator>
     </mat-card>
   </ng-container>

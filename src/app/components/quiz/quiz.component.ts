@@ -21,7 +21,7 @@ export class QuizComponent implements OnInit {
   preguntaActual = 1
   laPreguntaActual: Question = new FillBlankQuestion("Yes");
   selectedAnswer: { value: number, label: string } | null = null
-  completedQuiz = false
+  completedQuiz = true
   private subscription: Subscription | null = null;
 
   firstFormGroup!: FormGroup
@@ -101,4 +101,9 @@ export class QuizComponent implements OnInit {
     //this.$router.push({name: 'Resultado', params: {questions} as any})
   }
 
+  isInLastPage() {
+    console.log('questions: ', this.questionsData.length)
+    console.log('preguntaActual: ', (this.preguntaActual + 1))
+    this.questionsData.length === (this.preguntaActual + 1 || 0);
+  }
 }
