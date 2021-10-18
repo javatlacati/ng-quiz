@@ -34,7 +34,7 @@
             <button mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
-        <mat-step [stepControl]="secondFormGroup">
+        <mat-step [stepControl]="secondFormGroup" label="step2">
           <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Select The level of difficulty</ng-template>
             <mat-form-field appearance="fill">

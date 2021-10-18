@@ -75,24 +75,35 @@ export class HomepageComponent implements OnInit {
 
   stepClick(evt: StepperSelectionEvent) {
     let label = evt.selectedStep.label;
-    console.log(label)
-    if (label === 'step3') {
-      console.log('category selection: ', this.categorySelection)
-      this.questions = this.questions.filter(question => this.categorySelection.includes(question.category))
-    } else if (label === 'step1') {
+    console.log('label:', label)
+    switch (label) {
+      case 'step2':
+        break;
+      case 'step3':
+        console.log('category selection: ', this.categorySelection)
+        this.questions = this.questions.filter(question => this.categorySelection.includes(question.category))
+        break;
+      case 'step1':
+        this.questions = [];
+        let promises = []
+        for (const questionSetSelection of this.questionSet) {
+          let questionsPromise = new DatasetLoader(this.httpClient).createQuestionsFromFile(questionSetSelection.filename);
+          promises.push(questionsPromise);
+        }
 
-      for (const questionSetSelection of this.questionSet) {
-        let questions = new DatasetLoader(this.httpClient).createQuestionsFromFile(questionSetSelection.filename);
-        let questionsb = questions;
-        console.log('las preguntas', JSON.stringify(questions))
-        console.log('las preguntas', questions)
-        questionsb.push(...this.questions);
-        this.questions = questionsb;
+        Promise.all(promises).then(questionsPromises => {
+          questionsPromises.forEach(aQuesTionSet => {
+            //console.log('las preguntas', JSON.stringify(aQuesTionSet))
+            //console.log('las preguntas', aQuesTionSet)
+            this.questions.push(...aQuesTionSet);
+          })
+          //console.log('this.questions:', JSON.stringify(this.questions));
 
-      }
-      console.log('this.questions:', JSON.stringify(this.questions));
-      this.categories = [...new Set(this.questions.map(question => question.category))]
-      console.log('this.categories:', this.categories);
+          this.categories = [...new Set(this.questions.map(question => question.category))]
+          //console.log('this.categories:', this.categories);
+        })
+        break;
     }
+
   }
 }

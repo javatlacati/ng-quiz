@@ -14,22 +14,22 @@ export default class DatasetLoader {
     this.httpClient = httpClient;
   }
 
-  createQuestionsFromFile(fileName: string): Question[] {
-    this.httpClient.get('assets/' + fileName, {responseType: 'text'})
+  createQuestionsFromFile(fileName: string): Promise<Question[]> {
+    return this.httpClient.get('assets/' + fileName, {responseType: 'text'})
       .toPromise().then(quizText => {
-      if (quizText) {
-        let lines = quizText.split(/\r\n/g);
-        // console.log(`loaded lines:` + lines.length)
-        lines.forEach(line => this.parseQuestion(line));
-      }
-    });
-    return this.questions;
+        if (quizText) {
+          return quizText.split(/\r\n/g)
+            .map(line => this.parseQuestion(line));
+        } else {
+          return [];
+        }
+      });
   }
 
-  parseQuestion(line: string) {
+  parseQuestion(line: string): Question {
     let questarray: string[] = line.split(/@@/g);
     // console.log(`questarray:` + questarray.length)
-    // console.log(JSON.stringify(questarray))
+     console.log(JSON.stringify(questarray))
     let tipoPregunta: string = questarray[0];
     let vettedness: string = "v" === questarray[1] ? Question.VETTED : Question.TRIAL;
     let explanation: string = questarray[2];
@@ -37,13 +37,13 @@ export default class DatasetLoader {
     let difficulty: string = questarray[4];
     // console.log(questarray[5])
     let questionText: string = questarray[5];//this.formateaPregunta(questarray[5]);
-    // console.log(questionText)
+     console.log(questionText)
     switch (tipoPregunta) {
       case "MC": {
         //multiple choice
         let correctAnswerIdx = ~~questarray[6];
         let answersTexts = questarray.slice(7, questarray.length);
-        this.addMultipleChoiceQuestion(this.questions, vettedness, explanation,
+        return this.addMultipleChoiceQuestion(this.questions, vettedness, explanation,
           questionText, correctAnswerIdx, category, difficulty, answersTexts);
         break;
       }
@@ -51,12 +51,12 @@ export default class DatasetLoader {
         //fill in the blanks
         let blanks = questarray.slice(6, questarray.length);
         console.log(`blanks: ${blanks}`);
-        this.addFillBlankQuestion(this.questions, vettedness, explanation, questionText, category, difficulty, blanks);
+        return this.addFillBlankQuestion(this.questions, vettedness, explanation, questionText, category, difficulty, blanks);
         break;
       }
       case "MA": {
         let choices: Map<string, boolean> = this.parseChoicesMap(questarray.slice(6, questarray.length));
-        this.addMultipleAnswerQuestion(this.questions, vettedness, explanation, questionText,
+        return this.addMultipleAnswerQuestion(this.questions, vettedness, explanation, questionText,
           category, difficulty, choices);
         break;
       }
@@ -66,6 +66,7 @@ export default class DatasetLoader {
         console.error(`Question type not recognized: ${tipoPregunta}`)
         break;
     }
+    throw new Error("Question type not recognized")
     // console.log(JSON.stringify(this.questions));
   }
 
@@ -91,7 +92,7 @@ export default class DatasetLoader {
         return -1;
       }
     }), (theValue) => `${theValue}`).filter((str) => str !== 'undefined');
-    questions.push(choiceQuestion);
+    return choiceQuestion;
   }
 
   str2difficulty(idxStr: string) {
@@ -133,7 +134,7 @@ export default class DatasetLoader {
     fillBlankQuestion.category = category;
     fillBlankQuestion.difficulty = this.str2difficulty(difficulty);
     fillBlankQuestion.answer = blanks.join(' ');
-    questions.push(fillBlankQuestion);
+    return fillBlankQuestion;
   }
 
   addMultipleChoiceQuestion(questions: Question[], vettedness: string, explanation: string, questionText: string, correctAnswerIdx: number, category: string, difficulty: string, answersTexts: string[]) {
@@ -146,6 +147,6 @@ export default class DatasetLoader {
       let answerText = answersTexts[i];
       choiceQuestion.setChoice(answerText, i == correctAnswerIdx);
     }
-    questions.push(choiceQuestion);
+    return choiceQuestion
   }
 }
