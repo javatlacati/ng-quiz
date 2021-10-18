@@ -65,7 +65,7 @@ export class QuizComponent implements OnInit {
 
   verifyCompletion(questions: Question[]): void {
     console.log(JSON.stringify(questions))
-    console.log(questions[0].constructor.name)
+    // console.log(questions[0].constructor.name)
     console.log(`completedness:${JSON.stringify(questions.map(q => q.userAnswer))}`)
     this.completedQuiz = questions.every((aQuestion) => aQuestion.userAnswer.length > 0);
     console.log(`completed:${this.completedQuiz}`)

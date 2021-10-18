@@ -29,7 +29,7 @@ export default class DatasetLoader {
   parseQuestion(line: string): Question {
     let questarray: string[] = line.split(/@@/g);
     // console.log(`questarray:` + questarray.length)
-     console.log(JSON.stringify(questarray))
+    // console.log(JSON.stringify(questarray))
     let tipoPregunta: string = questarray[0];
     let vettedness: string = "v" === questarray[1] ? Question.VETTED : Question.TRIAL;
     let explanation: string = questarray[2];
@@ -37,7 +37,7 @@ export default class DatasetLoader {
     let difficulty: string = questarray[4];
     // console.log(questarray[5])
     let questionText: string = questarray[5];//this.formateaPregunta(questarray[5]);
-     console.log(questionText)
+    // console.log(questionText)
     switch (tipoPregunta) {
       case "MC": {
         //multiple choice

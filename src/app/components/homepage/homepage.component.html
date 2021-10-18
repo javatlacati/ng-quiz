@@ -23,7 +23,7 @@
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Select the categories</ng-template>
             <mat-form-field appearance="fill">
-              <mat-select placeholder="Select Item" multiple formControlName="firstCtrl" [ngModel]="categorySelection">
+              <mat-select placeholder="Select Item" multiple formControlName="firstCtrl" (selectionChange)="changeCategory($event.value)">
                 <mat-option *ngFor="let category of categories" [value]="category">
                   {{category}}
                 </mat-option>
@@ -39,7 +39,7 @@
             <ng-template matStepLabel>Select The level of difficulty</ng-template>
             <mat-form-field appearance="fill">
               <mat-select placeholder="Select Item" multiple formControlName="secondCtrl"
-                          [ngModel]="difficultySelection">
+                          (selectionChange)="changeDifficulty($event.value)">
                 <mat-option *ngFor="let difficulty of questionDifficulties" [value]="difficulty">
                   {{difficulty}}
                 </mat-option>

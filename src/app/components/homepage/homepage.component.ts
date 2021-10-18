@@ -56,11 +56,13 @@ export class HomepageComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
       thirdCtrl: ['', Validators.required]
     });
+
+    // this.secondFormGroup.get('secondCtrl')?.valueChanges.subscribe(valor => this.changeDifficulty(valor))
   }
 
   goToQuiz() {
     if (this.questions && this.questions.length > 0) {
-      let questionsToBePassed = this.questions
+      let questionsToBePassed = this.questions.filter(question => this.categorySelection.includes(question.category))
         .map((a) => ({sort: Math.random(), value: a}))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value)
@@ -81,7 +83,6 @@ export class HomepageComponent implements OnInit {
         break;
       case 'step3':
         console.log('category selection: ', this.categorySelection)
-        this.questions = this.questions.filter(question => this.categorySelection.includes(question.category))
         break;
       case 'step1':
         this.questions = [];
@@ -105,5 +106,16 @@ export class HomepageComponent implements OnInit {
         break;
     }
 
+  }
+
+  changeDifficulty(event: string[]) {
+    // console.log(JSON.stringify(event))
+    this.difficultySelection = event;
+    // console.log("difficulty sel changed:", this.difficultySelection)
+  }
+
+  changeCategory(event: string[]) {
+    // console.log(JSON.stringify(event))
+    this.categorySelection = event;
   }
 }
