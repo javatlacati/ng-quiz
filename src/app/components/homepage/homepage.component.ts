@@ -7,7 +7,6 @@ import {Router} from "@angular/router";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
 import {QuestionDatasetEntry} from "../../model/QuestionDatasetEntry";
-import FillBlankQuestion from "../../model/FillBlankQuestion";
 
 @Component({
   selector: 'app-homepage',
@@ -17,7 +16,6 @@ import FillBlankQuestion from "../../model/FillBlankQuestion";
 export class HomepageComponent implements OnInit {
 
   questions: Question[] = [];//new DatasetLoader(this.httpClient).createQuestionsFromFile();
-  asssitantStep: number = 1;
   maxQuestions = -1;
   questionSet: QuestionDatasetEntry[] = [{displayValue: 'vue', filename: 'vue.txt'}];
   categorySelection: string[] = [];
@@ -25,7 +23,6 @@ export class HomepageComponent implements OnInit {
   difficultySelection: string[] = [];
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
   errorMessage = ''
-  alert: boolean = false
 
   zerothFormGroup!: FormGroup;
   firstFormGroup!: FormGroup;
@@ -57,15 +54,12 @@ export class HomepageComponent implements OnInit {
       thirdCtrl: ['', Validators.required]
     });
 
-    // this.secondFormGroup.get('secondCtrl')?.valueChanges.subscribe(valor => this.changeDifficulty(valor))
   }
 
   goToQuiz() {
     if (this.questions && this.questions.length > 0) {
-      let questionsToBePassed = this.questions.filter(question => this.categorySelection.includes(question.category))
-        .map((a) => ({sort: Math.random(), value: a}))
-        .sort((a, b) => a.sort - b.sort)
-        .map((a) => a.value)
+      let questionsToBePassed = this.selectQuestionsToBePassed();
+      questionsToBePassed = this.shuffleQuestions(questionsToBePassed);
       if (this.maxQuestions !== -1) {
         questionsToBePassed = questionsToBePassed.slice(0, this.maxQuestions)
       }
@@ -73,6 +67,16 @@ export class HomepageComponent implements OnInit {
       console.log('questionsToBePassed:', questionsToBePassed)
       this.router.navigate(['/quiz'])
     }
+  }
+
+  private selectQuestionsToBePassed() {
+    return this.questions.filter(question => this.categorySelection.includes(question.category));
+  }
+
+  private shuffleQuestions(questionsToBePassed: Question[]) {
+    return questionsToBePassed.map((a) => ({sort: Math.random(), value: a}))
+      .sort((a, b) => a.sort - b.sort)
+      .map((a) => a.value)
   }
 
   stepClick(evt: StepperSelectionEvent) {
@@ -117,5 +121,9 @@ export class HomepageComponent implements OnInit {
   changeCategory(event: string[]) {
     // console.log(JSON.stringify(event))
     this.categorySelection = event;
+  }
+
+  calculateMaxQuestions() {
+    return this.selectQuestionsToBePassed().length
   }
 }

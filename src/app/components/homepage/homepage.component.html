@@ -23,7 +23,8 @@
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Select the categories</ng-template>
             <mat-form-field appearance="fill">
-              <mat-select placeholder="Select Item" multiple formControlName="firstCtrl" (selectionChange)="changeCategory($event.value)">
+              <mat-select placeholder="Select Item" multiple formControlName="firstCtrl"
+                          (selectionChange)="changeCategory($event.value)">
                 <mat-option *ngFor="let category of categories" [value]="category">
                   {{category}}
                 </mat-option>
@@ -56,7 +57,7 @@
             <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
             <mat-label>Number of questions</mat-label>
             <mat-slider formControlName="thirdCtrl" thumbLabel tickInterval="1" [min]="-1"
-                        [max]="questions.length" [ngModel]="maxQuestions"></mat-slider>
+                        [max]="calculateMaxQuestions()" [ngModel]="maxQuestions"></mat-slider>
           </form>
           <div>
             <button mat-button matStepperPrevious>Back</button>
