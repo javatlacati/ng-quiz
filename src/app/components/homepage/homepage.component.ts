@@ -33,6 +33,7 @@ export class HomepageComponent implements OnInit {
     //   filename: 'Hybrid cloud SRE Assessment.txt'
     // }
   ];
+  questionSetSelection: QuestionDatasetEntry[] = [];
   categorySelection: string[] = [];
   categories: string[] = [];
   difficultySelection: string[] = [];
@@ -106,8 +107,8 @@ export class HomepageComponent implements OnInit {
       case 'step1':
         this.questions = [];
         let promises = []
-        for (const questionSetSelection of this.questionSet) {
-          let questionsPromise = new DatasetLoader(this.httpClient).createQuestionsFromFile(questionSetSelection.filename);
+        for (const aQuestionSetSelection of this.questionSetSelection) {
+          let questionsPromise = new DatasetLoader(this.httpClient).createQuestionsFromFile(aQuestionSetSelection.filename);
           promises.push(questionsPromise);
         }
 
@@ -140,5 +141,9 @@ export class HomepageComponent implements OnInit {
 
   calculateMaxQuestions() {
     return this.selectQuestionsToBePassed().length
+  }
+
+  changeDatasets(value: string[]) {
+    this.questionSetSelection = this.questionSet.filter(questionS => value.includes(questionS.filename));
   }
 }
