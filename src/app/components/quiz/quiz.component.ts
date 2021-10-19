@@ -115,7 +115,7 @@ export class QuizComponent implements OnInit {
     this.verifyCompletion(this.questionsData);
     if(this.completedQuiz)
     this.questionSuubscription.updateSharedQuestions(this.questionsData);
-    this.router.navigate(['/resultado'])
+    this.router.navigate(['/result'])
     //this.$router.push({name: 'Resultado', params: {questions} as any})
   }
 

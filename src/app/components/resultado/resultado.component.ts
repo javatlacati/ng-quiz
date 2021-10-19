@@ -6,6 +6,7 @@ import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-resultado',
@@ -28,7 +29,7 @@ export class ResultadoComponent implements OnInit {
   totalIncorrect = 0;
   private subscription: Subscription | null = null;
 
-  constructor(private questionSuubscription: QuestionSubscription) {
+  constructor(private questionSuubscription: QuestionSubscription, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -51,10 +52,9 @@ export class ResultadoComponent implements OnInit {
 
 
       //Add points to total score
-      let questionElement: string = currentQuestion['_userAnswer'];
+      let questionElement: string = currentQuestion.userAnswer;
       console.log(questionElement)
-      // = currentQuestion.checkQuestionProvidingAnswer(questionElement);
-      let puntosRespuesta = (currentQuestion as any as Question)['checkQuestion']();
+      let puntosRespuesta = (currentQuestion as any as Question).checkQuestion();
       this.score += puntosRespuesta;
 
       //Was the answer vetted/trial and correct, partially correct, or incorrect?
@@ -97,9 +97,11 @@ export class ResultadoComponent implements OnInit {
     );
   }
 
-  goToFeedback(allQuestions: Question[]) {
-    let questions = this.incorrectQuestionsData(allQuestions);
+  goToFeedback() {
+    let questions = this.incorrectQuestionsData(this.questionsData);
     console.log(`questions sent to feedback:${JSON.stringify(questions)}`)
+    this.questionSuubscription.updateSharedQuestions(questions);
+    this.router.navigate(['/feedback'])
     // this.$router.push({name: 'Feedback', params: {questions} as any})
   }
 

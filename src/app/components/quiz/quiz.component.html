@@ -17,14 +17,16 @@
         <div *ngIf="'MultipleAnswerQuestion'===laPreguntaActual.constructor.name">
           <mat-select (selectionChange)="createItems($event.value)" multiple>
             <mat-option *ngFor="let choice of currentQuestionOptions"
-                        [value]="choice.value"> <span [textContent]="choice.label"></span></mat-option>
+                        [value]="choice.value"><span [textContent]="choice.label"></span></mat-option>
           </mat-select>
         </div>
         <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===laPreguntaActual.constructor.name">
           <textarea matInput [value]="selectedAnswer?.label"
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
         </mat-form-field>
-        <button *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)">Go to results</button>
+        <button *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)" (click)="goToResults()">Go to
+          results
+        </button>
       </form>
       <mat-paginator [length]="questionsData.length"
                      [pageSize]="1"
