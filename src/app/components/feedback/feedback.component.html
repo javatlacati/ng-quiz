@@ -1,10 +1,11 @@
 <ng-container>
   <mat-card>
     <mat-card-content>
-      <div class="overline mb-4">{{questionsData[preguntaActual - 1].category}}
-        <small>({{questionsData[preguntaActual - 1].constructor.name}})</small>
+      <div class="overline mb-4">{{laPreguntaActual.category}}
+        <small>({{laPreguntaActual.constructor.name}})</small>
+        <div [innerHTML]="laPreguntaActual.display()"></div>
       </div>
-      You answered: {{questionsData[preguntaActual - 1].userAnswer}}
+      You answered: {{laPreguntaActual.userAnswer}}
     </mat-card-content>
     <mat-card-actions>
       <mat-paginator [length]="questionsData.length"

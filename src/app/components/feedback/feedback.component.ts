@@ -5,6 +5,7 @@ import {PageEvent} from "@angular/material/paginator";
 import {Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
+import FillBlankQuestion from "../../model/FillBlankQuestion";
 
 @Component({
   selector: 'app-feedback',
@@ -15,7 +16,7 @@ export class FeedbackComponent implements OnInit {
 
   questionsData: Question[] = []
   preguntaActual = 1
-  selectedAnswer: { value: number, label: string } | null = null
+  laPreguntaActual: Question = new FillBlankQuestion("Yes");
   private subscription: Subscription | null = null;
 
   constructor(private questionSuubscription: QuestionSubscription) {
@@ -26,7 +27,7 @@ export class FeedbackComponent implements OnInit {
       .currentSharedQuestions
       .subscribe((theQuestions: Question[]) => {
         if (theQuestions.length > 0) {
-          // this.laPreguntaActual = theQuestions[0];
+          this.laPreguntaActual = theQuestions[0];
         }
         return this.questionsData = theQuestions;
       });
@@ -39,7 +40,7 @@ export class FeedbackComponent implements OnInit {
 
   public handleQuestionChange(event?: PageEvent) {
     this.preguntaActual = event?.pageIndex || 0;
-    // this.laPreguntaActual = this.questionsData[this.preguntaActual];
+    this.laPreguntaActual = this.questionsData[this.preguntaActual];
   }
 
   // questionChanged() {
