@@ -91,7 +91,7 @@ export class ResultadoComponent implements OnInit {
           throw new Error('unparseable question type:' + obj);
       }
     });
-    console.log(`filering incorrect questions parsed:${theQuestions}`);
+    console.log(`filering incorrect questions parsed:${JSON.stringify(theQuestions)}`);
     return theQuestions.filter((question) =>
       question.checkQuestion() < question.maxPoints
     );

@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
 import {ActivatedRoute, Router} from "@angular/router";
-import {map} from "rxjs/operators";
-import {NEVER, Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
@@ -20,7 +19,6 @@ export class QuizComponent implements OnInit {
   questionsData: Question[] = []
   preguntaActual = 1
   laPreguntaActual: Question = new FillBlankQuestion("Yes");
-  selectedAnswer: { value: number, label: string } | null = null
   completedQuiz = true
   private subscription: Subscription | null = null;
 
@@ -57,8 +55,23 @@ export class QuizComponent implements OnInit {
   }
 
   createItems(selection: number): void {
-    console.log(selection)
-    // TODO update answer for preguntaActual
+    console.log('respuesta elegida:', selection)
+    this.laPreguntaActual.userAnswer = `${selection}`;
+    console.log('saving answer:', this.laPreguntaActual.userAnswer)
+    let className = this.laPreguntaActual.constructor.name;
+    console.log(`className:${className}`)
+    switch (className) {
+      case 'MultipleChoiceQuestion':
+        this.laPreguntaActual.answer = `${selection}`;
+        console.log(this.laPreguntaActual.answer)
+        break;
+      case 'MultipleAnswerQuestion':
+        this.laPreguntaActual.answer = `${selection}`;
+        console.log(this.laPreguntaActual.answer)
+        break;
+    }
+
+    // TODO update answer for preguntaActual for fill in the blanks
   }
 
   verifyCompletion(questions: Question[]): void {
@@ -70,12 +83,10 @@ export class QuizComponent implements OnInit {
   }
 
   questionChanged() {
-    let daQuestion = this.questionsData[this.preguntaActual - 1] as unknown as Question;
-    let savedAnswer: string = daQuestion['_userAnswer'];
+    let daQuestion = this.laPreguntaActual || '';
+    let savedAnswer: string = daQuestion.userAnswer;
     console.log(`saved user answer: ${savedAnswer}`)
-    if (savedAnswer === '') {
-      this.selectedAnswer = null
-    } else {
+    if (savedAnswer && savedAnswer !== '') {
       let className = daQuestion.constructor.name;
       console.log(`className:${className}`)
       switch (className) {
@@ -83,7 +94,9 @@ export class QuizComponent implements OnInit {
           // @ts-ignore
           let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
           console.log(`saved answer value:${daQuestionElementElement}`)
-          this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
+          // this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
+          this.laPreguntaActual.userAnswer = savedAnswer
+          //this.firstFormGroup.setValue({value: ~~savedAnswer, label: daQuestionElementElement});
           break;
       }
     }
@@ -95,6 +108,7 @@ export class QuizComponent implements OnInit {
     let subtype = this.laPreguntaActual.constructor.name;
     switch (subtype) {
       case 'FillBlankQuestion':
+        this.currentQuestionOptions = [];
         // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
         break;
       case 'MultipleAnswerQuestion':
@@ -105,7 +119,8 @@ export class QuizComponent implements OnInit {
             value: idx,
             label: choice
           }
-        })
+        });
+        this.questionChanged();
         break;
     }
   }
@@ -113,8 +128,8 @@ export class QuizComponent implements OnInit {
   goToResults() {
     console.log(`questions sent:${JSON.stringify(this.questionsData)}`)
     this.verifyCompletion(this.questionsData);
-    if(this.completedQuiz)
-    this.questionSuubscription.updateSharedQuestions(this.questionsData);
+    if (this.completedQuiz)
+      this.questionSuubscription.updateSharedQuestions(this.questionsData);
     this.router.navigate(['/result'])
     //this.$router.push({name: 'Resultado', params: {questions} as any})
   }
@@ -123,5 +138,9 @@ export class QuizComponent implements OnInit {
     console.log('questions: ', this.questionsData.length)
     console.log('preguntaActual: ', (this.preguntaActual + 1))
     this.questionsData.length === (this.preguntaActual + 1 || 0);
+  }
+
+  unescape(label: string): string {
+    return new DOMParser().parseFromString(label, 'text/html').documentElement.textContent || '';
   }
 }
