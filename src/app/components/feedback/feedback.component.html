@@ -6,6 +6,9 @@
         <div [innerHTML]="laPreguntaActual.display()"></div>
       </div>
       You answered: {{laPreguntaActual.userAnswer}}
+      <br>
+      The correct answer was {{laPreguntaActual.answer}}
+      <span *ngIf="laPreguntaActual.explanation">Explanation:<br>{{laPreguntaActual.explanation}}</span>
     </mat-card-content>
     <mat-card-actions>
       <mat-paginator [length]="questionsData.length"

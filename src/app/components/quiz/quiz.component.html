@@ -9,13 +9,13 @@
       </mat-list>
       <form [formGroup]="firstFormGroup">
         <div *ngIf="'MultipleChoiceQuestion'===laPreguntaActual.constructor.name">
-          <mat-select (selectionChange)="createItems($event.value)" [value]="laPreguntaActual.userAnswer">
+          <mat-select formControlName="firstCtrl" (selectionChange)="createItems($event.value)" [(value)]="laPreguntaActual.userAnswer">
             <mat-option *ngFor="let choice of currentQuestionOptions"
                         [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
           </mat-select>
         </div>
         <div *ngIf="'MultipleAnswerQuestion'===laPreguntaActual.constructor.name">
-          <mat-select (selectionChange)="createItems($event.value)" multiple [value]="laPreguntaActual.userAnswer">
+          <mat-select (selectionChange)="createItems($event.value)" multiple [(value)]="laPreguntaActual.userAnswer">
             <mat-option *ngFor="let choice of currentQuestionOptions"
                         [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
           </mat-select>

@@ -64,6 +64,7 @@ export class QuizComponent implements OnInit {
       case 'MultipleChoiceQuestion':
         this.laPreguntaActual.answer = `${selection}`;
         console.log(this.laPreguntaActual.answer)
+        //this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.laPreguntaActual.answer);
         break;
       case 'MultipleAnswerQuestion':
         this.laPreguntaActual.answer = `${selection}`;
@@ -86,8 +87,8 @@ export class QuizComponent implements OnInit {
     let daQuestion = this.laPreguntaActual || '';
     let savedAnswer: string = daQuestion.userAnswer;
     console.log(`saved user answer: ${savedAnswer}`)
+    let className = daQuestion.constructor.name;
     if (savedAnswer && savedAnswer !== '') {
-      let className = daQuestion.constructor.name;
       console.log(`className:${className}`)
       switch (className) {
         case 'MultipleChoiceQuestion':
@@ -96,7 +97,14 @@ export class QuizComponent implements OnInit {
           console.log(`saved answer value:${daQuestionElementElement}`)
           // this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
           this.laPreguntaActual.userAnswer = savedAnswer
-          //this.firstFormGroup.setValue({value: ~~savedAnswer, label: daQuestionElementElement});
+          // this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.laPreguntaActual);
+          //this.firstFormGroup.markAllAsTouched();
+          break;
+      }
+    } else {
+      switch (className) {
+        case 'MultipleChoiceQuestion':
+          // this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(null);
           break;
       }
     }
