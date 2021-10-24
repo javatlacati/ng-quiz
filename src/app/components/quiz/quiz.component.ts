@@ -8,6 +8,7 @@ import FillBlankQuestion from "../../model/FillBlankQuestion";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-quiz',
@@ -18,13 +19,13 @@ export class QuizComponent implements OnInit {
 
   questionsData: Question[] = []
   preguntaActual = 1
-  laPreguntaActual: Question = new FillBlankQuestion("Yes");
+  currentQuestionAlv: Question = new FillBlankQuestion("Yes");
   completedQuiz = true
   private subscription: Subscription | null = null;
 
-  firstFormGroup!: FormGroup
-
   currentQuestionOptions: { label: string; value: number }[] = []
+
+  firstFormGroup!: FormGroup;
 
   constructor(
     private router: Router,
@@ -32,7 +33,9 @@ export class QuizComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private questionSuubscription: QuestionSubscription,
   ) {
-
+    this.firstFormGroup = _formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    })
   }
 
   ngOnInit(): void {
@@ -40,13 +43,10 @@ export class QuizComponent implements OnInit {
       .currentSharedQuestions
       .subscribe((theQuestions: Question[]) => {
         if (theQuestions.length > 0) {
-          this.laPreguntaActual = theQuestions[0];
+          this.currentQuestionAlv = theQuestions[0];
         }
         return this.questionsData = theQuestions;
       });
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
     this.handleQuestionChange();
   }
 
@@ -54,21 +54,23 @@ export class QuizComponent implements OnInit {
     this.subscription?.unsubscribe();
   }
 
-  createItems(selection: number): void {
+  mulAnswerSelectionChanged(event: MatSelectChange): void {
+    let selection = event.value as number
     console.log('respuesta elegida:', selection)
-    this.laPreguntaActual.userAnswer = `${selection}`;
-    console.log('saving answer:', this.laPreguntaActual.userAnswer)
-    let className = this.laPreguntaActual.constructor.name;
+    console.log('respuesta elegida en formulario:', this.firstFormGroup.get('firstCtrl')?.value)
+    this.currentQuestionAlv.userAnswer = `${selection}`;
+    console.log('saving answer:', this.currentQuestionAlv.userAnswer)
+    let className = this.currentQuestionAlv.constructor.name;
     console.log(`className:${className}`)
     switch (className) {
       case 'MultipleChoiceQuestion':
-        this.laPreguntaActual.answer = `${selection}`;
-        console.log(this.laPreguntaActual.answer)
+        this.currentQuestionAlv.answer = `${selection}`;
+        console.log(this.currentQuestionAlv.answer)
         //this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.laPreguntaActual.answer);
         break;
       case 'MultipleAnswerQuestion':
-        this.laPreguntaActual.answer = `${selection}`;
-        console.log(this.laPreguntaActual.answer)
+        this.currentQuestionAlv.answer = `${selection}`;
+        console.log(this.currentQuestionAlv.answer)
         break;
     }
 
@@ -83,8 +85,8 @@ export class QuizComponent implements OnInit {
     console.log(`completed:${this.completedQuiz}`)
   }
 
-  questionChanged() {
-    let daQuestion = this.laPreguntaActual || '';
+  savedAnswerValue(preguntaActual: number, preguntaSiguiente: number) {
+    let daQuestion = this.currentQuestionAlv;
     let savedAnswer: string = daQuestion.userAnswer;
     console.log(`saved user answer: ${savedAnswer}`)
     let className = daQuestion.constructor.name;
@@ -93,18 +95,21 @@ export class QuizComponent implements OnInit {
       switch (className) {
         case 'MultipleChoiceQuestion':
           // @ts-ignore
-          let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
-          console.log(`saved answer value:${daQuestionElementElement}`)
+          // let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
+          // console.log(`saved answer value:${daQuestionElementElement}`)
           // this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
-          this.laPreguntaActual.userAnswer = savedAnswer
-          // this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.laPreguntaActual);
+          this.currentQuestionAlv.userAnswer = savedAnswer
+          this.firstFormGroup.get('firstCtrl')!.setValue(parseInt(savedAnswer));
+          console.log("valor puesto:",this.currentQuestionAlv.userAnswer)
           //this.firstFormGroup.markAllAsTouched();
           break;
       }
     } else {
+      console.log('pregunta no previamente guardada')
       switch (className) {
         case 'MultipleChoiceQuestion':
-          // this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(null);
+           console.log('borrando first control')
+           this.firstFormGroup.get('firstCtrl')?.setValue('');
           break;
       }
     }
@@ -112,8 +117,9 @@ export class QuizComponent implements OnInit {
 
   public handleQuestionChange(event?: PageEvent) {
     this.preguntaActual = event?.pageIndex || 0;
-    this.laPreguntaActual = this.questionsData[this.preguntaActual];
-    let subtype = this.laPreguntaActual.constructor.name;
+    this.currentQuestionAlv = this.questionsData[this.preguntaActual];
+    this.savedAnswerValue(this.preguntaActual, this.preguntaActual+1);
+    let subtype = this.currentQuestionAlv.constructor.name;
     switch (subtype) {
       case 'FillBlankQuestion':
         this.currentQuestionOptions = [];
@@ -121,14 +127,13 @@ export class QuizComponent implements OnInit {
         break;
       case 'MultipleAnswerQuestion':
       case 'MultipleChoiceQuestion':
-        let choices: string[] = (this.laPreguntaActual as MultipleChoiceQuestion).choices;
+        let choices: string[] = (this.currentQuestionAlv as MultipleChoiceQuestion).choices;
         this.currentQuestionOptions = choices.map((choice, idx) => {
           return {
             value: idx,
             label: choice
           }
         });
-        this.questionChanged();
         break;
     }
   }
