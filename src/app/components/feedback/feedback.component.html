@@ -5,9 +5,11 @@
         <small>({{laPreguntaActual.constructor.name}})</small>
         <div [innerHTML]="laPreguntaActual.display()"></div>
       </div>
-      You answered: {{laPreguntaActual.userAnswer}}
+      <div *ngIf="'MultipleChoiceQuestion'===laPreguntaActual.constructor.name">
+        You answered: <span [innerHTML]="showAnswer(laPreguntaActual.userAnswer)"></span>
+      </div>
       <br>
-      The correct answer was {{laPreguntaActual.answer}}
+      The correct answer was: <span [innerHTML]="showAnswer(laPreguntaActual.answer)"></span>
       <span *ngIf="laPreguntaActual.explanation">Explanation:<br>{{laPreguntaActual.explanation}}</span>
     </mat-card-content>
     <mat-card-actions>
