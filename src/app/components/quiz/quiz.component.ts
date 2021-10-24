@@ -64,12 +64,12 @@ export class QuizComponent implements OnInit {
     console.log(`className:${className}`)
     switch (className) {
       case 'MultipleChoiceQuestion':
-        this.currentQuestionAlv.answer = `${selection}`;
+        this.currentQuestionAlv.userAnswer = `${selection}`;
         console.log(this.currentQuestionAlv.answer)
         //this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.laPreguntaActual.answer);
         break;
       case 'MultipleAnswerQuestion':
-        this.currentQuestionAlv.answer = `${selection}`;
+        this.currentQuestionAlv.userAnswer = `${selection}`;
         console.log(this.currentQuestionAlv.answer)
         break;
     }
@@ -81,7 +81,7 @@ export class QuizComponent implements OnInit {
     console.log(JSON.stringify(questions))
     // console.log(questions[0].constructor.name)
     console.log(`completedness:${JSON.stringify(questions.map(q => q.userAnswer))}`)
-    this.completedQuiz = questions.every((aQuestion) => aQuestion.userAnswer.length > 0);
+    this.completedQuiz = questions.every((aQuestion) => aQuestion.userAnswer);
     console.log(`completed:${this.completedQuiz}`)
   }
 
@@ -141,17 +141,17 @@ export class QuizComponent implements OnInit {
   goToResults() {
     console.log(`questions sent:${JSON.stringify(this.questionsData)}`)
     this.verifyCompletion(this.questionsData);
-    if (this.completedQuiz)
+    if (this.completedQuiz) {
       this.questionSuubscription.updateSharedQuestions(this.questionsData);
-    this.router.navigate(['/result'])
-    //this.$router.push({name: 'Resultado', params: {questions} as any})
+      this.router.navigate(['/result'])
+    }
   }
 
-  isInLastPage() {
-    console.log('questions: ', this.questionsData.length)
-    console.log('preguntaActual: ', (this.preguntaActual + 1))
-    this.questionsData.length === (this.preguntaActual + 1 || 0);
-  }
+  // isInLastPage() {
+  //   console.log('questions: ', this.questionsData.length)
+  //   console.log('preguntaActual: ', (this.preguntaActual + 1))
+  //   this.questionsData.length === (this.preguntaActual + 1 || 0);
+  // }
 
   unescape(label: string): string {
     return new DOMParser().parseFromString(label, 'text/html').documentElement.textContent || '';

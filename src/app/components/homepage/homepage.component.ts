@@ -19,19 +19,23 @@ export class HomepageComponent implements OnInit {
   maxQuestions = -1;
   questionSet: QuestionDatasetEntry[] = [
     {displayValue: 'Sample questions', filename: 'SampleQuiz.txt'},
-    // {displayValue: 'vue', filename: 'vue.txt'},
-    // {
-    //   displayValue: 'Appian',
-    //   filename: 'appian.txt'
-    // },
-    // {
-    //   displayValue: 'Java Webservices',
-    //   filename: 'java webservice.txt'
-    // },
-    // {
-    //   displayValue: 'Hybrid cloud',
-    //   filename: 'Hybrid cloud SRE Assessment.txt'
-    // }
+    {displayValue: 'vue', filename: 'vue.txt'},
+    {
+      displayValue: 'Appian',
+      filename: 'appian.txt'
+    },
+    {
+      displayValue: 'Java Webservices',
+      filename: 'java webservice.txt'
+    },
+    {
+      displayValue: 'Hybrid cloud',
+      filename: 'Hybrid cloud SRE Assessment.txt'
+    },
+    {
+      displayValue: 'Design Patterns',
+      filename: 'design patterns.txt'
+    }
   ];
   questionSetSelection: QuestionDatasetEntry[] = [];
   categorySelection: string[] = [];
