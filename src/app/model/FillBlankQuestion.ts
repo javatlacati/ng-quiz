@@ -22,7 +22,14 @@ export default class FillBlankQuestion extends Question {
         return this.checkQuestion();
     }
 
-    delims = "[ ]+";
+    display(): string {
+      let separatedByBlanks = this.text.split("_+");
+      console.log(JSON.stringify("separatedByBlanks: "+separatedByBlanks))
+      //TODO use reactive forms to insert text areas replacing the ____
+      return super.display();
+    }
+
+  delims = "[ ]+";
 
     checkQuestion(): number {
         let tokens = super.userAnswer.split(this.delims);

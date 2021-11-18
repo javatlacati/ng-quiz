@@ -8,7 +8,7 @@
           <form [formGroup]="zerothFormGroup">
             <ng-template matStepLabel>Select The question set</ng-template>
             <mat-form-field appearance="fill">
-              <mat-select placeholder="Select question set" multiple formControlName="zerothCtrl"
+              <mat-select id="questionSelection" placeholder="Select question set" multiple formControlName="zerothCtrl"
               (selectionChange)="changeDatasets($event.value)">
                 <mat-option *ngFor="let questionSet of questionSet" [value]="questionSet.filename">
                   {{questionSet.displayValue}}
@@ -17,7 +17,7 @@
             </mat-form-field>
           </form>
           <div>
-            <button mat-button matStepperNext>Next</button>
+            <button id="step0btnNext" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
         <mat-step [stepControl]="firstFormGroup" label="step1">
@@ -33,7 +33,7 @@
             </mat-form-field>
           </form>
           <div>
-            <button mat-button matStepperNext>Next</button>
+            <button id="step1btnNext" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
         <mat-step [stepControl]="secondFormGroup" label="step2">
@@ -50,7 +50,7 @@
           </form>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button id="step2btnNext" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
         <mat-step [stepControl]="thirdFormGroup" label="step3">
@@ -62,14 +62,14 @@
           </form>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button id="step3btnNext" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
         <mat-step>
           <button mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button id="goToQuiz" mat-button (click)="stepper.reset()">Reset</button>
           </div>
         </mat-step>
       </mat-stepper>

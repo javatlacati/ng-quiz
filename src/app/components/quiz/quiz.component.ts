@@ -122,7 +122,9 @@ export class QuizComponent implements OnInit {
     let subtype = this.currentQuestionAlv.constructor.name;
     switch (subtype) {
       case 'FillBlankQuestion':
+        let fillblanksRequired: number = (this.currentQuestionAlv as FillBlankQuestion)._correctAnswers.length;
         this.currentQuestionOptions = [];
+        console.log("fillblanks required:",fillblanksRequired)
         // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
         break;
       case 'MultipleAnswerQuestion':
