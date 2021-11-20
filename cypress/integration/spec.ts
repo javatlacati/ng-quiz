@@ -22,5 +22,11 @@ describe('My First Test', () => {
     home.clickOptionFromCategorySelectionByText('sample')
     home.closeSelect();
     home.step1ClickNextButton();
+    home.clickDifficultySelect();
+    home.verifyDifficultySelectionLength(3);
+    home.clickOptionFromDifficultySelectionByText('Hard');
+    home.clickOptionFromDifficultySelectionByText('Easy');
+    home.closeSelect();
+    home.step2ClickNextButton();
   })
 })

@@ -51,6 +51,10 @@ export class HomepagePageObject {
     cy.get('#step1btnNext').click()
   }
 
+  public step2ClickNextButton(): void {
+    cy.get('#step2btnNext').click()
+  }
+
   private categorySelection(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.get('mat-select[formControlName=firstCtrl]')
   }
@@ -77,6 +81,30 @@ export class HomepagePageObject {
 
   public verifyCategorySelectionLength(length: number) {
     this.getOptionsFromCategorySelection().should('have.lengthOf', length)
+  }
+
+  private difficultySelection(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.get('mat-select[formControlName=secondCtrl]')
+  }
+
+  public clickDifficultySelect(): void {
+    this.difficultySelection().click()
+  }
+
+  private getOptionsFromDifficultySelection(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.difficultySelection().get('mat-option');
+  }
+
+  public getOptionFromDifficultySelectionByText(text: string) {
+    return this.getOptionsFromDifficultySelection().contains(text)
+  }
+
+  public clickOptionFromDifficultySelectionByText(text: string) {
+    this.getOptionFromCategorySelectionByText(text).click()
+  }
+
+  public verifyDifficultySelectionLength(length: number) {
+    this.getOptionsFromDifficultySelection().should('have.lengthOf', length)
   }
 
 
