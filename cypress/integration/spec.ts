@@ -28,5 +28,9 @@ describe('My First Test', () => {
     home.clickOptionFromDifficultySelectionByText('Easy');
     home.closeSelect();
     home.step2ClickNextButton();
+    home.selectQuestionNumber(2);
+    home.step3ClickNextButton();
+    home.step4ClickgoToQuizButton();
+    cy.url().should('include', '/quiz');
   })
 })

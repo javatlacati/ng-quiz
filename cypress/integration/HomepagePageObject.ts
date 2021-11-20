@@ -55,6 +55,13 @@ export class HomepagePageObject {
     cy.get('#step2btnNext').click()
   }
 
+  public step3ClickNextButton(): void {
+    cy.get('#step3btnNext').click()
+  }
+  public step4ClickgoToQuizButton(): void {
+    cy.get('#goToQuiz').click()
+  }
+
   private categorySelection(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.get('mat-select[formControlName=firstCtrl]')
   }
@@ -107,5 +114,12 @@ export class HomepagePageObject {
     this.getOptionsFromDifficultySelection().should('have.lengthOf', length)
   }
 
+  private questionNumber(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.get('mat-slider[formControlName=thirdCtrl]')
+  }
 
+  public selectQuestionNumber(questions: number) {
+    this.questionNumber().focus()
+      .type("{rightarrow}".repeat(questions));
+  }
 }

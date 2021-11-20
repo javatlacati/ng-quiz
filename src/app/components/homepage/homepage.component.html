@@ -66,10 +66,10 @@
           </div>
         </mat-step>
         <mat-step>
-          <button mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
+          <button id="goToQuiz" mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button id="goToQuiz" mat-button (click)="stepper.reset()">Reset</button>
+            <button id="reset" mat-button (click)="stepper.reset()">Reset</button>
           </div>
         </mat-step>
       </mat-stepper>
