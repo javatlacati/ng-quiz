@@ -46,4 +46,38 @@ export class HomepagePageObject {
   public step0ClickNextButton(): void {
     cy.get('#step0btnNext').click()
   }
+
+  public step1ClickNextButton(): void {
+    cy.get('#step1btnNext').click()
+  }
+
+  private categorySelection(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.get('mat-select[formControlName=firstCtrl]')
+  }
+
+  public categorySelectionValidationFailed() {
+    this.categorySelection().should('have.attr', 'aria-invalid').should('equal', 'true')
+  }
+
+  public clickCategorySelect(): void {
+    this.categorySelection().click()
+  }
+
+  private getOptionsFromCategorySelection(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.categorySelection().get('mat-option');
+  }
+
+  public getOptionFromCategorySelectionByText(text: string) {
+    return this.getOptionsFromCategorySelection().contains(text)
+  }
+
+  public clickOptionFromCategorySelectionByText(text: string) {
+    this.getOptionFromCategorySelectionByText(text).click()
+  }
+
+  public verifyCategorySelectionLength(length: number) {
+    this.getOptionsFromCategorySelection().should('have.lengthOf', length)
+  }
+
+
 }

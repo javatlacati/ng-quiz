@@ -17,5 +17,10 @@ describe('My First Test', () => {
     home.clickOptionFromQuestionSelectionByText('Sample questions');
     home.closeSelect();
     home.step0ClickNextButton();
+    home.clickCategorySelect();
+    home.verifyCategorySelectionLength(1);
+    home.clickOptionFromCategorySelectionByText('sample')
+    home.closeSelect();
+    home.step1ClickNextButton();
   })
 })

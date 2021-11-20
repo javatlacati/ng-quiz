@@ -24,7 +24,7 @@
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Select the categories</ng-template>
             <mat-form-field appearance="fill">
-              <mat-select placeholder="Select Item" multiple formControlName="firstCtrl"
+              <mat-select id="categorySelection" placeholder="Select Item" multiple formControlName="firstCtrl"
                           (selectionChange)="changeCategory($event.value)">
                 <mat-option *ngFor="let category of categories" [value]="category">
                   {{category}}
