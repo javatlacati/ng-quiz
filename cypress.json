@@ -6,5 +6,7 @@
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
   "baseUrl": "http://localhost:4200",
-  "ignoreTestFiles": "*PageObject.ts"
+  "ignoreTestFiles": "*PageObject.ts",
+  "video": true,
+  "screenshotOnRunFailure": true
 }
