@@ -35,6 +35,10 @@ export class HomepageComponent implements OnInit {
     {
       displayValue: 'Design Patterns',
       filename: 'design patterns.txt'
+    },
+    {
+      displayValue: 'Selenium with Java',
+      filename: 'selenium java.txt'
     }
   ];
   questionSetSelection: QuestionDatasetEntry[] = [];

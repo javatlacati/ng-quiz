@@ -10,7 +10,7 @@
       </div>
       <br>
       The correct answer was: <span [innerHTML]="showAnswer(laPreguntaActual.answer)"></span>
-      <span *ngIf="laPreguntaActual.explanation">Explanation:<br>{{laPreguntaActual.explanation}}</span>
+      <span *ngIf="laPreguntaActual.explanation"><br>Explanation:<br>{{laPreguntaActual.explanation}}</span>
     </mat-card-content>
     <mat-card-actions>
       <mat-paginator [length]="questionsData.length"
