@@ -55,10 +55,12 @@
         </mat-step>
         <mat-step [stepControl]="thirdFormGroup" label="step3">
           <form [formGroup]="thirdFormGroup">
-            <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
-            <mat-label>Number of questions</mat-label>
-            <mat-slider formControlName="thirdCtrl" thumbLabel tickInterval="1" [min]="-1"
-                        [max]="calculateMaxQuestions()" [ngModel]="maxQuestions"></mat-slider>
+            <div style="line-height: 80px;">
+              <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
+              <mat-label>Number of questions</mat-label>
+              <mat-slider formControlName="thirdCtrl" thumbLabel tickInterval="1" [min]="-1"
+                          [max]="calculateMaxQuestions()" [ngModel]="maxQuestions"></mat-slider>
+            </div>
           </form>
           <div>
             <button mat-button matStepperPrevious>Back</button>
