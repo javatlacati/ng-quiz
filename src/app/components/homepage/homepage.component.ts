@@ -165,7 +165,7 @@ export class HomepageComponent implements OnInit {
           return Difficulty.NORMAL;
       }
     });
-     console.log("difficulty sel changed:", this.difficultySelection)
+   //  console.log("difficulty sel changed:", this.difficultySelection)
   }
 
   changeCategory(event: string[]) {
