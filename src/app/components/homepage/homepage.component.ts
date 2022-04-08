@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
 import {QuestionDatasetEntry} from "../../model/QuestionDatasetEntry";
+import Difficulty from "../../model/Difficulty";
 
 @Component({
   selector: 'app-homepage',
@@ -44,7 +45,7 @@ export class HomepageComponent implements OnInit {
   questionSetSelection: QuestionDatasetEntry[] = [];
   categorySelection: string[] = [];
   categories: string[] = [];
-  difficultySelection: string[] = [];
+  difficultySelection: Difficulty[] = [];
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
   errorMessage = ''
 
@@ -94,7 +95,8 @@ export class HomepageComponent implements OnInit {
   }
 
   private selectQuestionsToBePassed() {
-    return this.questions.filter(question => this.categorySelection.includes(question.category));
+    return this.questions.filter(question => this.categorySelection.includes(question.category))
+      .filter(question=>this.difficultySelection.includes(question.difficulty));
   }
 
   private shuffleQuestions(questionsToBePassed: Question[]) {
@@ -108,6 +110,18 @@ export class HomepageComponent implements OnInit {
     console.log('label:', label)
     switch (label) {
       case 'step2':
+        this.questionDifficulties= [...new Set(this.questions.map(question => {
+          switch (question.difficulty){
+            case Difficulty.EASY:
+              return 'EASY';
+            case Difficulty.NORMAL:
+              return 'NORMAL';
+            case Difficulty.HARD:
+              return 'HARD';
+            default:
+              return 'NORMAL';
+          }
+        }))];
         break;
       case 'step3':
         console.log('category selection: ', this.categorySelection)
@@ -138,8 +152,20 @@ export class HomepageComponent implements OnInit {
 
   changeDifficulty(event: string[]) {
     // console.log(JSON.stringify(event))
-    this.difficultySelection = event;
-    // console.log("difficulty sel changed:", this.difficultySelection)
+
+    this.difficultySelection = event.map(aDifficulty=>{
+      switch (aDifficulty){
+        case 'EASY':
+          return Difficulty.EASY;
+        case 'NORMAL':
+          return Difficulty.NORMAL;
+        case 'HARD':
+          return Difficulty.HARD;
+        default:
+          return Difficulty.NORMAL;
+      }
+    });
+     console.log("difficulty sel changed:", this.difficultySelection)
   }
 
   changeCategory(event: string[]) {

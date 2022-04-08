@@ -23,7 +23,7 @@ export default class FillBlankQuestion extends Question {
     }
 
     display(): string {
-      let separatedByBlanks = this.text.split("_+");
+      let separatedByBlanks = this.text.split("_+") || '';
       console.log(JSON.stringify("separatedByBlanks: "+separatedByBlanks))
       //TODO use reactive forms to insert text areas replacing the ____
       return super.display();
