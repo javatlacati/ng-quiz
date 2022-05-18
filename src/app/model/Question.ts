@@ -36,6 +36,9 @@ export default abstract class Question {
   }
 
 
+  get text(): string {
+    return this._text;
+  }
 
   get explanation(): string {
     return this._explanation;

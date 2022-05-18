@@ -1,0 +1,63 @@
+<mat-card>
+  <mat-card-content>
+    Select type:
+    <mat-select id="questionSelection" placeholder="Select question type"
+                (selectionChange)="changeType($event.value)">
+      <mat-option *ngFor="let questionType of questionTypes" [value]="questionType.value">
+        {{questionType.name}}
+      </mat-option>
+    </mat-select>
+    <hr>
+    Enunciado:
+    <mat-form-field>
+    <textarea matInput [(ngModel)]="currentQuestionAlv.text"
+              placeholder="Escriba su enunciado"></textarea>
+    </mat-form-field>
+    Categoria:
+    <mat-form-field>
+    <textarea matInput [(ngModel)]="currentQuestionAlv.category"
+              placeholder="Nombre de la categoria"></textarea>
+    </mat-form-field>
+    Select The level of difficulty
+    <mat-form-field appearance="fill">
+      <mat-select placeholder="Select Item"
+                  (ngModelChange)="changeDifficulty($event)" [(ngModel)]="currentQuestionAlv.difficulty">
+        <mat-option *ngFor="let difficulty of questionDifficulties" [value]="difficulty">
+          {{difficulty}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    Explicacion:
+    <mat-form-field>
+    <textarea matInput [(ngModel)]="currentQuestionAlv.explanation"
+              placeholder="Escriba su explicacion"></textarea>
+    </mat-form-field>
+    <div *ngIf="'FillBlankQuestion'===this.questionTypeSelection">
+      Respuesta:
+      <mat-form-field appearance="fill">
+
+          <textarea matInput [(ngModel)]="currentQuestionAlv.answer"
+                    placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+      </mat-form-field>
+      <hr>
+      <div>
+          <p>{{questionTypeAbreviation(currentQuestionAlv.constructor.name)}}@@v@@{{currentQuestionAlv.explanation}}@@{{currentQuestionAlv.category}}@@{{currentQuestionAlv.difficulty.valueOf()}}@@{{currentQuestionAlv.text}}@@{{currentQuestionAlv.answer.split(' ').join('@@')}}</p>
+        <button [cdkCopyToClipboard]="questionTypeAbreviation(currentQuestionAlv.constructor.name)+'@@v@@'+currentQuestionAlv.explanation+'@@'+currentQuestionAlv.category+'@@'+currentQuestionAlv.difficulty.valueOf()+'@@'+currentQuestionAlv.text+'@@'+currentQuestionAlv.answer.split(' ').join('@@')">copy</button>
+
+      </div>
+    </div>
+    <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">
+      <!--      <mat-select formControlName="firstCtrl" (selectionChange)="mulAnswerSelectionChanged($event)">-->
+      <!--        <mat-option *ngFor="let choice of currentQuestionOptions"-->
+      <!--                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>-->
+      <!--      </mat-select>-->
+    </div>
+    <div *ngIf="'MultipleAnswerQuestion'===this.questionTypeSelection">
+      <!--<mat-select (selectionChange)="mulAnswerSelectionChanged($event.value)" multiple [(value)]="currentQuestionAlv.userAnswer">
+        <mat-option *ngFor="let choice of currentQuestionOptions"
+                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
+      </mat-select>-->
+    </div>
+
+  </mat-card-content>
+</mat-card>

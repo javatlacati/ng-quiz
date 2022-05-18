@@ -180,4 +180,8 @@ export class HomepageComponent implements OnInit {
   changeDatasets(value: string[]) {
     this.questionSetSelection = this.questionSet.filter(questionS => value.includes(questionS.filename));
   }
+
+  goToEditor() {
+    this.router.navigate(['/questiongen'])
+  }
 }
