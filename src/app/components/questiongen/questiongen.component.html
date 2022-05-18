@@ -41,9 +41,8 @@
       </mat-form-field>
       <hr>
       <div>
-          <p>{{questionTypeAbreviation(currentQuestionAlv.constructor.name)}}@@v@@{{currentQuestionAlv.explanation}}@@{{currentQuestionAlv.category}}@@{{currentQuestionAlv.difficulty.valueOf()}}@@{{currentQuestionAlv.text}}@@{{currentQuestionAlv.answer.split(' ').join('@@')}}</p>
-        <button [cdkCopyToClipboard]="questionTypeAbreviation(currentQuestionAlv.constructor.name)+'@@v@@'+currentQuestionAlv.explanation+'@@'+currentQuestionAlv.category+'@@'+currentQuestionAlv.difficulty.valueOf()+'@@'+currentQuestionAlv.text+'@@'+currentQuestionAlv.answer.split(' ').join('@@')">copy</button>
-
+          <p>{{generateEnunciate()}}</p>
+        <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
       </div>
     </div>
     <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">
@@ -51,12 +50,27 @@
       <!--        <mat-option *ngFor="let choice of currentQuestionOptions"-->
       <!--                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>-->
       <!--      </mat-select>-->
+      <div>
+        <p>{{generateEnunciate()}}</p>
+        <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
+      </div>
     </div>
     <div *ngIf="'MultipleAnswerQuestion'===this.questionTypeSelection">
-      <!--<mat-select (selectionChange)="mulAnswerSelectionChanged($event.value)" multiple [(value)]="currentQuestionAlv.userAnswer">
-        <mat-option *ngFor="let choice of currentQuestionOptions"
-                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
-      </mat-select>-->
+      Add a new Answer choice:
+      <mat-form-field>
+       <textarea matInput [(ngModel)]="optionToBeAdded"
+              placeholder="answer choice"></textarea>
+      </mat-form-field>
+      <button (click)="addAnswerChoice()">add</button>
+      <mat-selection-list multiple #choice>
+        <mat-list-option *ngFor="let choice of getMultipleAnswerChoiceOptions()">
+          {{choice.label}}
+        </mat-list-option>
+      </mat-selection-list>
+      <div>
+        <p>{{generateEnunciate()}}</p>
+        <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
+      </div>
     </div>
 
   </mat-card-content>

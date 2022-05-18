@@ -19,6 +19,7 @@ export class QuestiongenComponent implements OnInit {
   currentQuestionAlv: Question = new FillBlankQuestion("Yes");
   questionTypeSelection: string = 'FillBlankQuestion';
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
+  optionToBeAdded: string = '';
 
 
   constructor() {
@@ -43,9 +44,9 @@ export class QuestiongenComponent implements OnInit {
   }
 
   changeDifficulty(event: string) {
-    console.log('difficulty to change: '+event)
+    console.log('difficulty to change: ' + event)
     this.currentQuestionAlv.difficulty = this.mapDifficulty(event)
-      console.log("difficulty sel changed:", this.currentQuestionAlv.difficulty.valueOf())
+    console.log("difficulty sel changed:", this.currentQuestionAlv.difficulty.valueOf())
   }
 
   mapDifficulty(aDifficulty: string): Difficulty {
@@ -72,5 +73,33 @@ export class QuestiongenComponent implements OnInit {
         return 'MC'
     }
     return '';
+  }
+
+  getMultipleAnswerChoiceOptions() {
+    return this.currentQuestionAlv.constructor.name === 'MultipleAnswerQuestion' ? (this.currentQuestionAlv as MultipleAnswerQuestion)['choices'].map((choice, idx) => {
+      return {
+        value: idx,
+        label: choice
+      }
+    }) : []
+  }
+
+  addAnswerChoice() {
+    if (this.currentQuestionAlv.constructor.name === 'MultipleAnswerQuestion') {
+      let answerOptions = (this.currentQuestionAlv as MultipleAnswerQuestion).choices;
+      answerOptions.push("this.optionToBeAdded");
+    }
+  }
+
+  generateEnunciate() {
+    switch (this.currentQuestionAlv.constructor.name) {
+      case 'FillBlankQuestion':
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`
+      case 'MultipleAnswerQuestion':
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${(this.currentQuestionAlv as MultipleAnswerQuestion).choices}`
+      case 'MultipleChoiceQuestion':
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${(this.currentQuestionAlv as MultipleChoiceQuestion).choices}`
+    }
+    return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`;
   }
 }
