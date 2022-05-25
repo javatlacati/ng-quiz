@@ -41,7 +41,7 @@
       </mat-form-field>
       <hr>
       <div>
-          <p>{{generateEnunciate()}}</p>
+        <p>{{generateEnunciate()}}</p>
         <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
       </div>
     </div>
@@ -59,14 +59,10 @@
       Add a new Answer choice:
       <mat-form-field>
        <textarea matInput [(ngModel)]="optionToBeAdded"
-              placeholder="answer choice"></textarea>
+                 placeholder="answer choice"></textarea>
       </mat-form-field>
+      <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct</mat-checkbox>
       <button (click)="addAnswerChoice()">add</button>
-      <mat-selection-list multiple #choice>
-        <mat-list-option *ngFor="let choice of getMultipleAnswerChoiceOptions()">
-          {{choice.label}}
-        </mat-list-option>
-      </mat-selection-list>
       <div>
         <p>{{generateEnunciate()}}</p>
         <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
