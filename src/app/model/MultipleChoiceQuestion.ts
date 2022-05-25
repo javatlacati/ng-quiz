@@ -84,4 +84,7 @@ export default class MultipleChoiceQuestion extends Question {
     return 1.0;
   }
 
+  shuffleChoices() {
+    this._choices = this._choices.sort(() => Math.random() - 0.5)
+  }
 }

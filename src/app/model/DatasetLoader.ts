@@ -79,6 +79,7 @@ export default class DatasetLoader {
     choiceQuestion.category = category;
     choiceQuestion.difficulty = this.str2difficulty(difficulty);
     // answerChoicesMap.forEach((choice, i) => choiceQuestion.setChoice(choice, i));
+    //TODO shuffle choices map
     choiceQuestion.choices = Array.from(answerChoicesMap.keys());
     choiceQuestion.answer = Array.from(answerChoicesMap.values()).map((value: boolean, idx: number) => {
       if (value) {
@@ -149,6 +150,8 @@ export default class DatasetLoader {
       let answerText = answersTexts[i];
       choiceQuestion.setChoice(answerText, i == correctAnswerIdx);
     }
+    // randomize order of choices to make it harder
+    choiceQuestion.shuffleChoices()
     return choiceQuestion
   }
 }
