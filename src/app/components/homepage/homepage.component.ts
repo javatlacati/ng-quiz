@@ -40,6 +40,10 @@ export class HomepageComponent implements OnInit {
     {
       displayValue: 'Selenium with Java',
       filename: 'selenium java.txt'
+    },
+    {
+      displayValue: 'Hybrid cloud pre assesment',
+      filename: 'hybrid cloud preassesment.txt'
     }
   ];
   questionSetSelection: QuestionDatasetEntry[] = [];

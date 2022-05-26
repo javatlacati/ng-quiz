@@ -46,13 +46,21 @@
       </div>
     </div>
     <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">
-      <!--      <mat-select formControlName="firstCtrl" (selectionChange)="mulAnswerSelectionChanged($event)">-->
-      <!--        <mat-option *ngFor="let choice of currentQuestionOptions"-->
-      <!--                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>-->
-      <!--      </mat-select>-->
+      Index of the correct answer (starting from 0):
+      <mat-form-field>
+       <textarea matInput [(ngModel)]="correctChoiceIdx"
+                 placeholder="answer index"></textarea>
+      </mat-form-field>
+      Add a new Answer choice:
+      <mat-form-field>
+       <textarea matInput [(ngModel)]="optionToBeAdded"
+                 placeholder="answer choice"></textarea>
+      </mat-form-field>
+      <button (click)="addAnswerChoice()">add</button>
       <div>
         <p>{{generateEnunciate()}}</p>
         <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
+        <button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
       </div>
     </div>
     <div *ngIf="'MultipleAnswerQuestion'===this.questionTypeSelection">
@@ -66,6 +74,7 @@
       <div>
         <p>{{generateEnunciate()}}</p>
         <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
+        <button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
       </div>
     </div>
 

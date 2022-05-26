@@ -88,7 +88,7 @@ export class ResultadoComponent implements OnInit {
         case '':
           return Object.assign(new MultipleAnswerQuestion('vetted'), obj);
         default:
-          throw new Error('unparseable question type:' + obj);
+          throw new Error('unparseable question type:' + JSON.stringify(obj));
       }
     });
     console.log(`filering incorrect questions parsed:${JSON.stringify(theQuestions)}`);

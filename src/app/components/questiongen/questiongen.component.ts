@@ -24,6 +24,7 @@ export class QuestiongenComponent implements OnInit {
   currentMultipleAnswerQuestion = new MultipleAnswerQuestion('Y')
   currentMultipleChoiceQuestion = new MultipleChoiceQuestion('Y')
   currentQuestionAlv: Question = this.currentFillBlankQuestion
+  correctChoiceIdx: number = 0;
 
 
   constructor() {
@@ -38,12 +39,15 @@ export class QuestiongenComponent implements OnInit {
     console.log('previous type:' + this.currentQuestionAlv.constructor.name)
     switch (value) {
       case 'FillBlankQuestion':
+        this.currentFillBlankQuestion = new FillBlankQuestion("Yes");
         this.currentQuestionAlv = this.currentFillBlankQuestion;
         break;
       case 'MultipleAnswerQuestion':
+        this.currentMultipleAnswerQuestion = new MultipleAnswerQuestion('Y')
         this.currentQuestionAlv = this.currentMultipleAnswerQuestion;
         break;
       case 'MultipleChoiceQuestion':
+        this.currentMultipleChoiceQuestion = new MultipleChoiceQuestion('Y')
         this.currentQuestionAlv = this.currentMultipleChoiceQuestion;
         break;
     }
@@ -96,11 +100,16 @@ export class QuestiongenComponent implements OnInit {
       let currentQuestionAlv1 = this.currentMultipleAnswerQuestion
       let answerOptions = currentQuestionAlv1.choices;
       console.log(`answer choices: ${JSON.stringify(currentQuestionAlv1.choices)}`)
-      debugger
-      currentQuestionAlv1.setChoice(this.optionToBeAdded,this.multipleAnswerCorrect);
+      currentQuestionAlv1.setChoice(this.optionToBeAdded, this.multipleAnswerCorrect);
       // answerOptions.push("this.optionToBeAdded");
       // if (this.multipleAnswerCorrect == 'true')
       //   currentQuestionAlv1.correctAnswers.push("this.optionToBeAdded");
+    } else {
+      if (this.currentQuestionAlv.constructor.name == 'MultipleChoiceQuestion') {
+        let currentQuestionAlv2 = this.currentMultipleChoiceQuestion
+        console.log(`answer choices: ${JSON.stringify(currentQuestionAlv2.choices)}`)
+        currentQuestionAlv2.setChoice(this.optionToBeAdded, currentQuestionAlv2.choices.length + 1 === this.correctChoiceIdx);
+      }
     }
   }
 
@@ -109,9 +118,9 @@ export class QuestiongenComponent implements OnInit {
       case 'FillBlankQuestion':
         return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`
       case 'MultipleAnswerQuestion':
-        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentMultipleAnswerQuestion.choices}@@${this.currentMultipleAnswerQuestion.correctAnswers}`
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentMultipleAnswerQuestion.choices.join('@@')}@@${this.currentMultipleAnswerQuestion.correctAnswers.join('@@')}`
       case 'MultipleChoiceQuestion':
-        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${(this.currentQuestionAlv as MultipleChoiceQuestion).choices}`
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.correctChoiceIdx}@@${this.currentMultipleChoiceQuestion.choices.join('@@')}`
     }
     return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`;
   }
