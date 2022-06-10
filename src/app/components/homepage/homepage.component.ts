@@ -44,6 +44,10 @@ export class HomepageComponent implements OnInit {
     {
       displayValue: 'Hybrid cloud pre assesment',
       filename: 'hybrid cloud preassesment.txt'
+    },
+    {
+      displayValue: 'Docker',
+      filename: 'docker.txt'
     }
   ];
   questionSetSelection: QuestionDatasetEntry[] = [];
