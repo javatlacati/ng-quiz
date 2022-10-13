@@ -20,8 +20,10 @@
     </mat-form-field>
     Select The level of difficulty
     <mat-form-field appearance="fill">
+<!--      (ngModelChange)="changeDifficulty($event)"-->
       <mat-select placeholder="Select Item"
-                  (ngModelChange)="changeDifficulty($event)" [(ngModel)]="currentQuestionAlv.difficulty">
+
+                  [(ngModel)]="this.currentDifficulty">
         <mat-option *ngFor="let difficulty of questionDifficulties" [value]="difficulty">
           {{difficulty}}
         </mat-option>

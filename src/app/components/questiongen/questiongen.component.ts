@@ -25,6 +25,7 @@ export class QuestiongenComponent implements OnInit {
   currentMultipleChoiceQuestion = new MultipleChoiceQuestion('Y')
   currentQuestionAlv: Question = this.currentFillBlankQuestion
   correctChoiceIdx: number = 0;
+  currentDifficulty: string = 'Easy';
 
 
   constructor() {
@@ -62,7 +63,7 @@ export class QuestiongenComponent implements OnInit {
 
   mapDifficulty(aDifficulty: string): Difficulty {
     // console.log(`mapping difficulty:${aDifficulty} of type ${aDifficulty.constructor.name}`)
-    switch (aDifficulty) {
+    switch (aDifficulty.toUpperCase()) {
       case 'EASY':
         return Difficulty.EASY;
       case 'NORMAL':
@@ -116,12 +117,12 @@ export class QuestiongenComponent implements OnInit {
   generateEnunciate() {
     switch (this.currentQuestionAlv.constructor.name) {
       case 'FillBlankQuestion':
-        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`.replace(/\n/g,' ')
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`.replace(/\n/g,' ')
       case 'MultipleAnswerQuestion':
-        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentMultipleAnswerQuestion.choices.join('@@')}@@${this.currentMultipleAnswerQuestion.correctAnswers.join('@@')}`.replace(/\n/g,' ')
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentMultipleAnswerQuestion.choices.join('@@')}@@${this.currentMultipleAnswerQuestion.correctAnswers.join('@@')}`.replace(/\n/g,' ')
       case 'MultipleChoiceQuestion':
-        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.correctChoiceIdx}@@${this.currentMultipleChoiceQuestion.choices.join('@@')}`.replace(/\n/g,' ')
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.correctChoiceIdx}@@${this.currentMultipleChoiceQuestion.choices.join('@@')}`.replace(/\n/g,' ')
     }
-    return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.currentQuestionAlv.difficulty.valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`.replace(/\n/g,' ');
+    return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`.replace(/\n/g,' ');
   }
 }
