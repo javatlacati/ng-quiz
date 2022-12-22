@@ -48,6 +48,10 @@ export class HomepageComponent implements OnInit {
     {
       displayValue: 'Docker',
       filename: 'docker.txt'
+    },
+    {
+      displayValue: 'Search Engine Optimization',
+      filename: 'seo.txt'
     }
   ];
   questionSetSelection: QuestionDatasetEntry[] = [];

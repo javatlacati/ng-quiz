@@ -52,6 +52,7 @@ export class QuestiongenComponent implements OnInit {
         this.currentQuestionAlv = this.currentMultipleChoiceQuestion;
         break;
     }
+    this.optionToBeAdded = ''
     console.log('new type:' + this.currentQuestionAlv.constructor.name)
   }
 
@@ -112,6 +113,7 @@ export class QuestiongenComponent implements OnInit {
         currentQuestionAlv2.setChoice(this.optionToBeAdded, currentQuestionAlv2.choices.length + 1 === this.correctChoiceIdx);
       }
     }
+    this.optionToBeAdded = '';
   }
 
   generateEnunciate() {
