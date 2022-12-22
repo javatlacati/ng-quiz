@@ -42,9 +42,11 @@
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
       </mat-form-field>
       <hr>
-      <div class="code-section">
-        <p>{{generateEnunciate()}}</p>
-        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()"><mat-icon>content_copy</mat-icon></button>
+      <div class="code-section row">
+        <p class="col-md-11 overflow-auto">{{generateEnunciate()}}</p>
+        <button class="col" mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+          <mat-icon>content_copy</mat-icon>
+        </button>
       </div>
     </div>
     <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">
@@ -59,10 +61,16 @@
                  placeholder="answer choice"></textarea>
       </mat-form-field>
       <button mat-button (click)="addAnswerChoice()">add</button>
-      <div class="code-section">
-        <p>{{generateEnunciate()}}</p>
-        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()"><mat-icon>content_copy</mat-icon></button>
-        <button mat-button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
+      <div class="code-section row">
+        <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
+        <div class="col align-self-end">
+          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+            <mat-icon>restart_alt</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
     <div *ngIf="'MultipleAnswerQuestion'===this.questionTypeSelection">
@@ -74,10 +82,16 @@
       <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct
       </mat-checkbox>
       <button mat-button (click)="addAnswerChoice()">add</button>
-      <div class="code-section">
-        <p>{{generateEnunciate()}}</p>
-        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()"><mat-icon>content_copy</mat-icon></button>
-        <button mat-button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
+      <div class="code-section row">
+        <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
+        <div class="col align-self-end">
+          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+            <mat-icon>restart_alt</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
 
