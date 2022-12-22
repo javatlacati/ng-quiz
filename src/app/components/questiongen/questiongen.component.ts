@@ -8,7 +8,7 @@ import Difficulty from "../../model/Difficulty";
 @Component({
   selector: 'app-questiongen',
   templateUrl: './questiongen.component.html',
-  styleUrls: ['./questiongen.component.sass']
+  styleUrls: ['./questiongen.component.scss']
 })
 export class QuestiongenComponent implements OnInit {
   questionTypes = [

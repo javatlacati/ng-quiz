@@ -20,7 +20,7 @@
     </mat-form-field>
     Select The level of difficulty
     <mat-form-field appearance="fill">
-<!--      (ngModelChange)="changeDifficulty($event)"-->
+      <!--      (ngModelChange)="changeDifficulty($event)"-->
       <mat-select placeholder="Select Item"
 
                   [(ngModel)]="this.currentDifficulty">
@@ -42,9 +42,9 @@
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
       </mat-form-field>
       <hr>
-      <div>
+      <div class="code-section">
         <p>{{generateEnunciate()}}</p>
-        <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
+        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()"><mat-icon>content_copy</mat-icon></button>
       </div>
     </div>
     <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">
@@ -58,11 +58,11 @@
        <textarea matInput [(ngModel)]="optionToBeAdded"
                  placeholder="answer choice"></textarea>
       </mat-form-field>
-      <button (click)="addAnswerChoice()">add</button>
-      <div>
+      <button mat-button (click)="addAnswerChoice()">add</button>
+      <div class="code-section">
         <p>{{generateEnunciate()}}</p>
-        <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
-        <button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
+        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()"><mat-icon>content_copy</mat-icon></button>
+        <button mat-button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
       </div>
     </div>
     <div *ngIf="'MultipleAnswerQuestion'===this.questionTypeSelection">
@@ -71,12 +71,13 @@
        <textarea matInput [(ngModel)]="optionToBeAdded"
                  placeholder="answer choice"></textarea>
       </mat-form-field>
-      <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct</mat-checkbox>
-      <button (click)="addAnswerChoice()">add</button>
-      <div>
+      <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct
+      </mat-checkbox>
+      <button mat-button (click)="addAnswerChoice()">add</button>
+      <div class="code-section">
         <p>{{generateEnunciate()}}</p>
-        <button [cdkCopyToClipboard]="generateEnunciate()">copy</button>
-        <button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
+        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()"><mat-icon>content_copy</mat-icon></button>
+        <button mat-button (click)="changeType(currentQuestionAlv.constructor.name)">reset</button>
       </div>
     </div>
 

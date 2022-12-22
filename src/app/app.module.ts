@@ -23,6 +23,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { QuestiongenComponent } from './components/questiongen/questiongen.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -33,25 +35,27 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     FeedbackComponent,
     QuestiongenComponent
   ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatCardModule,
-        MatStepperModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatSliderModule,
-        MatListModule,
-        MatPaginatorModule,
-        FormsModule,
-        ClipboardModule,
-        MatCheckboxModule
-    ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatCardModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSliderModule,
+    MatListModule,
+    MatPaginatorModule,
+    FormsModule,
+    ClipboardModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   providers: [QuestionSubscription],
   bootstrap: [AppComponent]
 })
