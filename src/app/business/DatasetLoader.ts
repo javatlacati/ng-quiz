@@ -16,27 +16,32 @@ export default class DatasetLoader {
       .toPromise().then(quizText => {
         if (quizText) {
           return quizText.split(/\r\n/g)
-            .filter(line=>line.trim().length>0)
-            .map(line => this.parseQuestion(line));
+            .filter(line => line.trim().length > 0)
+            .map(line => this.parseQuestion(line))
+            .filter(optionalQuestion => optionalQuestion.isPresent())
+            .map(optional => optional.get());
         } else {
           return [];
         }
       });
   }
 
-  parseQuestion(line: string): Question {
+  parseQuestion(line: string): Optional<Question> {
     let questarray: string[] = line.split(/@@/g);
     // console.log(`questarray:` + questarray.length)
     // console.log(JSON.stringify(questarray))
     let tipoPregunta: string = questarray[0];
     let questionStrategy =
-      Optional.ofNullable(StrategyChooser.getStrategy(tipoPregunta)).orElseThrow(() => {
-        console.error(`Question type not recognized: ${tipoPregunta}`);
-        console.log('the line for it was:"', line, '"')
-        // console.log(JSON.stringify(this.questions));
-        return new Error("Question type not recognized");
-      });
-    return questionStrategy.parse(questarray);
+      Optional.ofNullable(StrategyChooser.getStrategy(tipoPregunta))
+        .map((strategy) => strategy.parse(questarray));
+
+    if (questionStrategy.isEmpty()) {
+      console.error(`Question type not recognized: ${tipoPregunta}`);
+      console.error('the line for it was:"', line, '"')
+    }
+
+    // console.log(JSON.stringify(this.questions));
+    return questionStrategy;
   }
 
   public static str2difficulty(idxStr: string) {
