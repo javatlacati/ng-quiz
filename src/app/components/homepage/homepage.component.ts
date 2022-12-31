@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import DatasetLoader from "../../model/DatasetLoader";
 import Question from "../../model/Question";
 import {HttpClient} from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -8,6 +7,7 @@ import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
 import {QuestionDatasetEntry} from "../../model/QuestionDatasetEntry";
 import Difficulty from "../../model/Difficulty";
+import DatasetLoader from "../../business/DatasetLoader";
 
 @Component({
   selector: 'app-homepage',
