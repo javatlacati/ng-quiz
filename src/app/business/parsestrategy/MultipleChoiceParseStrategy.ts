@@ -3,7 +3,7 @@ import {QuestionStrategy} from "../QuestionStrategy";
 import Question from "../../model/Question";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 
-export class MultipleChoiceParseStrategy implements QuestionStrategy{
+export class MultipleChoiceParseStrategy implements QuestionStrategy {
   parse(questarray: string[]): Question {
     let vettedness = "v" === questarray[1] ? Question.VETTED : Question.TRIAL;
     let explanation = questarray[2];
@@ -16,7 +16,15 @@ export class MultipleChoiceParseStrategy implements QuestionStrategy{
       questionText, correctAnswerIdx, category, difficulty, answersTexts);
   }
 
-  addMultipleChoiceQuestion(vettedness: string, explanation: string, questionText: string, correctAnswerIdx: number, category: string, difficulty: string, answersTexts: string[]) {
+  addMultipleChoiceQuestion(
+    vettedness: string,
+    explanation: string,
+    questionText: string,
+    correctAnswerIdx: number,
+    category: string,
+    difficulty: string,
+    answersTexts: string[]
+  ): MultipleChoiceQuestion {
     let choiceQuestion = new MultipleChoiceQuestion(vettedness);
     choiceQuestion.explanation = explanation;
     choiceQuestion.text = questionText;
