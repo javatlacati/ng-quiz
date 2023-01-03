@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -15,7 +15,7 @@ import {MatSelectChange} from "@angular/material/select";
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.sass']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnDestroy {
 
   questionsData: Question[] = []
   preguntaActual = 1
@@ -63,6 +63,7 @@ export class QuizComponent implements OnInit {
     let className = this.currentQuestionAlv.constructor.name;
     console.log(`className:${className}`)
     switch (className) {
+      case 'OneExampleQuestion':
       case 'MultipleChoiceQuestion':
         this.currentQuestionAlv.userAnswer = `${selection}`;
         console.log(this.currentQuestionAlv.answer)
