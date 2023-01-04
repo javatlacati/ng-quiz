@@ -4,6 +4,7 @@ import FillBlankQuestion from "../../model/FillBlankQuestion";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Difficulty from "../../model/Difficulty";
+import {OneExampleQuestion} from "../../model/OneExampleQuestion";
 
 @Component({
   selector: 'app-questiongen',
@@ -15,6 +16,7 @@ export class QuestiongenComponent implements OnInit {
     {name: 'Fill In The Blanks', value: 'FillBlankQuestion'}
     , {name: 'Multiple Choice', value: 'MultipleChoiceQuestion'}
     , {name: 'Multiple Answer', value: 'MultipleAnswerQuestion'}
+    , {name: 'Give an Example Answer', value: 'OneExampleQuestion'}
   ];
   questionTypeSelection: string = 'FillBlankQuestion';
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
@@ -23,6 +25,7 @@ export class QuestiongenComponent implements OnInit {
   currentFillBlankQuestion = new FillBlankQuestion("Yes");
   currentMultipleAnswerQuestion = new MultipleAnswerQuestion('Y')
   currentMultipleChoiceQuestion = new MultipleChoiceQuestion('Y')
+  currentOneExampleQuestion = new OneExampleQuestion('Y')
   currentQuestionAlv: Question = this.currentFillBlankQuestion
   correctChoiceIdx: number = 0;
   currentDifficulty: string = 'Easy';
@@ -50,6 +53,10 @@ export class QuestiongenComponent implements OnInit {
       case 'MultipleChoiceQuestion':
         this.currentMultipleChoiceQuestion = new MultipleChoiceQuestion('Y')
         this.currentQuestionAlv = this.currentMultipleChoiceQuestion;
+        break;
+      case 'OneExampleQuestion':
+        this.currentOneExampleQuestion = new OneExampleQuestion('Y');
+        this.currentQuestionAlv = this.currentOneExampleQuestion;
         break;
     }
     this.optionToBeAdded = ''
@@ -84,6 +91,8 @@ export class QuestiongenComponent implements OnInit {
         return 'MA'
       case 'MultipleChoiceQuestion':
         return 'MC'
+      case 'OneExampleQuestion':
+        return 'OE'
     }
     return '';
   }
@@ -98,7 +107,7 @@ export class QuestiongenComponent implements OnInit {
   }
 
   addAnswerChoice() {
-    if (this.currentQuestionAlv.constructor.name === 'MultipleAnswerQuestion') {
+    if (this.currentQuestionAlv instanceof MultipleAnswerQuestion) {
       let currentQuestionAlv1 = this.currentMultipleAnswerQuestion
       let answerOptions = currentQuestionAlv1.choices;
       console.log(`answer choices: ${JSON.stringify(currentQuestionAlv1.choices)}`)
@@ -107,7 +116,7 @@ export class QuestiongenComponent implements OnInit {
       // if (this.multipleAnswerCorrect == 'true')
       //   currentQuestionAlv1.correctAnswers.push("this.optionToBeAdded");
     } else {
-      if (this.currentQuestionAlv.constructor.name == 'MultipleChoiceQuestion') {
+      if (this.currentQuestionAlv instanceof MultipleChoiceQuestion) {
         let currentQuestionAlv2 = this.currentMultipleChoiceQuestion
         console.log(`answer choices: ${JSON.stringify(currentQuestionAlv2.choices)}`)
         currentQuestionAlv2.setChoice(this.optionToBeAdded, currentQuestionAlv2.choices.length + 1 === this.correctChoiceIdx);
@@ -116,7 +125,7 @@ export class QuestiongenComponent implements OnInit {
     this.optionToBeAdded = '';
   }
 
-  generateEnunciate() {
+  generateEnunciate(): string {
     switch (this.currentQuestionAlv.constructor.name) {
       case 'FillBlankQuestion':
         return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`.replace(/\n/g,' ')
@@ -124,6 +133,8 @@ export class QuestiongenComponent implements OnInit {
         return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentMultipleAnswerQuestion.choices.join('@@')}@@${this.currentMultipleAnswerQuestion.correctAnswers.join('@@')}`.replace(/\n/g,' ')
       case 'MultipleChoiceQuestion':
         return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.correctChoiceIdx}@@${this.currentMultipleChoiceQuestion.choices.join('@@')}`.replace(/\n/g,' ')
+      case 'OneExampleQuestion':
+        return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentMultipleChoiceQuestion.choices.join('@@')}`.replace(/\\n/g,' ')
     }
     return `${this.questionTypeAbreviation(this.currentQuestionAlv.constructor.name)}@@v@@${this.currentQuestionAlv.explanation}@@${this.currentQuestionAlv.category}@@${this.mapDifficulty(this.currentDifficulty).valueOf()}@@${this.currentQuestionAlv.text}@@${this.currentQuestionAlv.answer.split(' ').join('@@')}`.replace(/\n/g,' ');
   }

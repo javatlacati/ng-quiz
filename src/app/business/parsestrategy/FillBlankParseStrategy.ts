@@ -1,9 +1,9 @@
-import {QuestionStrategy} from "../QuestionStrategy";
+import {QuestionParseStrategy} from "./QuestionParseStrategy";
 import Question from "../../model/Question";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import DatasetLoader from "../DatasetLoader";
 
-export class FillBlankParseStrategy implements QuestionStrategy {
+export class FillBlankParseStrategy implements QuestionParseStrategy {
   parse(questarray: string[]) {
     let vettedness: string = "v" === questarray[1] ? Question.VETTED : Question.TRIAL;
     let explanation: string = questarray[2];

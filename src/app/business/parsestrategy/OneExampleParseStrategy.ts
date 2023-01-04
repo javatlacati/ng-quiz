@@ -10,7 +10,7 @@ export class OneExampleParseStrategy extends MultipleChoiceParseStrategy {
     let explanation = questarray[2];
     let category = questarray[3];
     let difficulty = questarray[4];
-    let questionText = questarray[5]//QuestionStrategy.formateaPregunta(questarray[5]);
+    let questionText = questarray[5]//QuestionParseStrategy.formateaPregunta(questarray[5]);
     let answersTexts = questarray.slice(6, questarray.length);
     return this.addOneExampleQuestion(vettedness, explanation, questionText, category, difficulty, answersTexts);
   }
