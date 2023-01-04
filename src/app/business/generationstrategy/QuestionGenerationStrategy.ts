@@ -1,8 +1,9 @@
 import Question from "../../model/Question";
 
 export interface QuestionGenerationStrategy {
-
-  currentQuestion: Question
   questionTypeAbreviation: string
-  generateEnunciate(): string;
+
+  generateEnunciate(currentQuestion: Question, difficulty: number,correctChoiceIdx: number): string;
+
+  resetQuestion(): Question
 }
