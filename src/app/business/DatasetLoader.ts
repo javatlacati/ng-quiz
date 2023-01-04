@@ -1,5 +1,5 @@
 import {HttpClient} from "@angular/common/http";
-import {StrategyChooser} from "./StrategyChooser";
+import {ParseStrategyChooser} from "./ParseStrategyChooser";
 import {Optional} from "typescript-optional";
 import Question from "../model/Question";
 import Difficulty from "../model/Difficulty";
@@ -32,7 +32,7 @@ export default class DatasetLoader {
     // console.log(JSON.stringify(questarray))
     let tipoPregunta: string = questarray[0];
     let questionStrategy =
-      Optional.ofNullable(StrategyChooser.getStrategy(tipoPregunta))
+      Optional.ofNullable(ParseStrategyChooser.getStrategy(tipoPregunta))
         .map((strategy) => strategy.parse(questarray));
 
     if (questionStrategy.isEmpty()) {

@@ -47,6 +47,28 @@
         <button class="col" mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
           <mat-icon>content_copy</mat-icon>
         </button>
+        <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+          <mat-icon>restart_alt</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="'OneExampleQuestion'===this.questionTypeSelection">
+      Add a new Answer choice:
+      <mat-form-field>
+       <textarea matInput [(ngModel)]="optionToBeAdded"
+                 placeholder="answer choice"></textarea>
+      </mat-form-field>
+      <button mat-button (click)="addAnswerChoice()">add</button>
+      <div class="code-section row">
+        <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
+        <div class="col align-self-end">
+          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+            <mat-icon>restart_alt</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
     <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">

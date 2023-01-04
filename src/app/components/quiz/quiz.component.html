@@ -15,6 +15,11 @@
                         [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
           </mat-select>
         </div>
+        <div *ngIf="'OneExampleQuestion'===currentQuestionAlv.constructor.name">
+<!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
+          <textarea matInput [value]="currentQuestionAlv.userAnswer"
+                    placeholder="Escriba un ejemplo"></textarea>
+        </div>
         <div *ngIf="'MultipleAnswerQuestion'===currentQuestionAlv.constructor.name">
           <mat-select (selectionChange)="mulAnswerSelectionChanged($event)" multiple [(value)]="currentQuestionAlv.userAnswer">
             <mat-option *ngFor="let choice of currentQuestionOptions"
@@ -25,7 +30,7 @@
           <textarea matInput [value]="currentQuestionAlv.userAnswer"
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
         </mat-form-field>
-        <button *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)" (click)="goToResults()">Go to
+        <button [disabled]="!completedQuiz" *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)" (click)="goToResults()">Go to
           results
         </button>
       </form>
