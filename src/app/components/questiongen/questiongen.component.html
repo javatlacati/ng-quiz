@@ -47,6 +47,9 @@
         <button class="col" mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
           <mat-icon>content_copy</mat-icon>
         </button>
+        <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+          <mat-icon>restart_alt</mat-icon>
+        </button>
       </div>
     </div>
     <div *ngIf="'OneExampleQuestion'===this.questionTypeSelection">
