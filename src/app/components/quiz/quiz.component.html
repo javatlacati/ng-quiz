@@ -2,33 +2,15 @@
   <ng-container>
     <mat-card>
       <app-quiz-question-header [currentQuestionAlv]="currentQuestionAlv"></app-quiz-question-header>
-      <form [formGroup]="firstFormGroup">
-        <div *ngIf="'MultipleChoiceQuestion'===currentQuestionAlv.constructor.name">
-<!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
-          <mat-select formControlName="firstCtrl" (selectionChange)="mulAnswerSelectionChanged($event)">
-            <mat-option *ngFor="let choice of currentQuestionOptions"
-                        [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
-          </mat-select>
-        </div>
-        <div *ngIf="'OneExampleQuestion'===currentQuestionAlv.constructor.name">
-<!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
-          <textarea matInput [value]="currentQuestionAlv.userAnswer"
-                    placeholder="Escriba un ejemplo"></textarea>
-        </div>
-        <div *ngIf="'MultipleAnswerQuestion'===currentQuestionAlv.constructor.name">
-          <mat-select formControlName="secondCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple  [(value)]="selectedAnswers">
-            <mat-option *ngFor="let choice of currentQuestionOptions"
-                        [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
-          </mat-select>
-        </div>
-        <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===currentQuestionAlv.constructor.name">
-          <textarea matInput [value]="currentQuestionAlv.userAnswer"
-                    placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
-        </mat-form-field>
-        <button [disabled]="!completedQuiz" *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)" (click)="goToResults()">Go to
-          results
-        </button>
-      </form>
+      <app-quiz-question-form [firstFormGroup]="firstFormGroup" [currentQuestionAlv]="currentQuestionAlv"
+                              [mulAnswerSelectionChanged]="mulAnswerSelectionChanged"
+                              [currentQuestionOptions]="currentQuestionOptions"
+                              [(value)]="selectedAnswers" [completedQuiz]="completedQuiz">
+                <button [disabled]="!completedQuiz" *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)"
+                        (click)="goToResults()">Go to
+                  results
+                </button>
+      </app-quiz-question-form>
       <mat-paginator [length]="questionsData.length"
                      [pageSize]="1"
                      (page)="handleQuestionChange($event)"

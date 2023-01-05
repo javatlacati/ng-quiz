@@ -95,7 +95,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     console.log(`completed:${this.completedQuiz}`)
   }
 
-  savedAnswerValue(preguntaActual: number, preguntaSiguiente: number) {
+  private savedAnswerValue(preguntaActual: number, preguntaSiguiente: number) {
     let daQuestion = this.currentQuestionAlv;
     let savedAnswer: string = daQuestion.userAnswer;
     console.log(`saved user answer: ${savedAnswer}`)
@@ -176,13 +176,4 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  // isInLastPage() {
-  //   console.log('questions: ', this.questionsData.length)
-  //   console.log('preguntaActual: ', (this.preguntaActual + 1))
-  //   this.questionsData.length === (this.preguntaActual + 1 || 0);
-  // }
-
-  unescape(label: string): string {
-    return new DOMParser().parseFromString(label, 'text/html').documentElement.textContent || '';
-  }
 }

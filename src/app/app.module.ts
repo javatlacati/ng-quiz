@@ -26,6 +26,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { QuizQuestionHeaderComponent } from './components/quiz/quiz-question-header/quiz-question-header.component';
+import { QuizQuestionFormComponent } from './components/quiz/quiz-question-form/quiz-question-form.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { QuizQuestionHeaderComponent } from './components/quiz/quiz-question-hea
     ResultadoComponent,
     FeedbackComponent,
     QuestiongenComponent,
-    QuizQuestionHeaderComponent
+    QuizQuestionHeaderComponent,
+    QuizQuestionFormComponent
   ],
   imports: [
     AppRoutingModule,
