@@ -21,7 +21,7 @@
                     placeholder="Escriba un ejemplo"></textarea>
         </div>
         <div *ngIf="'MultipleAnswerQuestion'===currentQuestionAlv.constructor.name">
-          <mat-select (selectionChange)="mulAnswerSelectionChanged($event)" multiple [(value)]="currentQuestionAlv.userAnswer">
+          <mat-select formControlName="secondCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple  [(value)]="selectedAnswers">
             <mat-option *ngFor="let choice of currentQuestionOptions"
                         [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
           </mat-select>

@@ -27,6 +27,8 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   firstFormGroup!: FormGroup;
 
+  selectedAnswers: string[] = [];
+
   constructor(
     private router: Router,
     private activatedroute: ActivatedRoute,
@@ -34,7 +36,8 @@ export class QuizComponent implements OnInit, OnDestroy {
     private questionSuubscription: QuestionSubscription,
   ) {
     this.firstFormGroup = _formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      firstCtrl: ['', Validators.required],
+      secondCtrl: ['']
     })
   }
 
@@ -55,6 +58,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   mulAnswerSelectionChanged(event: MatSelectChange): void {
+    // [(value)]="currentQuestionAlv.userAnswer"
+    console.log(`event=${event.value}`)
     let selection = event.value as number
     console.log('respuesta elegida:', selection)
     console.log('respuesta elegida en formulario:', this.firstFormGroup.get('firstCtrl')?.value)
@@ -71,7 +76,11 @@ export class QuizComponent implements OnInit, OnDestroy {
         break;
       case 'MultipleAnswerQuestion':
         this.currentQuestionAlv.userAnswer = `${selection}`;
-        console.log(this.currentQuestionAlv.answer)
+        console.log(`this.selectedAnswers = ${this.currentQuestionAlv.userAnswer.split(',')}`)
+        //this.selectedAnswers = this.currentQuestionAlv.userAnswer.split(',')
+        this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.currentQuestionAlv.userAnswer.split(','):'')
+        console.log(`this.selectedAnswers=${this.selectedAnswers}`)
+        //this.selectedAnswers=this.currentQuestionAlv.userAnswer.split(',')
         break;
     }
 
@@ -104,6 +113,11 @@ export class QuizComponent implements OnInit, OnDestroy {
           console.log("valor puesto:",this.currentQuestionAlv.userAnswer)
           //this.firstFormGroup.markAllAsTouched();
           break;
+        case 'MultipleAnswerQuestion':
+          this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue(this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.currentQuestionAlv.userAnswer.split(','):''))
+          console.log(`this.selectedAnswers setting saved ${this.selectedAnswers}`)
+          this.selectedAnswers=this.currentQuestionAlv.userAnswer.split(',')
+          break;
       }
     } else {
       console.log('pregunta no previamente guardada')
@@ -117,6 +131,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   public handleQuestionChange(event?: PageEvent) {
+    console.log(`this.selectedAnswers=${this.selectedAnswers} deleted`)
+    this.selectedAnswers = []
     this.preguntaActual = event?.pageIndex || 0;
     this.currentQuestionAlv = this.questionsData[this.preguntaActual];
     this.savedAnswerValue(this.preguntaActual, this.preguntaActual+1);
@@ -129,6 +145,16 @@ export class QuizComponent implements OnInit, OnDestroy {
         // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
         break;
       case 'MultipleAnswerQuestion':
+        let daChoices: string[] = (this.currentQuestionAlv as MultipleAnswerQuestion).choices;
+        this.currentQuestionOptions = daChoices.map((choice, idx) => {
+          return {
+            value: idx,
+            label: choice
+          }
+        });
+        console.log(`this.selectedAnswers is ${this.currentQuestionAlv.userAnswer.split(',')}`)
+        this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue('')
+        break;
       case 'MultipleChoiceQuestion':
         let choices: string[] = (this.currentQuestionAlv as MultipleChoiceQuestion).choices;
         this.currentQuestionOptions = choices.map((choice, idx) => {
