@@ -1,0 +1,6 @@
+<mat-list>
+  <div class="overline mb-4">{{currentQuestionAlv.category}}
+    <small>({{currentQuestionAlv.constructor.name}})</small>
+  </div>
+  <div [innerHTML]="currentQuestionAlv.display()"></div>
+</mat-list>

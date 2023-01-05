@@ -1,12 +1,7 @@
 <div class="quiz">
   <ng-container>
     <mat-card>
-      <mat-list>
-        <div class="overline mb-4">{{currentQuestionAlv.category}}
-          <small>({{currentQuestionAlv.constructor.name}})</small>
-        </div>
-        <div [innerHTML]="currentQuestionAlv.display()"></div>
-      </mat-list>
+      <app-quiz-question-header [currentQuestionAlv]="currentQuestionAlv"></app-quiz-question-header>
       <form [formGroup]="firstFormGroup">
         <div *ngIf="'MultipleChoiceQuestion'===currentQuestionAlv.constructor.name">
 <!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->

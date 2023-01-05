@@ -25,6 +25,7 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import { QuizQuestionHeaderComponent } from './components/quiz/quiz-question-header/quiz-question-header.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatIconModule} from "@angular/material/icon";
     QuizComponent,
     ResultadoComponent,
     FeedbackComponent,
-    QuestiongenComponent
+    QuestiongenComponent,
+    QuizQuestionHeaderComponent
   ],
   imports: [
     AppRoutingModule,
