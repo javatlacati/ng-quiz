@@ -1,28 +1,16 @@
 <form [formGroup]="firstFormGroup">
   <ng-container [ngSwitch]="currentQuestionAlv.constructor.name">
     <div *ngSwitchCase="'MultipleChoiceQuestion'">
-      <!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
-      <mat-select formControlName="firstCtrl" (selectionChange)="mulAnswerSelectionChanged($event)">
-        <mat-option *ngFor="let choice of currentQuestionOptions"
-                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
-      </mat-select>
+      <app-multiple-choice-question-template [unescape]="unescape"></app-multiple-choice-question-template>
     </div>
     <div *ngSwitchCase="'OneExampleQuestion'">
-      <!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
-      <textarea matInput [value]="currentQuestionAlv.userAnswer"
-                placeholder="Escriba un ejemplo"></textarea>
+      <app-one-example-question-template></app-one-example-question-template>
     </div>
     <div *ngSwitchCase="'MultipleAnswerQuestion'">
-      <mat-select formControlName="secondCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple
-                  [value]="value"
-                  (valueChange)="valueChange.emit($event)">
-        <mat-option *ngFor="let choice of currentQuestionOptions"
-                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
-      </mat-select>
+      <app-multiple-answer-question-template [unescape]="unescape"></app-multiple-answer-question-template>
     </div>
     <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===currentQuestionAlv.constructor.name">
-          <textarea matInput [value]="currentQuestionAlv.userAnswer"
-                    placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+      <app-fill-blank-question-template></app-fill-blank-question-template>
     </mat-form-field>
   </ng-container>
   <ng-content></ng-content>

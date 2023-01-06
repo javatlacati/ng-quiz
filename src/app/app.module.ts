@@ -27,6 +27,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { QuizQuestionHeaderComponent } from './components/quiz/quiz-question-header/quiz-question-header.component';
 import { QuizQuestionFormComponent } from './components/quiz/quiz-question-form/quiz-question-form.component';
+import {
+  MultipleChoiceQuestionTemplate,
+} from './components/quiz/quiz-question-form/multiple-choice-question-template/multiple-choice-question-template.component';
+import { MultipleAnswerQuestionTemplateComponent } from './components/quiz/quiz-question-form/multiple-answer-question-template/multiple-answer-question-template.component';
+import { FillBlankQuestionTemplateComponent } from './components/quiz/quiz-question-form/fill-blank-question-template/fill-blank-question-template.component';
+import { OneExampleQuestionTemplateComponent } from './components/quiz/quiz-question-form/one-example-question-template/one-example-question-template.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +43,11 @@ import { QuizQuestionFormComponent } from './components/quiz/quiz-question-form/
     FeedbackComponent,
     QuestiongenComponent,
     QuizQuestionHeaderComponent,
-    QuizQuestionFormComponent
+    QuizQuestionFormComponent,
+    MultipleChoiceQuestionTemplate,
+    MultipleAnswerQuestionTemplateComponent,
+    FillBlankQuestionTemplateComponent,
+    OneExampleQuestionTemplateComponent
   ],
   imports: [
     AppRoutingModule,
