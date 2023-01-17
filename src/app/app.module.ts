@@ -27,6 +27,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import { QuizQuestionHeaderComponent } from './components/quiz/quiz-question-header/quiz-question-header.component';
 import { QuizQuestionFormComponent } from './components/quiz/quiz-question-form/quiz-question-form.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -39,27 +41,29 @@ import { QuizQuestionFormComponent } from './components/quiz/quiz-question-form/
     QuizQuestionHeaderComponent,
     QuizQuestionFormComponent
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatCardModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatSliderModule,
-    MatListModule,
-    MatPaginatorModule,
-    FormsModule,
-    ClipboardModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatIconModule
-  ],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatCardModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatSliderModule,
+        MatListModule,
+        MatPaginatorModule,
+        FormsModule,
+        ClipboardModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatTooltipModule
+    ],
   providers: [QuestionSubscription],
   bootstrap: [AppComponent]
 })

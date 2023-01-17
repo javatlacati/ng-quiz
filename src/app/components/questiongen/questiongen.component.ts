@@ -7,6 +7,7 @@ import Difficulty from "../../model/Difficulty";
 import {OneExampleQuestion} from "../../model/OneExampleQuestion";
 import {GenerationStrategyChooser} from "../../business/GenerationStrategyChooser";
 import {Optional} from "typescript-optional";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-questiongen',
@@ -30,7 +31,7 @@ export class QuestiongenComponent implements OnInit {
 
   currentGenerationStrategy = GenerationStrategyChooser.getStrategy(this.questionTypeSelection)
 
-  constructor() {
+  constructor(public _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -81,5 +82,11 @@ export class QuestiongenComponent implements OnInit {
     return Optional.ofNullable(this.currentGenerationStrategy)
       .map(generationStrategy => generationStrategy.generateEnunciate(this.currentQuestionAlv, this.mapDifficulty(this.currentDifficulty).valueOf(), this.correctChoiceIdx))
       .orElse("");
+  }
+
+  showSnackbar() {
+    this._snackBar.open("copied to clipboard", "close", {
+      duration: 1000, verticalPosition: "top"
+    });
   }
 }

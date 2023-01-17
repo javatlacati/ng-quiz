@@ -44,7 +44,7 @@
       <hr>
       <div class="code-section row">
         <p class="col-md-11 overflow-auto">{{generateEnunciate()}}</p>
-        <button class="col" mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
           <mat-icon>content_copy</mat-icon>
         </button>
         <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
@@ -62,7 +62,7 @@
       <div class="code-section row">
         <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
         <div class="col align-self-end">
-          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
             <mat-icon>content_copy</mat-icon>
           </button>
           <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
@@ -86,7 +86,7 @@
       <div class="code-section row">
         <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
         <div class="col align-self-end">
-          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
             <mat-icon>content_copy</mat-icon>
           </button>
           <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
@@ -107,7 +107,7 @@
       <div class="code-section row">
         <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
         <div class="col align-self-end">
-          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()">
+          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
             <mat-icon>content_copy</mat-icon>
           </button>
           <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
