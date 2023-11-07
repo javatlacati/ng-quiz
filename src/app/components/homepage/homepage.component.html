@@ -1,5 +1,5 @@
 <ng-container>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-title>Configure your exam session</mat-card-title>
     <mat-card-content>
       {{errorMessage}}
@@ -9,7 +9,7 @@
             <ng-template matStepLabel>Select The question set</ng-template>
             <mat-form-field appearance="fill">
               <mat-select id="questionSelection" placeholder="Select question set" multiple formControlName="zerothCtrl"
-              (selectionChange)="changeDatasets($event.value)">
+                          (selectionChange)="changeDatasets($event.value)">
                 <mat-option *ngFor="let questionSet of questionSet" [value]="questionSet.filename">
                   {{questionSet.displayValue}}
                 </mat-option>
@@ -53,13 +53,19 @@
             <button id="step2btnNext" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
-        <mat-step [stepControl]="thirdFormGroup" label="step3">
+        <mat-step [stepControl]="thirdFormGroup" label="step3" optional="true">
           <form [formGroup]="thirdFormGroup">
             <div style="line-height: 80px;">
               <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
               <mat-label>Number of questions</mat-label>
-              <mat-slider formControlName="thirdCtrl" thumbLabel tickInterval="1" [min]="-1"
-                          [max]="calculateMaxQuestions()" [ngModel]="maxQuestions"></mat-slider>
+              <!-- TODO: The 'tickInterval' property no longer exists -->
+              <mat-slider [min]="-1"
+                          [formControl]="thirdCtrl"
+                          [max]="calculateMaxQuestions()" showTickMarks discrete [displayWith]="myDisplayWithFn">
+                <input matSliderThumb>
+              </mat-slider>
+              <br />
+              {{thirdCtrl.getRawValue()}}
             </div>
           </form>
           <div>
@@ -67,7 +73,7 @@
             <button id="step3btnNext" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
-        <mat-step>
+        <mat-step label="Done">
           <button id="goToQuiz" mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -77,7 +83,7 @@
       </mat-stepper>
     </mat-card-content>
   </mat-card>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-content>
       <button mat-button (click)="goToEditor()">Generar codigo para pregunta</button>
     </mat-card-content>

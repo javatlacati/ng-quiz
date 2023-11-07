@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {UntypedFormGroup} from "@angular/forms";
 import Question from "../../../model/Question";
 import {MatSelectChange} from "@angular/material/select";
 import FillBlankQuestion from "../../../model/FillBlankQuestion";
@@ -12,7 +12,7 @@ import FillBlankQuestion from "../../../model/FillBlankQuestion";
 export class QuizQuestionFormComponent implements OnInit {
 
   @Input()
-  firstFormGroup!: FormGroup;
+  firstFormGroup!: UntypedFormGroup;
 
   @Input()
   currentQuestionAlv: Question = new FillBlankQuestion("Yes");

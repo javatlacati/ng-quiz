@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {PageEvent} from "@angular/material/paginator";
 import {MatSelectChange} from "@angular/material/select";
 
@@ -25,14 +25,14 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   currentQuestionOptions: { label: string; value: number }[] = []
 
-  firstFormGroup!: FormGroup;
+  firstFormGroup!: UntypedFormGroup;
 
   selectedAnswers: string[] = [];
 
   constructor(
     private router: Router,
     private activatedroute: ActivatedRoute,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private questionSuubscription: QuestionSubscription,
   ) {
     this.firstFormGroup = _formBuilder.group({

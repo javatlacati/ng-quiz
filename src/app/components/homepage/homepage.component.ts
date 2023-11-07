@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import Question from "../../model/Question";
 import {HttpClient} from "@angular/common/http";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormControl, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
@@ -61,14 +61,17 @@ export class HomepageComponent implements OnInit {
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
   errorMessage = ''
 
-  zerothFormGroup!: FormGroup;
-  firstFormGroup!: FormGroup;
-  secondFormGroup!: FormGroup;
-  thirdFormGroup!: FormGroup;
+  zerothFormGroup!: UntypedFormGroup;
+  firstFormGroup!: UntypedFormGroup;
+  secondFormGroup!: UntypedFormGroup;
+  thirdFormGroup!: UntypedFormGroup;
+
+  thirdCtrl = new FormControl()
+  myDisplayWithFn= ()=> this.maxQuestions+"";
 
   constructor(
     private httpClient: HttpClient,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private router: Router,
     private questionSuubscription: QuestionSubscription
   ) {
@@ -90,6 +93,7 @@ export class HomepageComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
       thirdCtrl: ['', Validators.required]
     });
+    this.thirdCtrl.setValue(this.maxQuestions);
 
   }
 
@@ -108,7 +112,7 @@ export class HomepageComponent implements OnInit {
 
   private selectQuestionsToBePassed() {
     return this.questions.filter(question => this.categorySelection.includes(question.category))
-      .filter(question=>this.difficultySelection.includes(question.difficulty));
+      .filter(question => this.difficultySelection.includes(question.difficulty));
   }
 
   private shuffleQuestions(questionsToBePassed: Question[]) {
@@ -122,8 +126,8 @@ export class HomepageComponent implements OnInit {
     console.log('label:', label)
     switch (label) {
       case 'step2':
-        this.questionDifficulties= [...new Set(this.questions.map(question => {
-          switch (question.difficulty){
+        this.questionDifficulties = [...new Set(this.questions.map(question => {
+          switch (question.difficulty) {
             case Difficulty.EASY:
               return 'EASY';
             case Difficulty.NORMAL:
@@ -165,8 +169,8 @@ export class HomepageComponent implements OnInit {
   changeDifficulty(event: string[]) {
     // console.log(JSON.stringify(event))
 
-    this.difficultySelection = event.map(aDifficulty=>{
-      switch (aDifficulty){
+    this.difficultySelection = event.map(aDifficulty => {
+      switch (aDifficulty) {
         case 'EASY':
           return Difficulty.EASY;
         case 'NORMAL':
@@ -177,7 +181,7 @@ export class HomepageComponent implements OnInit {
           return Difficulty.NORMAL;
       }
     });
-   //  console.log("difficulty sel changed:", this.difficultySelection)
+    //  console.log("difficulty sel changed:", this.difficultySelection)
   }
 
   changeCategory(event: string[]) {
