@@ -1,4 +1,4 @@
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {ParseStrategyChooser} from "./ParseStrategyChooser";
 import {Optional} from "typescript-optional";
 import Question from "../model/Question";

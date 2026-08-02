@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import Question from "../../model/Question";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {FormControl, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";

@@ -9,7 +9,7 @@ import {ResultadoComponent} from './components/resultado/resultado.component';
 import {FeedbackComponent} from './components/feedback/feedback.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
-import {HttpClientModule} from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import {MatStepperModule} from "@angular/material/stepper";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -30,23 +30,20 @@ import { QuizQuestionFormComponent } from './components/quiz/quiz-question-form/
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomepageComponent,
-    QuizComponent,
-    ResultadoComponent,
-    FeedbackComponent,
-    QuestiongenComponent,
-    QuizQuestionHeaderComponent,
-    QuizQuestionFormComponent
-  ],
-    imports: [
-        AppRoutingModule,
+@NgModule({ declarations: [
+        AppComponent,
+        HomepageComponent,
+        QuizComponent,
+        ResultadoComponent,
+        FeedbackComponent,
+        QuestiongenComponent,
+        QuizQuestionHeaderComponent,
+        QuizQuestionFormComponent
+    ],
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        HttpClientModule,
         MatCardModule,
         MatStepperModule,
         MatFormFieldModule,
@@ -62,10 +59,6 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
         MatButtonModule,
         MatIconModule,
         MatSnackBarModule,
-        MatTooltipModule
-    ],
-  providers: [QuestionSubscription],
-  bootstrap: [AppComponent]
-})
+        MatTooltipModule], providers: [QuestionSubscription, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
 }

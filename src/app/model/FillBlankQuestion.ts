@@ -10,7 +10,7 @@ export default class FillBlankQuestion extends Question {
     }
 
     set answer(answer: string) {
-        super._answer = answer;//this._correctAnswers.push(answer);
+        this._answer = answer;//this._correctAnswers.push(answer);
     }
 
     get answer(): string {
