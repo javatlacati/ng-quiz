@@ -20,11 +20,13 @@
                     [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
       </mat-select>
     </div>
-    <div *ngSwitchDefault>Tipo de pregunta no reconocido</div>
-    <mat-form-field appearance="fill" *ngIf="'FillBlankQuestion'===currentQuestionAlv.constructor.name">
+    <div *ngSwitchCase="'FillBlankQuestion'">
+      <mat-form-field appearance="fill">
           <textarea matInput [value]="currentQuestionAlv.userAnswer"
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
-    </mat-form-field>
+      </mat-form-field>
+    </div>
+    <div *ngSwitchDefault>Tipo de pregunta no reconocido</div>
   </ng-container>
   <ng-content></ng-content>
 </form>
