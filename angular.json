@@ -77,7 +77,7 @@
               "aot": false,
               "optimization": false,
               "extractLicenses": false,
-              "polyfills": "src/polyfills.ts"
+              "polyfills": ["src/polyfills.ts"]
             }
           },
           "defaultConfiguration": "production"
