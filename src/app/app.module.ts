@@ -9,7 +9,7 @@ import {ResultadoComponent} from './components/resultado/resultado.component';
 import {FeedbackComponent} from './components/feedback/feedback.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from "@angular/common/http";
 import {MatStepperModule} from "@angular/material/stepper";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -59,6 +59,6 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
         MatButtonModule,
         MatIconModule,
         MatSnackBarModule,
-        MatTooltipModule], providers: [QuestionSubscription, provideHttpClient(withInterceptorsFromDi())] })
+        MatTooltipModule], providers: [QuestionSubscription, provideHttpClient(withXhr(), withInterceptorsFromDi())] })
 export class AppModule {
 }

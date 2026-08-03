@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import {PageEvent} from "@angular/material/paginator";
@@ -11,6 +11,7 @@ import FillBlankQuestion from "../../model/FillBlankQuestion";
     selector: 'app-feedback',
     templateUrl: './feedback.component.html',
     styleUrls: ['./feedback.component.sass'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FeedbackComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
@@ -13,6 +13,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     selector: 'app-questiongen',
     templateUrl: './questiongen.component.html',
     styleUrls: ['./questiongen.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class QuestiongenComponent implements OnInit {

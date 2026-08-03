@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormGroup} from "@angular/forms";
 import Question from "../../../model/Question";
 import {MatSelectChange} from "@angular/material/select";
@@ -8,6 +8,7 @@ import FillBlankQuestion from "../../../model/FillBlankQuestion";
     selector: 'app-quiz-question-form',
     templateUrl: './quiz-question-form.component.html',
     styleUrls: ['./quiz-question-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class QuizQuestionFormComponent implements OnInit {

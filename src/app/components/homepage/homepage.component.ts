@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
 import { HttpClient } from "@angular/common/http";
 import {FormControl, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
@@ -13,6 +13,7 @@ import DatasetLoader from "../../business/DatasetLoader";
     selector: 'app-homepage',
     templateUrl: './homepage.component.html',
     styleUrls: ['./homepage.component.sass'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HomepageComponent implements OnInit {

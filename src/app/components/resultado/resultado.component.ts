@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
 import {Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
     selector: 'app-resultado',
     templateUrl: './resultado.component.html',
     styleUrls: ['./resultado.component.sass'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ResultadoComponent implements OnInit {
