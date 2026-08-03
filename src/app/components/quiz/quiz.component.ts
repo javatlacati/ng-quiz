@@ -11,9 +11,10 @@ import {PageEvent} from "@angular/material/paginator";
 import {MatSelectChange} from "@angular/material/select";
 
 @Component({
-  selector: 'app-quiz',
-  templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.sass']
+    selector: 'app-quiz',
+    templateUrl: './quiz.component.html',
+    styleUrls: ['./quiz.component.sass'],
+    standalone: false
 })
 export class QuizComponent implements OnInit, OnDestroy {
 

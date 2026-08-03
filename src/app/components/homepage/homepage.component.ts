@@ -10,9 +10,10 @@ import Difficulty from "../../model/Difficulty";
 import DatasetLoader from "../../business/DatasetLoader";
 
 @Component({
-  selector: 'app-homepage',
-  templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.sass']
+    selector: 'app-homepage',
+    templateUrl: './homepage.component.html',
+    styleUrls: ['./homepage.component.sass'],
+    standalone: false
 })
 export class HomepageComponent implements OnInit {
 

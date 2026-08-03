@@ -10,9 +10,10 @@ import {Optional} from "typescript-optional";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-questiongen',
-  templateUrl: './questiongen.component.html',
-  styleUrls: ['./questiongen.component.scss']
+    selector: 'app-questiongen',
+    templateUrl: './questiongen.component.html',
+    styleUrls: ['./questiongen.component.scss'],
+    standalone: false
 })
 export class QuestiongenComponent implements OnInit {
   questionTypes = [

@@ -5,9 +5,10 @@ import {MatSelectChange} from "@angular/material/select";
 import FillBlankQuestion from "../../../model/FillBlankQuestion";
 
 @Component({
-  selector: 'app-quiz-question-form',
-  templateUrl: './quiz-question-form.component.html',
-  styleUrls: ['./quiz-question-form.component.scss']
+    selector: 'app-quiz-question-form',
+    templateUrl: './quiz-question-form.component.html',
+    styleUrls: ['./quiz-question-form.component.scss'],
+    standalone: false
 })
 export class QuizQuestionFormComponent implements OnInit {
 

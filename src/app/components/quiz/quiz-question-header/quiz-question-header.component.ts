@@ -3,9 +3,10 @@ import Question from "../../../model/Question";
 import FillBlankQuestion from "../../../model/FillBlankQuestion";
 
 @Component({
-  selector: 'app-quiz-question-header',
-  templateUrl: './quiz-question-header.component.html',
-  styleUrls: ['./quiz-question-header.component.scss']
+    selector: 'app-quiz-question-header',
+    templateUrl: './quiz-question-header.component.html',
+    styleUrls: ['./quiz-question-header.component.scss'],
+    standalone: false
 })
 export class QuizQuestionHeaderComponent {
 

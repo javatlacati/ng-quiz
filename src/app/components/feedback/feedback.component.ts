@@ -8,9 +8,10 @@ import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 
 @Component({
-  selector: 'app-feedback',
-  templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.sass']
+    selector: 'app-feedback',
+    templateUrl: './feedback.component.html',
+    styleUrls: ['./feedback.component.sass'],
+    standalone: false
 })
 export class FeedbackComponent implements OnInit {
 

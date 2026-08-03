@@ -9,9 +9,10 @@ import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-resultado',
-  templateUrl: './resultado.component.html',
-  styleUrls: ['./resultado.component.sass']
+    selector: 'app-resultado',
+    templateUrl: './resultado.component.html',
+    styleUrls: ['./resultado.component.sass'],
+    standalone: false
 })
 export class ResultadoComponent implements OnInit {
 
