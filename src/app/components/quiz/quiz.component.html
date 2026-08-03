@@ -3,18 +3,20 @@
     <mat-card appearance="outlined">
       <app-quiz-question-header [currentQuestionAlv]="currentQuestionAlv"></app-quiz-question-header>
       <app-quiz-question-form [firstFormGroup]="firstFormGroup" [currentQuestionAlv]="currentQuestionAlv"
-                              [mulAnswerSelectionChanged]="mulAnswerSelectionChanged"
-                              [currentQuestionOptions]="currentQuestionOptions"
-                              [(value)]="selectedAnswers" [completedQuiz]="completedQuiz">
-                <button [disabled]="!completedQuiz" *ngIf="this.questionsData.length === (this.preguntaActual + 1 || 0)"
-                        (click)="goToResults()">Go to
-                  results
-                </button>
+        [mulAnswerSelectionChanged]="mulAnswerSelectionChanged"
+        [currentQuestionOptions]="currentQuestionOptions"
+        [(value)]="selectedAnswers" [completedQuiz]="completedQuiz">
+        @if (this.questionsData.length === (this.preguntaActual + 1 || 0)) {
+          <button [disabled]="!completedQuiz"
+            (click)="goToResults()">Go to
+            results
+          </button>
+        }
       </app-quiz-question-form>
       <mat-paginator [length]="questionsData.length"
-                     [pageSize]="1"
-                     (page)="handleQuestionChange($event)"
-                     aria-label="Select question" hidePageSize="true" showFirstLastButtons="true">
+        [pageSize]="1"
+        (page)="handleQuestionChange($event)"
+        aria-label="Select question" hidePageSize="true" showFirstLastButtons="true">
       </mat-paginator>
     </mat-card>
   </ng-container>

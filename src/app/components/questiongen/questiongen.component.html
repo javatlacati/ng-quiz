@@ -2,120 +2,131 @@
   <mat-card-content>
     Select type:
     <mat-select id="questionSelection" placeholder="Select question type"
-                (selectionChange)="changeType($event.value)">
-      <mat-option *ngFor="let questionType of questionTypes" [value]="questionType.value">
-        {{questionType.name}}
-      </mat-option>
+      (selectionChange)="changeType($event.value)">
+      @for (questionType of questionTypes; track questionType) {
+        <mat-option [value]="questionType.value">
+          {{questionType.name}}
+        </mat-option>
+      }
     </mat-select>
     <hr>
-    Enunciado:
-    <mat-form-field>
-    <textarea matInput [(ngModel)]="currentQuestionAlv.text"
-              placeholder="Escriba su enunciado"></textarea>
-    </mat-form-field>
-    Categoria:
-    <mat-form-field>
-    <textarea matInput [(ngModel)]="currentQuestionAlv.category"
-              placeholder="Nombre de la categoria"></textarea>
-    </mat-form-field>
-    Select The level of difficulty
-    <mat-form-field appearance="fill">
-      <!--      (ngModelChange)="changeDifficulty($event)"-->
-      <mat-select placeholder="Select Item"
-
-                  [(ngModel)]="this.currentDifficulty">
-        <mat-option *ngFor="let difficulty of questionDifficulties" [value]="difficulty">
-          {{difficulty}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    Explicacion:
-    <mat-form-field>
-    <textarea matInput [(ngModel)]="currentQuestionAlv.explanation"
-              placeholder="Escriba su explicacion"></textarea>
-    </mat-form-field>
-    <div *ngIf="'FillBlankQuestion'===this.questionTypeSelection">
-      Respuesta:
+      Enunciado:
+      <mat-form-field>
+        <textarea matInput [(ngModel)]="currentQuestionAlv.text"
+        placeholder="Escriba su enunciado"></textarea>
+      </mat-form-field>
+      Categoria:
+      <mat-form-field>
+        <textarea matInput [(ngModel)]="currentQuestionAlv.category"
+        placeholder="Nombre de la categoria"></textarea>
+      </mat-form-field>
+      Select The level of difficulty
       <mat-form-field appearance="fill">
+        <!--      (ngModelChange)="changeDifficulty($event)"-->
+        <mat-select placeholder="Select Item"
 
-          <textarea matInput [(ngModel)]="currentQuestionAlv.answer"
-                    placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+          [(ngModel)]="this.currentDifficulty">
+          @for (difficulty of questionDifficulties; track difficulty) {
+            <mat-option [value]="difficulty">
+              {{difficulty}}
+            </mat-option>
+          }
+        </mat-select>
       </mat-form-field>
-      <hr>
-      <div class="code-section row">
-        <p class="col-md-11 overflow-auto">{{generateEnunciate()}}</p>
-        <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-          <mat-icon>content_copy</mat-icon>
-        </button>
-        <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-          <mat-icon>restart_alt</mat-icon>
-        </button>
-      </div>
-    </div>
-    <div *ngIf="'OneExampleQuestion'===this.questionTypeSelection">
-      Add a new Answer choice:
+      Explicacion:
       <mat-form-field>
-       <textarea matInput [(ngModel)]="optionToBeAdded"
-                 placeholder="answer choice"></textarea>
+        <textarea matInput [(ngModel)]="currentQuestionAlv.explanation"
+        placeholder="Escriba su explicacion"></textarea>
       </mat-form-field>
-      <button mat-button (click)="addAnswerChoice()">add</button>
-      <div class="code-section row">
-        <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
-        <div class="col align-self-end">
-          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-            <mat-icon>content_copy</mat-icon>
-          </button>
-          <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-            <mat-icon>restart_alt</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="'MultipleChoiceQuestion'===this.questionTypeSelection">
-      Index of the correct answer (starting from 0):
-      <mat-form-field>
-       <textarea matInput [(ngModel)]="correctChoiceIdx"
-                 placeholder="answer index"></textarea>
-      </mat-form-field>
-      Add a new Answer choice:
-      <mat-form-field>
-       <textarea matInput [(ngModel)]="optionToBeAdded"
-                 placeholder="answer choice"></textarea>
-      </mat-form-field>
-      <button mat-button (click)="addAnswerChoice()">add</button>
-      <div class="code-section row">
-        <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
-        <div class="col align-self-end">
-          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-            <mat-icon>content_copy</mat-icon>
-          </button>
-          <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-            <mat-icon>restart_alt</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="'MultipleAnswerQuestion'===this.questionTypeSelection">
-      Add a new Answer choice:
-      <mat-form-field>
-       <textarea matInput [(ngModel)]="optionToBeAdded"
-                 placeholder="answer choice"></textarea>
-      </mat-form-field>
-      <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct
-      </mat-checkbox>
-      <button mat-button (click)="addAnswerChoice()">add</button>
-      <div class="code-section row">
-        <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
-        <div class="col align-self-end">
-          <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-            <mat-icon>content_copy</mat-icon>
-          </button>
-          <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-            <mat-icon>restart_alt</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
+      @if ('FillBlankQuestion'===this.questionTypeSelection) {
+        <div>
+          Respuesta:
+          <mat-form-field appearance="fill">
+            <textarea matInput [(ngModel)]="currentQuestionAlv.answer"
+            placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+          </mat-form-field>
+          <hr>
+            <div class="code-section row">
+              <p class="col-md-11 overflow-auto">{{generateEnunciate()}}</p>
+              <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+              <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+                <mat-icon>restart_alt</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+        @if ('OneExampleQuestion'===this.questionTypeSelection) {
+          <div>
+            Add a new Answer choice:
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="optionToBeAdded"
+              placeholder="answer choice"></textarea>
+            </mat-form-field>
+            <button mat-button (click)="addAnswerChoice()">add</button>
+            <div class="code-section row">
+              <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
+              <div class="col align-self-end">
+                <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
+                  <mat-icon>content_copy</mat-icon>
+                </button>
+                <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+                  <mat-icon>restart_alt</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+        @if ('MultipleChoiceQuestion'===this.questionTypeSelection) {
+          <div>
+            Index of the correct answer (starting from 0):
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="correctChoiceIdx"
+              placeholder="answer index"></textarea>
+            </mat-form-field>
+            Add a new Answer choice:
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="optionToBeAdded"
+              placeholder="answer choice"></textarea>
+            </mat-form-field>
+            <button mat-button (click)="addAnswerChoice()">add</button>
+            <div class="code-section row">
+              <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
+              <div class="col align-self-end">
+                <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
+                  <mat-icon>content_copy</mat-icon>
+                </button>
+                <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+                  <mat-icon>restart_alt</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+        @if ('MultipleAnswerQuestion'===this.questionTypeSelection) {
+          <div>
+            Add a new Answer choice:
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="optionToBeAdded"
+              placeholder="answer choice"></textarea>
+            </mat-form-field>
+            <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct
+            </mat-checkbox>
+            <button mat-button (click)="addAnswerChoice()">add</button>
+            <div class="code-section row">
+              <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
+              <div class="col align-self-end">
+                <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
+                  <mat-icon>content_copy</mat-icon>
+                </button>
+                <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+                  <mat-icon>restart_alt</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
 
-  </mat-card-content>
-</mat-card>
+      </mat-card-content>
+    </mat-card>
