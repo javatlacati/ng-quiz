@@ -12,7 +12,7 @@ import DatasetLoader from "../../business/DatasetLoader";
 @Component({
     selector: 'app-homepage',
     templateUrl: './homepage.component.html',
-    styleUrls: ['./homepage.component.sass'],
+    styleUrls: ['./homepage.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
