@@ -39,7 +39,9 @@ export class QuizComponent implements OnInit, OnDestroy {
   ) {
     this.firstFormGroup = _formBuilder.group({
       firstCtrl: ['', Validators.required],
-      secondCtrl: ['']
+      secondCtrl: [''],
+      exampleCtrl: [''],
+      fillBlankCtrl: ['']
     })
   }
 
@@ -139,12 +141,23 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.currentQuestionAlv = this.questionsData[this.preguntaActual];
     this.savedAnswerValue(this.preguntaActual, this.preguntaActual+1);
     let subtype = this.currentQuestionAlv.constructor.name;
+    
+    // Reset all controls first
+    this.firstFormGroup.get('firstCtrl')?.setValue('');
+    this.firstFormGroup.get('secondCtrl')?.setValue('');
+    this.firstFormGroup.get('exampleCtrl')?.setValue('');
+    this.firstFormGroup.get('fillBlankCtrl')?.setValue('');
+    
     switch (subtype) {
       case 'FillBlankQuestion':
         let fillblanksRequired: number = (this.currentQuestionAlv as FillBlankQuestion)._correctAnswers.length;
         this.currentQuestionOptions = [];
+        this.firstFormGroup.get('fillBlankCtrl')?.setValue(this.currentQuestionAlv.userAnswer || '');
         console.log("fillblanks required:",fillblanksRequired)
         // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
+        break;
+      case 'OneExampleQuestion':
+        this.firstFormGroup.get('exampleCtrl')?.setValue(this.currentQuestionAlv.userAnswer || '');
         break;
       case 'MultipleAnswerQuestion':
         let daChoices: string[] = (this.currentQuestionAlv as MultipleAnswerQuestion).choices;
@@ -155,7 +168,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           }
         });
         console.log(`this.selectedAnswers is ${this.currentQuestionAlv.userAnswer.split(',')}`)
-        this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue('')
+        this.firstFormGroup.get('secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer ? this.currentQuestionAlv.userAnswer.split(',') : '')
         break;
       case 'MultipleChoiceQuestion':
         let choices: string[] = (this.currentQuestionAlv as MultipleChoiceQuestion).choices;
@@ -165,6 +178,7 @@ export class QuizComponent implements OnInit, OnDestroy {
             label: choice
           }
         });
+        this.firstFormGroup.get('firstCtrl')?.setValue(this.currentQuestionAlv.userAnswer ? parseInt(this.currentQuestionAlv.userAnswer) : '');
         break;
     }
   }

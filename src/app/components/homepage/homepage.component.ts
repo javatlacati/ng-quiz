@@ -54,6 +54,10 @@ export class HomepageComponent implements OnInit {
     {
       displayValue: 'Search Engine Optimization',
       filename: 'seo.txt'
+    },
+    {
+      displayValue: 'Finanzas y Trading',
+      filename: 'finanzas y trading.txt'
     }
   ];
   questionSetSelection: QuestionDatasetEntry[] = [];

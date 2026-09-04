@@ -9,9 +9,9 @@
         }
       </mat-select>
     } @case ('OneExampleQuestion') {
-      <!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
-      <textarea matInput [value]="currentQuestionAlv.userAnswer"
-                placeholder="Escriba un ejemplo"></textarea>
+      <textarea matInput formControlName="exampleCtrl"
+                placeholder="Escriba un ejemplo"
+    ></textarea>
     } @case ('MultipleAnswerQuestion') {
       <mat-select formControlName="secondCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple
                   [value]="value"
@@ -21,7 +21,7 @@
       </mat-select>
     } @case ('FillBlankQuestion') {
       <mat-form-field appearance="fill">
-          <textarea matInput [value]="currentQuestionAlv.userAnswer"
+          <textarea matInput formControlName="fillBlankCtrl"
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
       </mat-form-field>
     } @default {
