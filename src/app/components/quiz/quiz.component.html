@@ -5,15 +5,15 @@
       <app-quiz-question-form [firstFormGroup]="firstFormGroup" [currentQuestionAlv]="currentQuestionAlv"
         [mulAnswerSelectionChanged]="mulAnswerSelectionChanged"
         [currentQuestionOptions]="currentQuestionOptions"
-        [(value)]="selectedAnswers" [completedQuiz]="completedQuiz">
-        @if (this.questionsData.length === (this.preguntaActual + 1 || 0)) {
-          <button [disabled]="!completedQuiz"
+        [(value)]="selectedAnswers">
+        @if (this.questionsData().length === (this.preguntaActual + 1 || 0)) {
+          <button id="goToResultsButton" [disabled]="!completedQuiz()"
             (click)="goToResults()">Go to
             results
           </button>
         }
       </app-quiz-question-form>
-      <mat-paginator [length]="questionsData.length"
+      <mat-paginator [length]="questionsData().length"
         [pageSize]="1"
         (page)="handleQuestionChange($event)"
         aria-label="Select question" hidePageSize="true" showFirstLastButtons="true">

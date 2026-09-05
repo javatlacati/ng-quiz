@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy, signal, computed} from '@angular/core';
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -19,10 +19,10 @@ import {MatSelectChange} from "@angular/material/select";
 })
 export class QuizComponent implements OnInit, OnDestroy {
 
-  questionsData: Question[] = []
+  questionsData = signal<Question[]>([])
   preguntaActual = 1
   currentQuestionAlv: Question = new FillBlankQuestion("Yes");
-  completedQuiz = true
+  completedQuiz = computed(()=>this.questionsData().every((aQuestion) => aQuestion.userAnswer != ''));
   private subscription: Subscription | null = null;
 
   currentQuestionOptions: { label: string; value: number }[] = []
@@ -52,7 +52,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         if (theQuestions.length > 0) {
           this.currentQuestionAlv = theQuestions[0];
         }
-        return this.questionsData = theQuestions;
+        return this.questionsData.set(theQuestions);
       });
     this.handleQuestionChange();
   }
@@ -76,32 +76,29 @@ export class QuizComponent implements OnInit, OnDestroy {
       case 'MultipleChoiceQuestion':
         this.currentQuestionAlv.userAnswer = `${selection}`;
         console.log(this.currentQuestionAlv.answer)
-        //this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.laPreguntaActual.answer);
+        //this.firstFormGroup.get('firstFormGroup.firstCtrl')?.setValue(this.currentQuestionAlv.answer);
         break;
       case 'MultipleAnswerQuestion':
         this.currentQuestionAlv.userAnswer = `${selection}`;
-        console.log(`this.selectedAnswers = ${this.currentQuestionAlv.userAnswer.split(',')}`)
-        //this.selectedAnswers = this.currentQuestionAlv.userAnswer.split(',')
-        this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.currentQuestionAlv.userAnswer.split(','):'')
-        console.log(`this.selectedAnswers=${this.selectedAnswers}`)
-        //this.selectedAnswers=this.currentQuestionAlv.userAnswer.split(',')
+        console.log(`this.selectedAnswers = ${this.currentQuestionAlv.userAnswer}`)
+        this.selectedAnswers = this.currentQuestionAlv.userAnswer.split(',')
+        this.firstFormGroup.get('secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.selectedAnswers:'')
+        console.log(`secondCtrl after selection changed: ${this.firstFormGroup.get('secondCtrl')?.getRawValue()}`)
+        console.log(`setted this.selectedAnswers=${this.selectedAnswers}`)
         break;
     }
+
+    // Update the signal to trigger computed recalculation
+    const updatedQuestions = [...this.questionsData()];
+    updatedQuestions[this.preguntaActual] = this.currentQuestionAlv;
+    this.questionsData.set(updatedQuestions);
 
     // TODO update answer for preguntaActual for fill in the blanks
   }
 
-  verifyCompletion(questions: Question[]): void {
-    console.log(JSON.stringify(questions))
-    // console.log(questions[0].constructor.name)
-    console.log(`completedness:${JSON.stringify(questions.map(q => q.userAnswer))}`)
-    this.completedQuiz = questions.every((aQuestion) => aQuestion.userAnswer);
-    console.log(`completed:${this.completedQuiz}`)
-  }
-
   private savedAnswerValue(preguntaActual: number, preguntaSiguiente: number) {
     let daQuestion = this.currentQuestionAlv;
-    let savedAnswer: string = daQuestion.userAnswer;
+    let savedAnswer: string = daQuestion?.userAnswer;
     console.log(`saved user answer: ${savedAnswer}`)
     let className = daQuestion.constructor.name;
     if (savedAnswer && savedAnswer !== '') {
@@ -118,9 +115,15 @@ export class QuizComponent implements OnInit, OnDestroy {
           //this.firstFormGroup.markAllAsTouched();
           break;
         case 'MultipleAnswerQuestion':
-          this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue(this.firstFormGroup.get('firstFormGroup.secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.currentQuestionAlv.userAnswer.split(','):''))
-          console.log(`this.selectedAnswers setting saved ${this.selectedAnswers}`)
-          this.selectedAnswers=this.currentQuestionAlv.userAnswer.split(',')
+          console.log(`this.selectedAnswers setting saved ${savedAnswer} into ${this.selectedAnswers}`)
+          this.selectedAnswers=savedAnswer.split(',')//this.currentQuestionAlv.userAnswer.split(',')
+          console.log(`this.selectedAnswers after split: ${this.selectedAnswers}`)
+          if(this.selectedAnswers){
+            this.firstFormGroup.get('secondCtrl')?.setValue(this.selectedAnswers)
+          }else{
+            this.firstFormGroup.get('secondCtrl')?.setValue(this.firstFormGroup.get('secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.currentQuestionAlv.userAnswer.split(','):''))
+          }
+          console.log(`secondCtrl after setting: ${this.firstFormGroup.get('secondCtrl')?.getRawValue()}`)
           break;
       }
     } else {
@@ -132,22 +135,28 @@ export class QuizComponent implements OnInit, OnDestroy {
           break;
       }
     }
+
+    // Update the signal to trigger computed recalculation
+    const updatedQuestions = [...this.questionsData()];
+    updatedQuestions[this.preguntaActual] = this.currentQuestionAlv;
+    this.questionsData.set(updatedQuestions);
   }
 
   public handleQuestionChange(event?: PageEvent) {
+    console.log('completedQuiz: '+this.completedQuiz())
     console.log(`this.selectedAnswers=${this.selectedAnswers} deleted`)
     this.selectedAnswers = []
     this.preguntaActual = event?.pageIndex || 0;
-    this.currentQuestionAlv = this.questionsData[this.preguntaActual];
+    this.currentQuestionAlv = this.questionsData()[this.preguntaActual];
     this.savedAnswerValue(this.preguntaActual, this.preguntaActual+1);
     let subtype = this.currentQuestionAlv.constructor.name;
-    
+
     // Reset all controls first
     this.firstFormGroup.get('firstCtrl')?.setValue('');
     this.firstFormGroup.get('secondCtrl')?.setValue('');
     this.firstFormGroup.get('exampleCtrl')?.setValue('');
     this.firstFormGroup.get('fillBlankCtrl')?.setValue('');
-    
+
     switch (subtype) {
       case 'FillBlankQuestion':
         let fillblanksRequired: number = (this.currentQuestionAlv as FillBlankQuestion)._correctAnswers.length;
@@ -181,14 +190,18 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.firstFormGroup.get('firstCtrl')?.setValue(this.currentQuestionAlv.userAnswer ? parseInt(this.currentQuestionAlv.userAnswer) : '');
         break;
     }
+    console.log(`questions updated: ${JSON.stringify(this.questionsData())}`)
+    console.log(`all questions filled: ${JSON.stringify(this.questionsData().every((aQuestion) => aQuestion.userAnswer != ''))}`)
+    console.log(`completedQuiz: ${JSON.stringify(this.completedQuiz())}`)
   }
 
   goToResults() {
-    console.log(`questions sent:${JSON.stringify(this.questionsData)}`)
-    this.verifyCompletion(this.questionsData);
-    if (this.completedQuiz) {
-      this.questionSuubscription.updateSharedQuestions(this.questionsData);
+    if (this.completedQuiz()) {
+      console.log(`questions sent:${JSON.stringify(this.questionsData())}`)
+      this.questionSuubscription.updateSharedQuestions(this.questionsData());
       this.router.navigate(['/result'])
+    }else{
+      console.log('Quiz not completed')
     }
   }
 
