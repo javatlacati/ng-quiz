@@ -1,12 +1,12 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
-import {Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import {Router} from "@angular/router";
+import {OneExampleQuestion} from "../../model/OneExampleQuestion";
 
 @Component({
     selector: 'app-resultado',
@@ -87,10 +87,14 @@ export class ResultadoComponent implements OnInit {
           return Object.assign(new MultipleChoiceQuestion('vetted'), obj);
         case 'FillBlankQuestion':
           return Object.assign(new FillBlankQuestion('vetted'), obj);
+        case 'OneExampleQuestion':
+          return Object.assign(new OneExampleQuestion('vetted'), obj);
+        case 'MultipleAnswerQuestion':
+          return Object.assign(new MultipleAnswerQuestion('vetted'), obj);
         case '':
           return Object.assign(new MultipleAnswerQuestion('vetted'), obj);
         default:
-          throw new Error('unparseable question type:' + JSON.stringify(obj));
+          throw new Error('unparseable question type:'+obj.constructor.name+'\n\n' + JSON.stringify(obj));
       }
     });
     console.log(`filering incorrect questions parsed:${JSON.stringify(theQuestions)}`);

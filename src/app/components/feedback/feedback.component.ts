@@ -51,6 +51,7 @@ export class FeedbackComponent implements OnInit {
         // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
         break;
       case 'MultipleAnswerQuestion':
+      case 'OneExampleQuestion':
       case 'MultipleChoiceQuestion':
         let choices: string[] = (this.laPreguntaActual as MultipleChoiceQuestion).choices;
         this.currentQuestionOptions = choices.map((choice, idx) => {
