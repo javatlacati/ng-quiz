@@ -1,82 +1,126 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ChangeDetectionStrategy, computed, inject} from '@angular/core';
 import Question from "../../model/Question";
-import {Subscription} from "rxjs";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import {Router} from "@angular/router";
 import {OneExampleQuestion} from "../../model/OneExampleQuestion";
+import {MatCard, MatCardHeader, MatCardContent} from '@angular/material/card';
+import {MatButton} from '@angular/material/button';
 
 @Component({
-    selector: 'app-resultado',
-    templateUrl: './resultado.component.html',
-    styleUrls: ['./resultado.component.sass'],
-    changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+  selector: 'app-resultado',
+  templateUrl: './resultado.component.html',
+  styleUrls: ['./resultado.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatCard, MatCardHeader, MatCardContent, MatButton]
 })
-export class ResultadoComponent implements OnInit {
+export class ResultadoComponent {
+  private questionSubscription = inject(QuestionSubscription);
+  private router = inject(Router);
 
-  questionsData: Question[] = []
-  score = 0;
-  vettedScore = 0
-  totalVetted = 0
-  totalCorrectVetted = 0
-  totalIncorrectVetted = 0
-  totalTrial = 0
-  trialScore = 0
-  totalCorrectTrial = 0
-  totalIncorrectTrial = 0
-  totalCorrect = 0;
-  totalIncorrect = 0;
-  private subscription: Subscription | null = null;
+  questionsData = this.questionSubscription.currentSharedQuestions;
 
-  constructor(private questionSuubscription: QuestionSubscription, private router: Router) {
-  }
-
-  ngOnInit(): void {
-    this.subscription = this.questionSuubscription
-      .currentSharedQuestions
-      .subscribe((theQuestions: Question[]) => {
-        // if (theQuestions.length > 0) {
-        //   this.laPreguntaActual = theQuestions[0];
-        // }
-        return this.questionsData = theQuestions;
-      });
-
-    // console.log(this.questionsData)
-    //For every question in questions
-    for (let currentQuestion of this.questionsData) {
-
-      //TODO perhaps instead of
-      //currentQuestion.checkQuestionProvidingAnswer(input) userAnswer
-      //could be just setted
-
-
-      //Add points to total score
-      let questionElement: string = currentQuestion.userAnswer;
-      console.log(questionElement)
-      let puntosRespuesta = (currentQuestion as any as Question).checkQuestion();
-      this.score += puntosRespuesta;
-
-      //Was the answer vetted/trial and correct, partially correct, or incorrect?
-      if ((currentQuestion as any as Question).gradeQuestion()) {
-        this.countForVetted(puntosRespuesta);
-      } else {
-        this.countForTrial(puntosRespuesta);
-      }
-
+  score = computed(() => {
+    let total = 0;
+    for (let currentQuestion of this.questionsData()) {
+      total += (currentQuestion as any as Question).checkQuestion();
     }
+    return total;
+  });
 
+  vettedScore = computed(() => {
+    let total = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if ((currentQuestion as any as Question).gradeQuestion()) {
+        total += (currentQuestion as any as Question).checkQuestion();
+      }
+    }
+    return total;
+  });
 
-    this.totalCorrect = this.totalCorrectVetted + this.totalCorrectTrial;
-    this.totalIncorrect = this.totalIncorrectVetted + this.totalIncorrectTrial;
+  totalVetted = computed(() => {
+    let count = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if ((currentQuestion as any as Question).gradeQuestion()) {
+        count++;
+      }
+    }
+    return count;
+  });
 
-  }
+  totalCorrectVetted = computed(() => {
+    let count = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if ((currentQuestion as any as Question).gradeQuestion()) {
+        if ((currentQuestion as any as Question).checkQuestion() > 0) {
+          count++;
+        }
+      }
+    }
+    return count;
+  });
 
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
+  totalIncorrectVetted = computed(() => {
+    let count = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if ((currentQuestion as any as Question).gradeQuestion()) {
+        if ((currentQuestion as any as Question).checkQuestion() === 0) {
+          count++;
+        }
+      }
+    }
+    return count;
+  });
+
+  totalTrial = computed(() => {
+    let count = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if (!(currentQuestion as any as Question).gradeQuestion()) {
+        count++;
+      }
+    }
+    return count;
+  });
+
+  trialScore = computed(() => {
+    let total = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if (!(currentQuestion as any as Question).gradeQuestion()) {
+        total += (currentQuestion as any as Question).checkQuestion();
+      }
+    }
+    return total;
+  });
+
+  totalCorrectTrial = computed(() => {
+    let count = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if (!(currentQuestion as any as Question).gradeQuestion()) {
+        if ((currentQuestion as any as Question).checkQuestion() > 0) {
+          count++;
+        }
+      }
+    }
+    return count;
+  });
+
+  totalIncorrectTrial = computed(() => {
+    let count = 0;
+    for (let currentQuestion of this.questionsData()) {
+      if (!(currentQuestion as any as Question).gradeQuestion()) {
+        if ((currentQuestion as any as Question).checkQuestion() === 0) {
+          count++;
+        }
+      }
+    }
+    return count;
+  });
+
+  totalCorrect = computed(() => this.totalCorrectVetted() + this.totalCorrectTrial());
+  totalIncorrect = computed(() => this.totalIncorrectVetted() + this.totalIncorrectTrial());
+
 
   incorrectQuestionsData(questions: Question[]) {
     console.log(`filering incorrect questions from:${JSON.stringify(questions)}`);
@@ -94,7 +138,7 @@ export class ResultadoComponent implements OnInit {
         case '':
           return Object.assign(new MultipleAnswerQuestion('vetted'), obj);
         default:
-          throw new Error('unparseable question type:'+obj.constructor.name+'\n\n' + JSON.stringify(obj));
+          throw new Error('unparseable question type:' + obj.constructor.name + '\n\n' + JSON.stringify(obj));
       }
     });
     console.log(`filering incorrect questions parsed:${JSON.stringify(theQuestions)}`);
@@ -104,48 +148,11 @@ export class ResultadoComponent implements OnInit {
   }
 
   goToFeedback() {
-    let questions = this.incorrectQuestionsData(this.questionsData);
+    let questions = this.incorrectQuestionsData(this.questionsData());
     console.log(`questions sent to feedback:${JSON.stringify(questions)}`)
-    this.questionSuubscription.updateSharedQuestions(questions);
+    this.questionSubscription.updateSharedQuestions(questions);
     this.router.navigate(['/feedback'])
-    // this.$router.push({name: 'Feedback', params: {questions} as any})
   }
 
-  countForVetted(puntosRespuesta: number) {
-    //Count vetted questions
-    this.totalVetted++;
-
-    //Add to vetted score
-    this.vettedScore += puntosRespuesta;
-
-    //Was question correct, partially corrct, or incorrct?
-    //Question is vetted
-    if (puntosRespuesta > 0) {
-      //Count correct/partial vetted
-      this.totalCorrectVetted++;
-    } else {
-      //Count incorrect vetted
-      this.totalIncorrectVetted++;
-    }
-  }
-
-  countForTrial(puntosRespuesta: number) {
-
-    //Count trial questions
-    this.totalTrial++;
-
-    //Add to trial score
-    this.trialScore += puntosRespuesta;
-
-    //Was question correct, partially correct, or incorrect?
-    //Question is trial
-    if (puntosRespuesta > 0) {
-      //Count correct/partial trial
-      this.totalCorrectTrial++;
-    } else {
-      //Count incorrect trial
-      this.totalIncorrectTrial++;
-    }
-  }
 
 }

@@ -1,18 +1,19 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
-import {PageEvent} from "@angular/material/paginator";
+import { PageEvent, MatPaginator } from "@angular/material/paginator";
 import {Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
 
 @Component({
     selector: 'app-feedback',
     templateUrl: './feedback.component.html',
     styleUrls: ['./feedback.component.sass'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardContent, MatCardActions, MatPaginator]
 })
 export class FeedbackComponent implements OnInit {
 
@@ -20,25 +21,15 @@ export class FeedbackComponent implements OnInit {
   preguntaActual = 1
   laPreguntaActual: Question = new FillBlankQuestion("Yes");
   currentQuestionOptions: { label: string; value: number }[] = []
-  private subscription: Subscription | null = null;
 
   constructor(private questionSuubscription: QuestionSubscription) {
   }
 
   ngOnInit(): void {
-    this.subscription = this.questionSuubscription
-      .currentSharedQuestions
-      .subscribe((theQuestions: Question[]) => {
-        if (theQuestions.length > 0) {
-          this.laPreguntaActual = theQuestions[0];
-        }
-        return this.questionsData = theQuestions;
-      });
+    this.questionsData = this.questionSuubscription.currentSharedQuestions();
+    if(this.questionsData.length >0)
+    this.laPreguntaActual = this.questionsData[0];
     this.handleQuestionChange();
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
   }
 
   public handleQuestionChange(event?: PageEvent) {

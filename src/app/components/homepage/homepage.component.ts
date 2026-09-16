@@ -1,20 +1,26 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import Question from "../../model/Question";
 import { HttpClient } from "@angular/common/http";
-import {FormControl, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import {Router} from "@angular/router";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
 import {QuestionDatasetEntry} from "../../model/QuestionDatasetEntry";
 import Difficulty from "../../model/Difficulty";
 import DatasetLoader from "../../business/DatasetLoader";
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatStepper, MatStep, MatStepLabel, MatStepperNext, MatStepperPrevious } from '@angular/material/stepper';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 
 @Component({
     selector: 'app-homepage',
     templateUrl: './homepage.component.html',
     styleUrls: ['./homepage.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, ReactiveFormsModule, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperNext, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb]
 })
 export class HomepageComponent implements OnInit {
 
@@ -146,7 +152,7 @@ export class HomepageComponent implements OnInit {
         }))];
         break;
       case 'step3':
-        console.log('category selection: ', this.categorySelection)
+        console.log('category selection: ', JSON.stringify(this.categorySelection))
         break;
       case 'step1':
         this.questions = [];
@@ -207,3 +213,4 @@ export class HomepageComponent implements OnInit {
     this.router.navigate(['/questiongen'])
   }
 }
+

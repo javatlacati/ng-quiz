@@ -1,29 +1,30 @@
-<form [formGroup]="firstFormGroup">
+<form [formRoot]="formRoot">
   @switch (currentQuestionAlv.constructor.name) {
     @case ('MultipleChoiceQuestion') {
       <!--          (selectionChange)="createItems($event)" [(value)]="laPreguntaActual.userAnswer"-->
-      <mat-select formControlName="firstCtrl" (selectionChange)="mulAnswerSelectionChanged($event)">
+      <mat-select [formField]="formRoot.multipleChoiceCtrl" (selectionChange)="mulAnswerSelectionChanged($event)">
         @for (choice of currentQuestionOptions; track choice.label) {
           <mat-option
             [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
         }
       </mat-select>
     } @case ('OneExampleQuestion') {
-      <textarea matInput formControlName="exampleCtrl"
+      <textarea matInput [formField]="formRoot.exampleCtrl"
                 placeholder="Escriba un ejemplo"
     ></textarea>
     } @case ('MultipleAnswerQuestion') {
-      <mat-select formControlName="secondCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple
-                  [value]="value"
+      <mat-select [formField]="formRoot.multipleAnswerCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple
                   (valueChange)="valueChange.emit($event)">
         @for (choice of currentQuestionOptions; track choice.label) {
           <mat-option
             [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
         }
       </mat-select>
+      <br />
+      Selected {{formRoot.multipleAnswerCtrl().controlValue()}}
     } @case ('FillBlankQuestion') {
       <mat-form-field appearance="fill">
-          <textarea matInput formControlName="fillBlankCtrl"
+          <textarea matInput [formField]="formRoot.fillBlankCtrl"
                     placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
       </mat-form-field>
     } @default {

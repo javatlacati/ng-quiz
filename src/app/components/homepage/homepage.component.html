@@ -10,9 +10,9 @@
             <mat-form-field appearance="fill">
               <mat-select id="questionSelection" placeholder="Select question set" multiple formControlName="zerothCtrl"
                 (selectionChange)="changeDatasets($event.value)">
-                @for (questionSet of questionSet; track questionSet) {
-                  <mat-option [value]="questionSet.filename">
-                    {{questionSet.displayValue}}
+                @for (aQuestion of questionSet; track aQuestion) {
+                  <mat-option [value]="aQuestion.filename">
+                    {{aQuestion.displayValue}}
                   </mat-option>
                 }
               </mat-select>
@@ -66,9 +66,8 @@
               <mat-label>Number of questions</mat-label>
               <!-- TODO: The 'tickInterval' property no longer exists -->
               <mat-slider [min]="-1"
-                [formControl]="thirdCtrl"
                 [max]="calculateMaxQuestions()" showTickMarks discrete [displayWith]="myDisplayWithFn">
-                <input matSliderThumb>
+                <input [formControl]="thirdCtrl" matSliderThumb>
               </mat-slider>
               <br />
               {{thirdCtrl.getRawValue()}}

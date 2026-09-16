@@ -8,13 +8,23 @@ import {OneExampleQuestion} from "../../model/OneExampleQuestion";
 import {GenerationStrategyChooser} from "../../business/GenerationStrategyChooser";
 import {Optional} from "typescript-optional";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
+import { MatIcon } from '@angular/material/icon';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-questiongen',
     templateUrl: './questiongen.component.html',
     styleUrls: ['./questiongen.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    imports: [MatCard, MatCardContent, MatSelect, MatOption, MatFormField, MatInput, ReactiveFormsModule, FormsModule, MatIconButton, MatTooltip, CdkCopyToClipboard, MatIcon, MatButton, MatCheckbox]
 })
 export class QuestiongenComponent implements OnInit {
   questionTypes = [

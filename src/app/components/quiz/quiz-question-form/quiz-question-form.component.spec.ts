@@ -8,8 +8,8 @@ describe('QuizQuestionFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ QuizQuestionFormComponent ]
-    })
+    imports: [QuizQuestionFormComponent]
+})
     .compileComponents();
   });
 

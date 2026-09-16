@@ -1,16 +1,17 @@
-import {BehaviorSubject, Observable} from "rxjs";
-import {Injectable} from "@angular/core";
+import {Injectable, signal} from "@angular/core";
 import Question from "../model/Question";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class QuestionSubscription {
-  private sharedQuesitons: BehaviorSubject<Question[]> = new BehaviorSubject([] as Question[]);
-  currentSharedQuestions = this.sharedQuesitons.asObservable();
+  private _sharedQuesitons = signal<Question[]>([] as Question[]);
+  currentSharedQuestions = this._sharedQuesitons.asReadonly();
 
   constructor() {
   }
 
   updateSharedQuestions(questions: Question[]): void {
-    this.sharedQuesitons.next(questions);
+    this._sharedQuesitons.set(questions);
   }
 }
