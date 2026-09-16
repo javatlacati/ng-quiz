@@ -1,12 +1,10 @@
-import {Component, OnDestroy, OnInit, ChangeDetectionStrategy, signal, computed, inject} from '@angular/core';
+import {Component, OnInit, signal, computed, inject} from '@angular/core';
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
-import {FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import { PageEvent, MatPaginator } from "@angular/material/paginator";
 import {MatSelectChange} from "@angular/material/select";
 import { MatCard } from '@angular/material/card';

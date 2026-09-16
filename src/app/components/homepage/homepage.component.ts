@@ -1,7 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, signal, inject, Injector} from '@angular/core';
 import Question from "../../model/Question";
 import { HttpClient } from "@angular/common/http";
-import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import {Router} from "@angular/router";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
@@ -14,13 +13,21 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import {form, required, FieldTree, FormField} from '@angular/forms/signals';
+
+interface HomepageFormModel {
+  zerothCtrl: string[];
+  firstCtrl: string[];
+  secondCtrl: string[];
+  thirdCtrl: number;
+}
 
 @Component({
     selector: 'app-homepage',
     templateUrl: './homepage.component.html',
     styleUrls: ['./homepage.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, ReactiveFormsModule, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperNext, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb]
+  imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperNext, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb, FormField]
 })
 export class HomepageComponent implements OnInit {
 
@@ -73,44 +80,44 @@ export class HomepageComponent implements OnInit {
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
   errorMessage = ''
 
-  zerothFormGroup!: UntypedFormGroup;
-  firstFormGroup!: UntypedFormGroup;
-  secondFormGroup!: UntypedFormGroup;
-  thirdFormGroup!: UntypedFormGroup;
+  homepageForm!: FieldTree<HomepageFormModel>;
+  myDisplayWithFn = (value: number) => {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
 
-  thirdCtrl = new FormControl()
-  myDisplayWithFn= ()=> this.maxQuestions+"";
+    return `${value}`;
+  }
+
+  private injector = inject(Injector);
+
+  formModel = signal<HomepageFormModel>({
+    zerothCtrl: [],
+    firstCtrl: [],
+    secondCtrl: [],
+    thirdCtrl: this.maxQuestions
+  });
 
   constructor(
     private httpClient: HttpClient,
-    private _formBuilder: UntypedFormBuilder,
     private router: Router,
     private questionSuubscription: QuestionSubscription
   ) {
+    this.homepageForm = form(this.formModel, (form) => {
+      required(form.zerothCtrl);
+      required(form.firstCtrl);
+      required(form.secondCtrl);
+      required(form.thirdCtrl);
+    }, { injector: this.injector });
   }
 
   ngOnInit(): void {
     // leer de assets nombres de archivos
-
-
-    this.zerothFormGroup = this._formBuilder.group({
-      zerothCtrl: ['', Validators.required]
-    });
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
-    });
-    this.thirdCtrl.setValue(this.maxQuestions);
-
   }
 
   goToQuiz() {
     if (this.questions && this.questions.length > 0) {
+      this.maxQuestions = this.homepageForm.thirdCtrl().value();
       let questionsToBePassed = this.selectQuestionsToBePassed();
       questionsToBePassed = this.shuffleQuestions(questionsToBePassed);
       if (this.maxQuestions !== -1) {
@@ -180,6 +187,7 @@ export class HomepageComponent implements OnInit {
 
   changeDifficulty(event: string[]) {
     // console.log(JSON.stringify(event))
+    this.homepageForm.secondCtrl().value.set(event);
 
     this.difficultySelection = event.map(aDifficulty => {
       switch (aDifficulty) {
@@ -199,6 +207,7 @@ export class HomepageComponent implements OnInit {
   changeCategory(event: string[]) {
     // console.log(JSON.stringify(event))
     this.categorySelection = event;
+    this.homepageForm.firstCtrl().value.set(event);
   }
 
   calculateMaxQuestions() {
@@ -207,6 +216,7 @@ export class HomepageComponent implements OnInit {
 
   changeDatasets(value: string[]) {
     this.questionSetSelection = this.questionSet.filter(questionS => value.includes(questionS.filename));
+    this.homepageForm.zerothCtrl().value.set(value);
   }
 
   goToEditor() {
