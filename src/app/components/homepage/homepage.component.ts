@@ -73,8 +73,6 @@ export class HomepageComponent {
   ];
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
 
-  questionSetSelection: QuestionDatasetEntry[] = [];
-  categorySelection: string[] = [];
   categories = signal<string[]>([]);
   questions = signal<Question[]>([]);
   formModel = signal<HomepageFormModel>({
@@ -102,6 +100,7 @@ export class HomepageComponent {
         return Difficulty.NORMAL;
     }
   }));
+  questionSetSelection = computed<QuestionDatasetEntry[]>(() => this.questionSet.filter(questionS => this.formModel().questionSetSelectionCtrl.includes(questionS.filename)))
   private router = inject(Router);
   private questionSubscription = inject(QuestionSubscription);
   private httpClient = inject(HttpClient);
@@ -135,12 +134,12 @@ export class HomepageComponent {
         //this.questionDifficulties = [...new Set(this.questions())];
         break;
       case 'step3':
-        console.log('category selection: ', JSON.stringify(this.categorySelection))
+        console.log('category selection: ', JSON.stringify(this.formModel().categorySelectionCtrl))
         break;
       case 'step1':
         this.questions.set([]);
         let promises = []
-        for (const aQuestionSetSelection of this.questionSetSelection) {
+        for (const aQuestionSetSelection of this.questionSetSelection()) {
           let questionsPromise = new DatasetLoader(this.httpClient).createQuestionsFromFile(aQuestionSetSelection.filename);
           promises.push(questionsPromise);
         }
@@ -169,7 +168,6 @@ export class HomepageComponent {
 
   changeCategory(event: string[]) {
     // console.log(JSON.stringify(event))
-    this.categorySelection = event;
     this.homepageForm.categorySelectionCtrl().value.set(event);
   }
 
@@ -178,7 +176,6 @@ export class HomepageComponent {
   }
 
   changeDatasets(value: string[]) {
-    this.questionSetSelection = this.questionSet.filter(questionS => value.includes(questionS.filename));
     this.homepageForm.questionSetSelectionCtrl().value.set(value);
   }
 
@@ -187,7 +184,7 @@ export class HomepageComponent {
   }
 
   private selectQuestionsToBePassed() {
-    return this.questions().filter(question => this.categorySelection.includes(question.category))
+    return this.questions().filter(question => this.formModel().categorySelectionCtrl.includes(question.category))
       .filter(question => this.difficultySelection().includes(question.difficulty));
   }
 
