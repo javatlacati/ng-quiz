@@ -2,82 +2,82 @@
   <mat-card appearance="outlined">
     <mat-card-title>Configure your exam session</mat-card-title>
     <mat-card-content>
-      {{errorMessage}}
-      <mat-stepper linear="true" #stepper (selectionChange)="stepClick($event)">
-        <mat-step label="step0">
-          <ng-template matStepLabel>Select The question set</ng-template>
-          <mat-form-field appearance="fill">
-            <mat-select id="questionSelection" placeholder="Select question set" multiple [formField]="homepageForm.zerothCtrl"
-              (selectionChange)="changeDatasets($event.value)">
-              @for (aQuestion of questionSet; track aQuestion) {
-                <mat-option [value]="aQuestion.filename">
-                  {{aQuestion.displayValue}}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <div>
-            <button id="step0btnNext" mat-button matStepperNext>Next</button>
-          </div>
-        </mat-step>
-        <mat-step label="step1">
-          <ng-template matStepLabel>Select the categories</ng-template>
-          <mat-form-field appearance="fill">
-            <mat-select id="categorySelection" placeholder="Select Item" multiple [formField]="homepageForm.firstCtrl"
-              (selectionChange)="changeCategory($event.value)">
-              @for (category of categories; track category) {
-                <mat-option [value]="category">
-                  {{category}}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <div>
-            <button id="step1btnNext" mat-button matStepperNext>Next</button>
-          </div>
-        </mat-step>
-        <mat-step label="step2">
-          <ng-template matStepLabel>Select The level of difficulty</ng-template>
-          <mat-form-field appearance="fill">
-            <mat-select placeholder="Select Item" multiple [formField]="homepageForm.secondCtrl"
-              (selectionChange)="changeDifficulty($event.value)">
-              @for (difficulty of questionDifficulties; track difficulty) {
-                <mat-option [value]="difficulty">
-                  {{difficulty}}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button id="step2btnNext" mat-button matStepperNext>Next</button>
-          </div>
-        </mat-step>
-        <mat-step label="step3" optional="true">
-          <div style="line-height: 80px;">
-            <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
-            <mat-label>Number of questions</mat-label>
-            <!-- TODO: The 'tickInterval' property no longer exists -->
-            <mat-slider [min]="-1" [step]="1"
-              [max]="calculateMaxQuestions()" showTickMarks discrete [displayWith]="myDisplayWithFn">
-              <input [formField]="homepageForm.thirdCtrl" matSliderThumb>
-            </mat-slider>
-            <br />
-              {{homepageForm.thirdCtrl().value()}}
-          </div>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button id="step3btnNext" mat-button matStepperNext>Next</button>
-          </div>
-        </mat-step>
-        <mat-step label="Done">
+      <form [formRoot]="homepageForm">
+        <mat-stepper linear="true" #stepper (selectionChange)="stepClick($event)">
+          <mat-step label="step0">
+            <ng-template matStepLabel>Select The question set</ng-template>
+            <mat-form-field appearance="fill">
+              <mat-select id="questionSelection" placeholder="Select question set" multiple [formField]="homepageForm.questionSetSelectionCtrl"
+                          (selectionChange)="changeDatasets($event.value)" >
+                @for (aQuestion of questionSet; track aQuestion) {
+                  <mat-option [value]="aQuestion.filename">
+                    {{aQuestion.displayValue}}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <button id="step0btnNext" mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step label="step1">
+            <ng-template matStepLabel>Select the categories</ng-template>
+            <mat-form-field appearance="fill">
+              <mat-select id="categorySelection" placeholder="Select Item" multiple [formField]="homepageForm.categorySelectionCtrl"
+                          (selectionChange)="changeCategory($event.value)">
+                @for (category of categories(); track category) {
+                  <mat-option [value]="category">
+                    {{category}}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <button id="step1btnNext" mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step label="step2">
+            <ng-template matStepLabel>Select The level of difficulty</ng-template>
+            <mat-form-field appearance="fill">
+              <mat-select placeholder="Select Item" multiple [formField]="homepageForm.difficultySelectionCtrl"
+                          (selectionChange)="changeDifficulty($event.value)">
+                @for (difficulty of questionDifficulties; track difficulty) {
+                  <mat-option [value]="difficulty">
+                    {{difficulty}}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button id="step2btnNext" mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step label="step3" optional="true">
+            <div style="line-height: 80px;">
+              <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
+              <mat-label>Number of questions</mat-label>
+              <mat-slider [min]="-1" [step]="1"
+                          [max]="calculateMaxQuestions()" showTickMarks discrete [displayWith]="myDisplayWithFn">
+                <input [formField]="homepageForm.questionNumberCtrl" matSliderThumb>
+              </mat-slider>
+              <br />
+              {{homepageForm.questionNumberCtrl().value()}}
+            </div>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button id="step3btnNext" mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step label="Done">
           <button id="goToQuiz" mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button id="reset" mat-button (click)="stepper.reset()">Reset</button>
-          </div>
-        </mat-step>
-      </mat-stepper>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button id="reset" mat-button (click)="stepper.reset()">Reset</button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </form>
     </mat-card-content>
   </mat-card>
   <mat-card appearance="outlined">

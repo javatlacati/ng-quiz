@@ -1,17 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomepageComponent} from "./components/homepage/homepage.component";
-import {QuizComponent} from "./components/quiz/quiz.component";
-import {FeedbackComponent} from "./components/feedback/feedback.component";
-import {ResultadoComponent} from "./components/resultado/resultado.component";
-import {QuestiongenComponent} from "./components/questiongen/questiongen.component";
 
 const routes: Routes = [
   {path: '', component: HomepageComponent},
-  {path: 'quiz', component: QuizComponent},
-  {path: 'feedback', component: FeedbackComponent},
-  {path: 'result', component: ResultadoComponent},
-  {path: 'questiongen', component: QuestiongenComponent},
+  {path: 'quiz', loadComponent: () => import('./components/quiz/quiz.component').then(m => m.QuizComponent)},
+  {path: 'feedback', loadComponent: () => import('./components/feedback/feedback.component').then(m => m.FeedbackComponent)},
+  {path: 'result', loadComponent: () => import('./components/resultado/resultado.component').then(m => m.ResultadoComponent)},
+  {path: 'questiongen', loadComponent: () => import('./components/questiongen/questiongen.component').then(m => m.QuestiongenComponent)},
   {path: '**', redirectTo: ''}
 ];
 
