@@ -16,8 +16,10 @@
       <mat-select formControlName="secondCtrl" (selectionChange)="mulAnswerSelectionChanged($event)" multiple
                   [value]="value"
                   (valueChange)="valueChange.emit($event)">
-        <mat-option *ngFor="let choice of currentQuestionOptions"
-                    [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
+        @for (choice of currentQuestionOptions; track choice.label) {
+          <mat-option
+            [value]="choice.value"><span [textContent]="unescape(choice.label)"></span></mat-option>
+        }
       </mat-select>
     } @case ('FillBlankQuestion') {
       <mat-form-field appearance="fill">

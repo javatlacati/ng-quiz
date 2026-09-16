@@ -22,39 +22,39 @@ export class HomepageComponent implements OnInit {
   maxQuestions = -1;
   questionSet: QuestionDatasetEntry[] = [
     {displayValue: 'Sample questions', filename: 'SampleQuiz.txt'},
-    {displayValue: 'vue', filename: 'vue.txt'},
-    {
-      displayValue: 'Appian',
-      filename: 'appian.txt'
-    },
-    {
-      displayValue: 'Java Webservices',
-      filename: 'java webservice.txt'
-    },
-    {
-      displayValue: 'Hybrid cloud',
-      filename: 'Hybrid cloud SRE Assessment.txt'
-    },
-    {
-      displayValue: 'Design Patterns',
-      filename: 'design patterns.txt'
-    },
-    {
-      displayValue: 'Selenium with Java',
-      filename: 'selenium java.txt'
-    },
-    {
-      displayValue: 'Hybrid cloud pre assesment',
-      filename: 'hybrid cloud preassesment.txt'
-    },
-    {
-      displayValue: 'Docker',
-      filename: 'docker.txt'
-    },
-    {
-      displayValue: 'Search Engine Optimization',
-      filename: 'seo.txt'
-    },
+    // {displayValue: 'vue', filename: 'vue.txt'},
+    // {
+    //   displayValue: 'Appian',
+    //   filename: 'appian.txt'
+    // },
+    // {
+    //   displayValue: 'Java Webservices',
+    //   filename: 'java webservice.txt'
+    // },
+    // {
+    //   displayValue: 'Hybrid cloud',
+    //   filename: 'Hybrid cloud SRE Assessment.txt'
+    // },
+    // {
+    //   displayValue: 'Design Patterns',
+    //   filename: 'design patterns.txt'
+    // },
+    // {
+    //   displayValue: 'Selenium with Java',
+    //   filename: 'selenium java.txt'
+    // },
+    // {
+    //   displayValue: 'Hybrid cloud pre assesment',
+    //   filename: 'hybrid cloud preassesment.txt'
+    // },
+    // {
+    //   displayValue: 'Docker',
+    //   filename: 'docker.txt'
+    // },
+    // {
+    //   displayValue: 'Search Engine Optimization',
+    //   filename: 'seo.txt'
+    // },
     {
       displayValue: 'Finanzas y Trading',
       filename: 'finanzas y trading.txt'
