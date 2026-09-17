@@ -1,32 +1,33 @@
 <mat-card appearance="outlined">
   <mat-card-content>
-    Select type:
-    <mat-select id="questionSelection" placeholder="Select question type"
-      (selectionChange)="changeType($event.value)" [formField]="formQuestionGeneration.questionType">
-      @for (questionType of questionTypes; track questionType) {
-        <mat-option [value]="questionType.value">
-          {{questionType.name}}
-        </mat-option>
-      }
-    </mat-select>
-    <hr>
+    <form [formRoot]="formQuestionGeneration">
+      Select type:
+      <mat-select id="questionSelection" placeholder="Select question type"
+                  [formField]="formQuestionGeneration.questionType">
+        @for (questionType of questionTypes; track questionType) {
+          <mat-option [value]="questionType.value">
+            {{ questionType.name }}
+          </mat-option>
+        }
+      </mat-select>
+      <hr>
       Enunciado:
       <mat-form-field>
         <textarea matInput [formField]="formQuestionGeneration.questionText"
-        placeholder="Escriba su enunciado"></textarea>
+                  placeholder="Escriba su enunciado"></textarea>
       </mat-form-field>
       Categoria:
       <mat-form-field>
         <textarea matInput [formField]="formQuestionGeneration.category"
-        placeholder="Nombre de la categoria"></textarea>
+                  placeholder="Nombre de la categoria"></textarea>
       </mat-form-field>
       Select The level of difficulty
       <mat-form-field appearance="fill">
         <mat-select placeholder="Select Item"
-          [formField]="formQuestionGeneration.difficulty">
+                    [formField]="formQuestionGeneration.difficulty">
           @for (difficulty of questionDifficulties; track difficulty) {
             <mat-option [value]="difficulty">
-              {{difficulty}}
+              {{ difficulty }}
             </mat-option>
           }
         </mat-select>
@@ -34,97 +35,102 @@
       Explicacion:
       <mat-form-field>
         <textarea matInput [formField]="formQuestionGeneration.explanation"
-        placeholder="Escriba su explicacion"></textarea>
+                  placeholder="Escriba su explicacion"></textarea>
       </mat-form-field>
-      @if ('FillBlankQuestion'===this.questionGenerationModel().questionType) {
+      @if ('FillBlankQuestion' === this.questionGenerationModel().questionType) {
         <div>
           Respuesta:
           <mat-form-field appearance="fill">
             <textarea matInput [formField]="formQuestionGeneration.answer"
-            placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+                      placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
           </mat-form-field>
           <hr>
-            <div class="code-section row">
-              <p class="col-md-11 overflow-auto">{{generateEnunciate()}}</p>
-              <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
+          <div class="code-section row">
+            <p class="col-md-11 overflow-auto">{{ generateEnunciate() }}</p>
+            <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy"
+                    (click)="showSnackbar()">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+            <button mat-icon-button (click)="resetFields()">
+              <mat-icon>restart_alt</mat-icon>
+            </button>
+          </div>
+        </div>
+      }
+      @if ('OneExampleQuestion' === this.questionGenerationModel().questionType) {
+        <div>
+          Add a new Answer choice:
+          <mat-form-field>
+              <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
+                        placeholder="answer choice"></textarea>
+          </mat-form-field>
+          <button mat-button (click)="addAnswerChoice()">add</button>
+          <div class="code-section row">
+            <p class="col-11 overflow-auto">{{ generateEnunciate() }}</p>
+            <div class="col align-self-end">
+              <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy"
+                      (click)="showSnackbar()">
                 <mat-icon>content_copy</mat-icon>
               </button>
-              <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
+              <button mat-icon-button (click)="resetFields()">
                 <mat-icon>restart_alt</mat-icon>
               </button>
             </div>
           </div>
-        }
-        @if ('OneExampleQuestion'===this.questionGenerationModel().questionType) {
-          <div>
-            Add a new Answer choice:
-            <mat-form-field>
+        </div>
+      }
+      @if ('MultipleChoiceQuestion' === this.questionGenerationModel().questionType) {
+        <div>
+          Index of the correct answer (starting from 0):
+          <mat-form-field>
+            <input type="number" matInput inputmode="numeric" [formField]="formQuestionGeneration.correctChoiceIdx"
+                   placeholder="answer index"/>
+          </mat-form-field>
+          Add a new Answer choice:
+          <mat-form-field>
               <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
-              placeholder="answer choice"></textarea>
-            </mat-form-field>
-            <button mat-button (click)="addAnswerChoice()">add</button>
-            <div class="code-section row">
-              <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
-              <div class="col align-self-end">
-                <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-                  <mat-icon>content_copy</mat-icon>
-                </button>
-                <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-                  <mat-icon>restart_alt</mat-icon>
-                </button>
-              </div>
+                        placeholder="answer choice"></textarea>
+          </mat-form-field>
+          <button mat-button (click)="addAnswerChoice()">add</button>
+          <div class="code-section row">
+            <p class="col-11 overflow-auto">{{ generateEnunciate() }}</p>
+            <div class="col align-self-end">
+              <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy"
+                      (click)="showSnackbar()">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+              <button mat-icon-button (click)="resetFields()">
+                <mat-icon>restart_alt</mat-icon>
+              </button>
             </div>
           </div>
-        }
-        @if ('MultipleChoiceQuestion'===this.questionGenerationModel().questionType) {
-          <div>
-            Index of the correct answer (starting from 0):
-            <mat-form-field>
-              <input type="number" matInput [formField]="formQuestionGeneration.correctChoiceIdx"
-              placeholder="answer index" />
-            </mat-form-field>
-            Add a new Answer choice:
-            <mat-form-field>
+        </div>
+      }
+      @if ('MultipleAnswerQuestion' === this.questionGenerationModel().questionType) {
+        <div>
+          Add a new Answer choice:
+          <mat-form-field>
               <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
-              placeholder="answer choice"></textarea>
-            </mat-form-field>
-            <button mat-button (click)="addAnswerChoice()">add</button>
-            <div class="code-section row">
-              <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
-              <div class="col align-self-end">
-                <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-                  <mat-icon>content_copy</mat-icon>
-                </button>
-                <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-                  <mat-icon>restart_alt</mat-icon>
-                </button>
-              </div>
+                        placeholder="answer choice"></textarea>
+          </mat-form-field>
+          <mat-checkbox [formField]="formQuestionGeneration.multipleAnswerCorrect">
+            correct
+          </mat-checkbox>
+          <button mat-button (click)="this.questionGenerationModel().optionToBeAdded.trim().length > 0 && addAnswerChoice()">add</button>
+          <div class="code-section row">
+            <p class="col-11 overflow-auto">{{ generateEnunciate() }}</p>
+            <div class="col align-self-end">
+              <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy"
+                      (click)="showSnackbar()">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+              <button mat-icon-button (click)="resetFields()">
+                <mat-icon>restart_alt</mat-icon>
+              </button>
             </div>
           </div>
-        }
-        @if ('MultipleAnswerQuestion'===this.questionGenerationModel().questionType) {
-          <div>
-            Add a new Answer choice:
-            <mat-form-field>
-              <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
-              placeholder="answer choice"></textarea>
-            </mat-form-field>
-            <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct
-            </mat-checkbox>
-            <button mat-button (click)="addAnswerChoice()">add</button>
-            <div class="code-section row">
-              <p class="col-11 overflow-auto">{{generateEnunciate()}}</p>
-              <div class="col align-self-end">
-                <button mat-icon-button [cdkCopyToClipboard]="generateEnunciate()" matTooltip="copy" (click)="showSnackbar()">
-                  <mat-icon>content_copy</mat-icon>
-                </button>
-                <button mat-icon-button (click)="changeType(currentQuestionAlv.constructor.name)">
-                  <mat-icon>restart_alt</mat-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-        }
-
-      </mat-card-content>
-    </mat-card>
+        </div>
+      }
+    </form>
+  </mat-card-content>
+</mat-card>

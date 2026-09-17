@@ -1,16 +1,39 @@
 import {QuestionGenerationStrategy} from "./QuestionGenerationStrategy";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
+import {QuestionFormModel} from "../../components/questiongen/questiongen.component";
 
-export class MultipleChoiceGenerationStrategy implements QuestionGenerationStrategy{
-  questionTypeAbreviation='MC';
+export class MultipleChoiceGenerationStrategy implements QuestionGenerationStrategy {
+  questionTypeAbreviation = 'MC';
 
-  generateEnunciate(currentQuestion:MultipleChoiceQuestion,difficulty: number,correctChoiceIdx: number): string {
-    return `${this.questionTypeAbreviation}@@v@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${correctChoiceIdx}@@${currentQuestion.choices.join('@@')}`.replace(/\n/g,' ')
+  resetModel(): QuestionFormModel {
+    return {
+      questionType: 'MultipleChoiceQuestion',
+      questionText: '',
+      answer: '',
+      explanation: '',
+      correctChoiceIdx: 0,
+      multipleAnswerCorrect: false,
+      difficulty: 'Easy',
+      category: 'default',
+      optionToBeAdded: '',
+      choices: [],
+      correctAnswers: []
+    }
   }
 
-  resetQuestion(): Question {
-    return new MultipleChoiceQuestion('v');
+  generateQuestion(questionGenerationModel: QuestionFormModel): Question {
+    const question = new MultipleChoiceQuestion('v')
+    question.text = questionGenerationModel.questionText;
+    question.answer = questionGenerationModel.answer;
+    question.category = questionGenerationModel.category;
+    question.explanation = questionGenerationModel.explanation;
+    question.choices = questionGenerationModel.choices;
+    return question;
+  }
+
+  generateEnunciate(currentQuestion: MultipleChoiceQuestion, difficulty: number, correctChoiceIdx: number): string {
+    return `${this.questionTypeAbreviation}@@v@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${correctChoiceIdx}@@${currentQuestion.choices.join('@@')}`.replace(/\n/g, ' ')
   }
 
 }
