@@ -2,7 +2,7 @@
   <mat-card-content>
     Select type:
     <mat-select id="questionSelection" placeholder="Select question type"
-      (selectionChange)="changeType($event.value)">
+      (selectionChange)="changeType($event.value)" [formField]="formQuestionGeneration.questionType">
       @for (questionType of questionTypes; track questionType) {
         <mat-option [value]="questionType.value">
           {{questionType.name}}
@@ -12,20 +12,18 @@
     <hr>
       Enunciado:
       <mat-form-field>
-        <textarea matInput [(ngModel)]="currentQuestionAlv.text"
+        <textarea matInput [formField]="formQuestionGeneration.questionText"
         placeholder="Escriba su enunciado"></textarea>
       </mat-form-field>
       Categoria:
       <mat-form-field>
-        <textarea matInput [(ngModel)]="currentQuestionAlv.category"
+        <textarea matInput [formField]="formQuestionGeneration.category"
         placeholder="Nombre de la categoria"></textarea>
       </mat-form-field>
       Select The level of difficulty
       <mat-form-field appearance="fill">
-        <!--      (ngModelChange)="changeDifficulty($event)"-->
         <mat-select placeholder="Select Item"
-
-          [(ngModel)]="this.currentDifficulty">
+          [formField]="formQuestionGeneration.difficulty">
           @for (difficulty of questionDifficulties; track difficulty) {
             <mat-option [value]="difficulty">
               {{difficulty}}
@@ -35,14 +33,14 @@
       </mat-form-field>
       Explicacion:
       <mat-form-field>
-        <textarea matInput [(ngModel)]="currentQuestionAlv.explanation"
+        <textarea matInput [formField]="formQuestionGeneration.explanation"
         placeholder="Escriba su explicacion"></textarea>
       </mat-form-field>
-      @if ('FillBlankQuestion'===this.questionTypeSelection) {
+      @if ('FillBlankQuestion'===this.questionGenerationModel().questionType) {
         <div>
           Respuesta:
           <mat-form-field appearance="fill">
-            <textarea matInput [(ngModel)]="currentQuestionAlv.answer"
+            <textarea matInput [formField]="formQuestionGeneration.answer"
             placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
           </mat-form-field>
           <hr>
@@ -57,11 +55,11 @@
             </div>
           </div>
         }
-        @if ('OneExampleQuestion'===this.questionTypeSelection) {
+        @if ('OneExampleQuestion'===this.questionGenerationModel().questionType) {
           <div>
             Add a new Answer choice:
             <mat-form-field>
-              <textarea matInput [(ngModel)]="optionToBeAdded"
+              <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
               placeholder="answer choice"></textarea>
             </mat-form-field>
             <button mat-button (click)="addAnswerChoice()">add</button>
@@ -78,16 +76,16 @@
             </div>
           </div>
         }
-        @if ('MultipleChoiceQuestion'===this.questionTypeSelection) {
+        @if ('MultipleChoiceQuestion'===this.questionGenerationModel().questionType) {
           <div>
             Index of the correct answer (starting from 0):
             <mat-form-field>
-              <textarea matInput [(ngModel)]="correctChoiceIdx"
-              placeholder="answer index"></textarea>
+              <input type="number" matInput [formField]="formQuestionGeneration.correctChoiceIdx"
+              placeholder="answer index" />
             </mat-form-field>
             Add a new Answer choice:
             <mat-form-field>
-              <textarea matInput [(ngModel)]="optionToBeAdded"
+              <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
               placeholder="answer choice"></textarea>
             </mat-form-field>
             <button mat-button (click)="addAnswerChoice()">add</button>
@@ -104,11 +102,11 @@
             </div>
           </div>
         }
-        @if ('MultipleAnswerQuestion'===this.questionTypeSelection) {
+        @if ('MultipleAnswerQuestion'===this.questionGenerationModel().questionType) {
           <div>
             Add a new Answer choice:
             <mat-form-field>
-              <textarea matInput [(ngModel)]="optionToBeAdded"
+              <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
               placeholder="answer choice"></textarea>
             </mat-form-field>
             <mat-checkbox [checked]="multipleAnswerCorrect" (change)="multipleAnswerCorrect = $event.source.checked">correct
