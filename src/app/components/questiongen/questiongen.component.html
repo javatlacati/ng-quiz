@@ -3,7 +3,7 @@
     <form [formRoot]="formQuestionGeneration">
       Select type:
       <mat-select id="questionSelection" placeholder="Select question type"
-                  [formField]="formQuestionGeneration.questionType">
+                  [formField]="formQuestionGeneration.questionType" (valueChange)="resetFields()">
         @for (questionType of questionTypes; track questionType) {
           <mat-option [value]="questionType.value">
             {{ questionType.name }}

@@ -1,5 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, signal, computed} from '@angular/core';
-import Question from "../../model/Question";
+import {Component, ChangeDetectionStrategy, signal, computed} from '@angular/core';
 import Difficulty from "../../model/Difficulty";
 import {GenerationStrategyChooser} from "../../business/GenerationStrategyChooser";
 import {Optional} from "typescript-optional";
@@ -37,7 +36,7 @@ export interface QuestionFormModel {
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCard, MatCardContent, MatSelect, MatOption, MatFormField, MatInput, ReactiveFormsModule, FormsModule, MatIconButton, MatTooltip, CdkCopyToClipboard, MatIcon, MatButton, MatCheckbox, FormField, FormRoot]
 })
-export class QuestiongenComponent implements OnInit {
+export class QuestiongenComponent {
   questionTypes = [
     {name: 'Fill In The Blanks', value: 'FillBlankQuestion'}
     , {name: 'Multiple Choice', value: 'MultipleChoiceQuestion'}
@@ -77,9 +76,6 @@ export class QuestiongenComponent implements OnInit {
 
 
   constructor(public _snackBar: MatSnackBar) {
-  }
-
-  ngOnInit(): void {
   }
 
   mapDifficulty(aDifficulty: string): Difficulty {
