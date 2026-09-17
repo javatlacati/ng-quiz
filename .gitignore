@@ -44,3 +44,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Cypress
+cypress/fixtures/
+cypress/support/
+
+# Assessment files
+src/assets/*.txt
