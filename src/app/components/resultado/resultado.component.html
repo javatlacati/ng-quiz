@@ -16,7 +16,7 @@
     Respondidas {{totalCorrectTrial()}} para calificación<br>
     Respondidas {{totalIncorrectTrial()}} sin contar para calificación<br>
     <div class="text-center">
-      <button mat-button (click)="goToFeedback()">Revisar preguntas fallidas</button>
+      <button mat-button (click)="goToFeedback()" [disabled]="totalIncorrect() === 0">Revisar preguntas fallidas</button>
       <!--    TODO liga al home-->
       <!--    &nbsp;<router-link to="/">Home page</router-link>-->
     </div>
