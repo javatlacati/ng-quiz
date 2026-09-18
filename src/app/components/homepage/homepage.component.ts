@@ -183,6 +183,34 @@ export class HomepageComponent {
     this.router.navigate(['/questiongen'])
   }
 
+  protected clearSelection(homepageForm: string) {
+    switch (homepageForm) {
+      case 'questionSetSelectionCtrl':
+        this.homepageForm.questionSetSelectionCtrl().value.set([]);
+        break;
+      case 'categorySelectionCtrl':
+        this.homepageForm.categorySelectionCtrl().value.set([]);
+        break;
+      case 'difficultySelectionCtrl':
+        this.homepageForm.difficultySelectionCtrl().value.set([]);
+        break;
+    }
+  }
+
+  protected selectAll(homepageForm: string) {
+    switch (homepageForm) {
+      case 'questionSetSelectionCtrl':
+        this.homepageForm.questionSetSelectionCtrl().value.set(this.questionSet.map(q => q.filename));
+        break;
+      case 'categorySelectionCtrl':
+        this.homepageForm.categorySelectionCtrl().value.set(this.categories());
+        break;
+      case 'difficultySelectionCtrl':
+        this.homepageForm.difficultySelectionCtrl().value.set(this.questionDifficulties);
+        break;
+    }
+  }
+
   private selectQuestionsToBePassed() {
     return this.questions().filter(question => this.formModel().categorySelectionCtrl.includes(question.category))
       .filter(question => this.difficultySelection().includes(question.difficulty));

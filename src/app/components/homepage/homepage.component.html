@@ -6,48 +6,66 @@
         <mat-stepper linear="true" #stepper (selectionChange)="stepClick($event)">
           <mat-step label="step0">
             <ng-template matStepLabel>Select The question set</ng-template>
-            <mat-form-field appearance="fill">
-              <mat-select id="questionSelection" placeholder="Select question set" multiple [formField]="homepageForm.questionSetSelectionCtrl"
-                          (selectionChange)="changeDatasets($event.value)" >
-                @for (aQuestion of questionSet; track aQuestion) {
-                  <mat-option [value]="aQuestion.filename">
-                    {{aQuestion.displayValue}}
-                  </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <mat-form-field appearance="fill" style="flex: 1;">
+                <mat-select id="questionSelection" placeholder="Select question set" multiple [formField]="homepageForm.questionSetSelectionCtrl"
+                            (selectionChange)="changeDatasets($event.value)" >
+                  @for (aQuestion of questionSet; track aQuestion) {
+                    <mat-option [value]="aQuestion.filename">
+                      {{aQuestion.displayValue}}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button mat-button (click)="selectAll('questionSetSelectionCtrl')">Select All</button>
+                <button mat-button (click)="clearSelection('questionSetSelectionCtrl')">Clear All</button>
+              </div>
+            </div>
             <div>
               <button id="step0btnNext" mat-button matStepperNext>Next</button>
             </div>
           </mat-step>
           <mat-step label="step1">
             <ng-template matStepLabel>Select the categories</ng-template>
-            <mat-form-field appearance="fill">
-              <mat-select id="categorySelection" placeholder="Select Item" multiple [formField]="homepageForm.categorySelectionCtrl"
-                          (selectionChange)="changeCategory($event.value)">
-                @for (category of categories(); track category) {
-                  <mat-option [value]="category">
-                    {{category}}
-                  </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <mat-form-field appearance="fill" style="flex: 1;">
+                <mat-select id="categorySelection" placeholder="Select Item" multiple [formField]="homepageForm.categorySelectionCtrl"
+                            (selectionChange)="changeCategory($event.value)">
+                  @for (category of categories(); track category) {
+                    <mat-option [value]="category">
+                      {{category}}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button mat-button (click)="selectAll('categorySelectionCtrl')">Select All</button>
+                <button mat-button (click)="clearSelection('categorySelectionCtrl')">Clear All</button>
+              </div>
+            </div>
             <div>
               <button id="step1btnNext" mat-button matStepperNext>Next</button>
             </div>
           </mat-step>
           <mat-step label="step2">
             <ng-template matStepLabel>Select The level of difficulty</ng-template>
-            <mat-form-field appearance="fill">
-              <mat-select placeholder="Select Item" multiple [formField]="homepageForm.difficultySelectionCtrl"
-                          (selectionChange)="changeDifficulty($event.value)">
-                @for (difficulty of questionDifficulties; track difficulty) {
-                  <mat-option [value]="difficulty">
-                    {{difficulty}}
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <mat-form-field appearance="fill" style="flex: 1;">
+                <mat-select placeholder="Select Item" multiple [formField]="homepageForm.difficultySelectionCtrl"
+                            (selectionChange)="changeDifficulty($event.value)">
+                  @for (difficulty of questionDifficulties; track difficulty) {
+                    <mat-option [value]="difficulty">
+                      {{difficulty}}
                   </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button mat-button (click)="selectAll('difficultySelectionCtrl')">Select All</button>
+                <button mat-button (click)="clearSelection('difficultySelectionCtrl')">Clear All</button>
+              </div>
+            </div>
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button id="step2btnNext" mat-button matStepperNext>Next</button>
