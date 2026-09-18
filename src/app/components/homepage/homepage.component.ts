@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, signal, inject, computed} from '@angular/core';
+import {Component, ChangeDetectionStrategy, signal, inject, computed, ViewChild} from '@angular/core';
 import Question from "../../model/Question";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -30,6 +30,7 @@ interface HomepageFormModel {
   imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperNext, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb, FormField, FormRoot]
 })
 export class HomepageComponent {
+  @ViewChild(MatStepper) stepper!: MatStepper;
 
   questionSet: QuestionDatasetEntry[] = [ //TODO extract question loading logic to service
     {displayValue: 'Sample questions', filename: 'SampleQuiz.txt'},
@@ -85,8 +86,7 @@ export class HomepageComponent {
     required(form.questionSetSelectionCtrl);
     required(form.categorySelectionCtrl);
     required(form.difficultySelectionCtrl);
-    required(form.questionNumberCtrl);
-    validate(form.questionNumberCtrl, ({value}) => value() !== 0 ? {kind: 'select at least one question'} : undefined);
+    validate(form.questionNumberCtrl, ({value}) => value() === 0 ? {kind: 'select at least one question'} : undefined);
   });
   difficultySelection = computed<Difficulty[]>(() => this.homepageForm.difficultySelectionCtrl().value().map(difficultyStr => {
     switch (difficultyStr) {
@@ -100,6 +100,11 @@ export class HomepageComponent {
         return Difficulty.NORMAL;
     }
   }));
+
+  questionSetModified = computed(() => this.homepageForm.questionSetSelectionCtrl().value().length > 0);
+  categoryModified = computed(() => this.homepageForm.categorySelectionCtrl().value().length > 0);
+  difficultyModified = computed(() => this.homepageForm.difficultySelectionCtrl().value().length > 0);
+  questionNumberValid = computed(() => this.homepageForm.questionNumberCtrl().value() !== -1);
   questionSetSelection = computed<QuestionDatasetEntry[]>(() => this.questionSet.filter(questionS => this.formModel().questionSetSelectionCtrl.includes(questionS.filename)))
   private router = inject(Router);
   private questionSubscription = inject(QuestionSubscription);
@@ -128,6 +133,30 @@ export class HomepageComponent {
 
   stepClick(evt: StepperSelectionEvent) {
     let label = evt.selectedStep.label;
+    let selectedIndex = evt.selectedIndex;
+    let previousIndex = evt.previouslySelectedIndex;
+
+    // Prevenir navegación hacia adelante si los pasos anteriores no son válidos
+    if (selectedIndex > previousIndex) {
+      //El setTimeout permite que Angular complete su ciclo de detección de cambios y renderizado
+      if (selectedIndex > 0 && !this.questionSetModified()) {
+        setTimeout(() => this.stepper.selectedIndex = previousIndex);
+        return;
+      }
+      if (selectedIndex > 1 && !this.categoryModified()) {
+        setTimeout(() => this.stepper.selectedIndex = previousIndex);
+        return;
+      }
+      if (selectedIndex > 2 && !this.difficultyModified()) {
+        setTimeout(() => this.stepper.selectedIndex = previousIndex);
+        return;
+      }
+      if (selectedIndex > 3 && !this.homepageForm.questionNumberCtrl().valid()) {
+        setTimeout(() => this.stepper.selectedIndex = previousIndex);
+        return;
+      }
+    }
+
     console.log('label:', label)
     switch (label) {
       case 'step2':
@@ -157,6 +186,31 @@ export class HomepageComponent {
         break;
     }
 
+  }
+
+  goToNextStep(stepIndex: number) {
+    switch (stepIndex) {
+      case 0:
+        if (this.questionSetModified()) {
+          this.stepper.next();
+        }
+        break;
+      case 1:
+        if (this.categoryModified()) {
+          this.stepper.next();
+        }
+        break;
+      case 2:
+        if (this.difficultyModified()) {
+          this.stepper.next();
+        }
+        break;
+      case 3:
+        if (this.questionNumberValid()) {
+          this.stepper.next();
+        }
+        break;
+    }
   }
 
   changeDifficulty(event: string[]) {

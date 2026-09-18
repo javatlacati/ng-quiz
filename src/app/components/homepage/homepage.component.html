@@ -4,7 +4,7 @@
     <mat-card-content>
       <form [formRoot]="homepageForm">
         <mat-stepper linear="true" #stepper (selectionChange)="stepClick($event)">
-          <mat-step label="step0">
+          <mat-step label="step0" [stepControl]="homepageForm.questionSetSelectionCtrl" [completed]="homepageForm.questionSetSelectionCtrl().valid()">
             <ng-template matStepLabel>Select The question set</ng-template>
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <mat-form-field appearance="fill" style="flex: 1;">
@@ -23,10 +23,10 @@
               </div>
             </div>
             <div>
-              <button id="step0btnNext" mat-button matStepperNext>Next</button>
+              <button id="step0btnNext" mat-button (click)="goToNextStep(0)" [disabled]="!questionSetModified()">Next</button>
             </div>
           </mat-step>
-          <mat-step label="step1">
+          <mat-step label="step1" [stepControl]="homepageForm.categorySelectionCtrl" [completed]="homepageForm.categorySelectionCtrl().valid()">
             <ng-template matStepLabel>Select the categories</ng-template>
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <mat-form-field appearance="fill" style="flex: 1;">
@@ -45,10 +45,10 @@
               </div>
             </div>
             <div>
-              <button id="step1btnNext" mat-button matStepperNext>Next</button>
+              <button id="step1btnNext" mat-button (click)="goToNextStep(1)" [disabled]="!categoryModified()">Next</button>
             </div>
           </mat-step>
-          <mat-step label="step2">
+          <mat-step label="step2" [stepControl]="homepageForm.difficultySelectionCtrl" [completed]="homepageForm.difficultySelectionCtrl().valid()">
             <ng-template matStepLabel>Select The level of difficulty</ng-template>
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <mat-form-field appearance="fill" style="flex: 1;">
@@ -68,10 +68,10 @@
             </div>
             <div>
               <button mat-button matStepperPrevious>Back</button>
-              <button id="step2btnNext" mat-button matStepperNext>Next</button>
+              <button id="step2btnNext" mat-button (click)="goToNextStep(2)" [disabled]="!difficultyModified()">Next</button>
             </div>
           </mat-step>
-          <mat-step label="step3" optional="true">
+          <mat-step label="step3" [stepControl]="homepageForm.questionNumberCtrl" [completed]="homepageForm.questionNumberCtrl().valid()">
             <div style="line-height: 80px;">
               <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
               <mat-label>Number of questions</mat-label>
@@ -84,7 +84,7 @@
             </div>
             <div>
               <button mat-button matStepperPrevious>Back</button>
-              <button id="step3btnNext" mat-button matStepperNext>Next</button>
+              <button id="step3btnNext" mat-button (click)="goToNextStep(3)" [disabled]="!homepageForm.questionNumberCtrl().valid()">Next</button>
             </div>
           </mat-step>
           <mat-step label="Done">
