@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ChangeDetectionStrategy, input} from '@angular/core';
 import Question from "../../../model/Question";
 import FillBlankQuestion from "../../../model/FillBlankQuestion";
 import { MatList } from '@angular/material/list';
@@ -12,7 +12,6 @@ import { MatList } from '@angular/material/list';
 })
 export class QuizQuestionHeaderComponent {
 
-  @Input()
-  currentQuestionAlv: Question = new FillBlankQuestion("Yes")
+  currentQuestionAlv = input<Question>(new FillBlankQuestion("Yes"));
 
 }
