@@ -1,23 +1,27 @@
 <div class="quiz">
   <ng-container>
     <mat-card appearance="outlined">
-      <app-quiz-question-header [currentQuestionAlv]="currentQuestionAlv"></app-quiz-question-header>
-      <app-quiz-question-form [formRoot]="quizForm" [currentQuestionAlv]="currentQuestionAlv"
-        [mulAnswerSelectionChanged]="mulAnswerSelectionChanged"
-        [currentQuestionOptions]="currentQuestionOptions"
-        [(value)]="selectedAnswers">
-        @if (this.questionsData().length === (this.preguntaActual + 1 || 0)) {
+      <app-quiz-question-header [currentQuestionAlv]="currentQuestionAlv()"></app-quiz-question-header>
+      <app-quiz-question-form [formRoot]="quizForm" [currentQuestionAlv]="currentQuestionAlv()"
+                              [mulAnswerSelectionChanged]="(event) => onFormChange(event)"
+                              [currentQuestionOptions]="currentQuestionOptions()"
+      >
+        @if (this.questionsData().length === (this.currentQuestionIndex() + 1 || 0)) {
           <button id="goToResultsButton" [disabled]="!completedQuiz()"
-            (click)="goToResults()">Go to
+                  (click)="goToResults()">Go to
             results
           </button>
         }
       </app-quiz-question-form>
       <mat-paginator [length]="questionsData().length"
-        [pageSize]="1"
-        (page)="handleQuestionChange($event)"
-        aria-label="Select question" hidePageSize="true" showFirstLastButtons="true">
+                     [pageSize]="1"
+                     (page)="handleQuestionChange($event)"
+                     aria-label="Select question" hidePageSize="true" showFirstLastButtons="true">
       </mat-paginator>
+    </mat-card>
+    <mat-card appearance="filled">
+      page {{ currentQuestionIndex() }} of {{ questionsData().length }}
+      current question: {{ JSON.stringify(currentQuestionAlv()) }}
     </mat-card>
   </ng-container>
 </div>

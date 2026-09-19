@@ -1,201 +1,153 @@
 import {Component, OnInit, signal, computed, inject} from '@angular/core';
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import Question from "../../model/Question";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import MultipleAnswerQuestion from "../../model/MultipleAnswerQuestion";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
-import { PageEvent, MatPaginator } from "@angular/material/paginator";
-import {MatSelectChange} from "@angular/material/select";
-import { MatCard } from '@angular/material/card';
-import { QuizQuestionHeaderComponent } from './quiz-question-header/quiz-question-header.component';
-import { QuizQuestionFormComponent } from './quiz-question-form/quiz-question-form.component';
+import {PageEvent, MatPaginator} from "@angular/material/paginator";
+import {MatCard} from '@angular/material/card';
+import {QuizQuestionHeaderComponent} from './quiz-question-header/quiz-question-header.component';
+import {QuizQuestionFormComponent} from './quiz-question-form/quiz-question-form.component';
 import {FieldTree, form} from "@angular/forms/signals";
+import {OneExampleQuestion} from "../../model/OneExampleQuestion";
 
 @Component({
-    selector: 'app-quiz',
-    templateUrl: './quiz.component.html',
-    styleUrls: ['./quiz.component.sass'],
-    imports: [MatCard, QuizQuestionHeaderComponent, QuizQuestionFormComponent, MatPaginator]
+  selector: 'app-quiz',
+  templateUrl: './quiz.component.html',
+  styleUrls: ['./quiz.component.sass'],
+  imports: [MatCard, QuizQuestionHeaderComponent, QuizQuestionFormComponent, MatPaginator]
 })
 export class QuizComponent implements OnInit {
 
-  private questionSubscription = inject(QuestionSubscription);
-  private router = inject(Router);
-
-  questionsData = this.questionSubscription.currentSharedQuestions;
-
-  preguntaActual = 1
-  currentQuestionAlv: Question = new FillBlankQuestion("Yes");
-  completedQuiz = computed(()=>this.questionsData().every((aQuestion) => aQuestion.userAnswer != ''));
-
-  currentQuestionOptions: { label: string; value: number }[] = []
-
+  currentQuestionIndex = signal(1)
+  currentQuestionAlv = signal<Question>(new FillBlankQuestion("Yes"));
   selectedAnswers: string[] = [];
+
   modelQuiz = signal({
     multipleChoiceCtrl: '',
-    multipleAnswerCtrl: '',
+    multipleAnswerCtrl: [] as string[],
     exampleCtrl: '',
     fillBlankCtrl: ''
   })
 
   quizForm: FieldTree<{
     multipleChoiceCtrl: string;
-    multipleAnswerCtrl: string;
+    multipleAnswerCtrl: string[];
     exampleCtrl: string;
     fillBlankCtrl: string;
   }, string | number, "writable"> = form(this.modelQuiz)
+  //currentQuestionOptions = signal<{ label: string; value: number }[]>([]) this should be a computed signal
+  currentQuestionOptions = computed(() => {
+    if (this.currentQuestionAlv() instanceof MultipleChoiceQuestion || this.currentQuestionAlv() instanceof MultipleAnswerQuestion || this.currentQuestionAlv() instanceof OneExampleQuestion) {
+      let choices: string[] = (this.currentQuestionAlv() as MultipleChoiceQuestion).choices;
+      return choices.map((choice, idx) => {
+        return {
+          value: idx,
+          label: choice
+        }
+      })
+    }
+    return []
+  })
+  protected readonly JSON = JSON;
+  private questionSubscription = inject(QuestionSubscription);
+  questionsData = this.questionSubscription.currentSharedQuestions;
+  completedQuiz = computed(() => this.questionsData().every((aQuestion) => aQuestion.userAnswer != ''));
 
-
-  constructor(
-    private activatedroute: ActivatedRoute,
-  ) {
-
-  }
+  // constructor(
+  //   private activatedroute: ActivatedRoute,
+  // ) {
+  //
+  // }
+  private router = inject(Router);
 
   ngOnInit(): void {
     if (this.questionsData().length > 0) {
-          this.currentQuestionAlv = this.questionsData()[0];
-        }
-
-      // .subscribe((theQuestions: Question[]) => {
-      //   if (theQuestions.length > 0) {
-      //     this.currentQuestionAlv = theQuestions[0];
-      //   }
-      //   return this.questionsData.set(theQuestions);
-      // });
+      this.currentQuestionAlv.set(this.questionsData()[0]);
+    }
     this.handleQuestionChange();
   }
 
-  mulAnswerSelectionChanged(event: MatSelectChange): void {
-    // [(value)]="currentQuestionAlv.userAnswer"
-    console.log(`event=${event.value}`)
-    let selection = event.value as number
-    console.log('respuesta elegida:', selection)
-    // console.log('respuesta elegida en formulario:', this.firstFormGroup.get('multipleChoiceCtrl')?.value)
-    this.currentQuestionAlv.userAnswer = `${selection}`;
-    console.log('saving answer:', this.currentQuestionAlv.userAnswer)
-    let className = this.currentQuestionAlv.constructor.name;
-    console.log(`className:${className}`)
+  onFormChange(event?: any): void {
+    console.log('onFormChange called with event:', event);
+    const formValues = this.modelQuiz();
+    const question = this.currentQuestionAlv();
+    const className = question.constructor.name;
+
+    console.log('onFormChange called, formValues:', formValues);
+    console.log('question type:', className);
+
     switch (className) {
-      case 'OneExampleQuestion':
       case 'MultipleChoiceQuestion':
-        this.currentQuestionAlv.userAnswer = `${selection}`;
-        console.log(this.currentQuestionAlv.answer)
-        //this.firstFormGroup.get('firstFormGroup.multipleChoiceCtrl')?.setValue(this.currentQuestionAlv.answer);
+        console.log("Valor del control multipleChoiceCtrl: " + formValues.multipleChoiceCtrl)
+        question.userAnswer = event;
+        console.log('userAnswer:', question.userAnswer);
+        console.log('Set question.userAnswer to:', event);
+        break;
+      case 'OneExampleQuestion':
+        question.userAnswer = formValues.exampleCtrl;
+        console.log('Set userAnswer to:', question.userAnswer);
         break;
       case 'MultipleAnswerQuestion':
-        this.currentQuestionAlv.userAnswer = `${selection}`;
-        console.log(`this.selectedAnswers = ${this.currentQuestionAlv.userAnswer}`)
-        this.selectedAnswers = this.currentQuestionAlv.userAnswer.split(',')
-        // this.firstFormGroup.get('secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.selectedAnswers:'')
-        // console.log(`secondCtrl after selection changed: ${this.firstFormGroup.get('secondCtrl')?.getRawValue()}`)
-        console.log(`setted this.selectedAnswers=${this.selectedAnswers}`)
+        question.userAnswer = event.join(',');
+        console.log('Set userAnswer to:', event);
+        break;
+      case 'FillBlankQuestion':
+        question.userAnswer = formValues.fillBlankCtrl;
+        console.log('Set userAnswer to:', question.userAnswer);
         break;
     }
 
-    // Update the signal to trigger computed recalculation
-    const updatedQuestions = Array.from(this.questionsData());
-    updatedQuestions[this.preguntaActual] = this.currentQuestionAlv;
-    this.questionSubscription.updateSharedQuestions(updatedQuestions)
-
-    // TODO update answer for preguntaActual for fill in the blanks
-  }
-
-  private savedAnswerValue(preguntaActual: number, preguntaSiguiente: number) {
-    let daQuestion = this.currentQuestionAlv;
-    let savedAnswer: string = daQuestion?.userAnswer;
-    console.log(`saved user answer: ${savedAnswer}`)
-    let className = daQuestion.constructor.name;
-    if (savedAnswer && savedAnswer !== '') {
-      console.log(`className:${className}`)
-      switch (className) {
-        case 'MultipleChoiceQuestion':
-          // @ts-ignore
-          // let daQuestionElementElement = (daQuestion as MultipleChoiceQuestion)['_choices'][savedAnswer];
-          // console.log(`saved answer value:${daQuestionElementElement}`)
-          // this.selectedAnswer = {value: ~~savedAnswer, label: daQuestionElementElement}
-          this.currentQuestionAlv.userAnswer = savedAnswer
-          // this.firstFormGroup.get('multipleChoiceCtrl')!.setValue(parseInt(savedAnswer));
-          console.log("valor puesto:",this.currentQuestionAlv.userAnswer)
-          //this.firstFormGroup.markAllAsTouched();
-          break;
-        case 'MultipleAnswerQuestion':
-          console.log(`this.selectedAnswers setting saved ${savedAnswer} into ${this.selectedAnswers}`)
-          this.selectedAnswers=savedAnswer.split(',')//this.currentQuestionAlv.userAnswer.split(',')
-          console.log(`this.selectedAnswers after split: ${this.selectedAnswers}`)
-          // if(this.selectedAnswers){
-          //   this.firstFormGroup.get('secondCtrl')?.setValue(this.selectedAnswers)
-          // }else{
-          //   this.firstFormGroup.get('secondCtrl')?.setValue(this.firstFormGroup.get('secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer?this.currentQuestionAlv.userAnswer.split(','):''))
-          // }
-          // console.log(`secondCtrl after setting: ${this.firstFormGroup.get('secondCtrl')?.getRawValue()}`)
-          break;
-      }
-    } else {
-      console.log('pregunta no previamente guardada')
-      switch (className) {
-        case 'MultipleChoiceQuestion':
-           console.log('borrando first control')
-           // this.firstFormGroup.get('multipleChoiceCtrl')?.setValue('');
-          break;
-      }
-    }
+    console.log('question after update:', JSON.stringify(question));
 
     // Update the signal to trigger computed recalculation
     const updatedQuestions = [...this.questionsData()];
-    updatedQuestions[this.preguntaActual] = this.currentQuestionAlv;
-    this.questionSubscription.updateSharedQuestions(updatedQuestions)
+    this.currentQuestionAlv.set(question);
+    console.log('currentQuestionAlv:', JSON.stringify(this.currentQuestionAlv()));
+    updatedQuestions[this.currentQuestionIndex()] = this.currentQuestionAlv();
+    this.questionSubscription.updateSharedQuestions(updatedQuestions);
+    console.log('Updated questionsData');
   }
 
+
   public handleQuestionChange(event?: PageEvent) {
-    console.log('completedQuiz: '+this.completedQuiz())
+    console.log('completedQuiz: ' + this.completedQuiz())
     console.log(`this.selectedAnswers=${this.selectedAnswers} deleted`)
     this.selectedAnswers = []
-    this.preguntaActual = event?.pageIndex || 0;
-    this.currentQuestionAlv = this.questionsData()[this.preguntaActual];
-    this.savedAnswerValue(this.preguntaActual, this.preguntaActual+1);
-    let subtype = this.currentQuestionAlv.constructor.name;
+    this.currentQuestionIndex.set(event?.pageIndex || 0);
+    this.currentQuestionAlv.set(this.questionsData()[this.currentQuestionIndex()]);
 
-    // Reset all controls first
-    // this.firstFormGroup.get('multipleChoiceCtrl')?.setValue('');
-    // this.firstFormGroup.get('secondCtrl')?.setValue('');
-    // this.firstFormGroup.get('exampleCtrl')?.setValue('');
-    // this.firstFormGroup.get('fillBlankCtrl')?.setValue('');
+    // Update form values based on the new question's saved answer
+    let subtype = this.currentQuestionAlv().constructor.name;
 
     switch (subtype) {
       case 'FillBlankQuestion':
-        let fillblanksRequired: number = (this.currentQuestionAlv as FillBlankQuestion)._correctAnswers.length;
-        this.currentQuestionOptions = [];
-        // this.firstFormGroup.get('fillBlankCtrl')?.setValue(this.currentQuestionAlv.userAnswer || '');
-        console.log("fillblanks required:",fillblanksRequired)
-        // TODO detectar el número de espacios a llenar requeridos y ponerlo en el texto de la pregunta como inputs
+        this.modelQuiz.update(m => ({
+          ...m,
+          fillBlankCtrl: this.currentQuestionAlv().userAnswer || ''
+        }));
         break;
       case 'OneExampleQuestion':
-        // this.firstFormGroup.get('exampleCtrl')?.setValue(this.currentQuestionAlv.userAnswer || '');
+        this.modelQuiz.update(m => ({
+          ...m,
+          exampleCtrl: this.currentQuestionAlv().userAnswer || ''
+        }));
         break;
       case 'MultipleAnswerQuestion':
-        let daChoices: string[] = (this.currentQuestionAlv as MultipleAnswerQuestion).choices;
-        this.currentQuestionOptions = daChoices.map((choice, idx) => {
-          return {
-            value: idx,
-            label: choice
-          }
-        });
-        console.log(`this.selectedAnswers is ${this.currentQuestionAlv.userAnswer.split(',')}`)
-        // this.firstFormGroup.get('secondCtrl')?.setValue(this.currentQuestionAlv.userAnswer ? this.currentQuestionAlv.userAnswer.split(',') : '')
+        this.modelQuiz.update(m => ({
+          ...m,
+          multipleAnswerCtrl: this.currentQuestionAlv().userAnswer ? this.currentQuestionAlv().userAnswer.split(',') : []
+        }));
         break;
       case 'MultipleChoiceQuestion':
-        let choices: string[] = (this.currentQuestionAlv as MultipleChoiceQuestion).choices;
-        this.currentQuestionOptions = choices.map((choice, idx) => {
-          return {
-            value: idx,
-            label: choice
-          }
-        });
-        // this.firstFormGroup.get('multipleChoiceCtrl')?.setValue(this.currentQuestionAlv.userAnswer ? parseInt(this.currentQuestionAlv.userAnswer) : '');
+        this.modelQuiz.update(m => ({
+          ...m,
+          multipleChoiceCtrl: this.currentQuestionAlv().userAnswer || ''
+        }));
         break;
     }
+
     console.log(`questions updated: ${JSON.stringify(this.questionsData())}`)
     console.log(`all questions filled: ${JSON.stringify(this.questionsData().every((aQuestion) => aQuestion.userAnswer != ''))}`)
     console.log(`completedQuiz: ${JSON.stringify(this.completedQuiz())}`)
@@ -205,7 +157,7 @@ export class QuizComponent implements OnInit {
     if (this.completedQuiz()) {
       console.log(`questions sent:${JSON.stringify(this.questionSubscription.currentSharedQuestions())}`)
       this.router.navigate(['/result'])
-    }else{
+    } else {
       console.log('Quiz not completed')
     }
   }

@@ -5,7 +5,7 @@
         <small>({{laPreguntaActual.constructor.name}})</small>
         <div [innerHTML]="laPreguntaActual.display()"></div>
       </div>
-      @if ('MultipleChoiceQuestion'===laPreguntaActual.constructor.name) {
+      @if ('MultipleChoiceQuestion'===laPreguntaActual.constructor.name || 'MultipleAnswerQuestion'===laPreguntaActual.constructor.name) {
         <div>
           You answered: <span [innerHTML]="showAnswer(laPreguntaActual.userAnswer)"></span>
         </div>
