@@ -8,7 +8,7 @@ import {QuestionDatasetEntry} from "../../model/QuestionDatasetEntry";
 import Difficulty from "../../model/Difficulty";
 import DatasetLoader from "../../business/DatasetLoader";
 import {MatCard, MatCardTitle, MatCardContent} from '@angular/material/card';
-import {MatStepper, MatStep, MatStepLabel, MatStepperNext, MatStepperPrevious} from '@angular/material/stepper';
+import {MatStepper, MatStep, MatStepLabel, MatStepperPrevious} from '@angular/material/stepper';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatSelect, MatOption} from '@angular/material/select';
 import {MatButton} from '@angular/material/button';
@@ -27,7 +27,7 @@ interface HomepageFormModel {
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperNext, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb, FormField, FormRoot]
+  imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb, FormField, FormRoot]
 })
 export class HomepageComponent {
   @ViewChild(MatStepper) stepper!: MatStepper;
@@ -104,7 +104,7 @@ export class HomepageComponent {
   questionSetModified = computed(() => this.homepageForm.questionSetSelectionCtrl().value().length > 0);
   categoryModified = computed(() => this.homepageForm.categorySelectionCtrl().value().length > 0);
   difficultyModified = computed(() => this.homepageForm.difficultySelectionCtrl().value().length > 0);
-  questionNumberValid = computed(() => this.homepageForm.questionNumberCtrl().value() !== -1);
+  questionNumberValid = computed(() => this.homepageForm.questionNumberCtrl().value() !== 0);
   questionSetSelection = computed<QuestionDatasetEntry[]>(() => this.questionSet.filter(questionS => this.formModel().questionSetSelectionCtrl.includes(questionS.filename)))
   private router = inject(Router);
   private questionSubscription = inject(QuestionSubscription);
