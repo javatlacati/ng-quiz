@@ -5,13 +5,13 @@ import Question from "../model/Question";
   providedIn: 'root'
 })
 export class QuestionSubscription {
-  private _sharedQuesitons = signal<Question[]>([] as Question[]);
-  currentSharedQuestions = this._sharedQuesitons.asReadonly();
+  private _sharedQuestions = signal<Question[]>([] as Question[]);
+  currentSharedQuestions = this._sharedQuestions.asReadonly();
 
   constructor() {
   }
 
   updateSharedQuestions(questions: Question[]): void {
-    this._sharedQuesitons.set(questions);
+    this._sharedQuestions.set(questions);
   }
 }

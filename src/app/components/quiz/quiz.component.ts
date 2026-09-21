@@ -81,7 +81,7 @@ export class QuizComponent implements OnInit {
     switch (className) {
       case 'MultipleChoiceQuestion':
         console.log("Valor del control multipleChoiceCtrl: " + formValues.multipleChoiceCtrl)
-        question.userAnswer = event;
+        question.userAnswer = event+'';
         console.log('userAnswer:', question.userAnswer);
         console.log('Set question.userAnswer to:', event);
         break;

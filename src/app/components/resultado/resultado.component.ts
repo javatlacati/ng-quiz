@@ -30,6 +30,14 @@ export class ResultadoComponent {
     return total;
   });
 
+  maxScore = computed(() => {
+    let total = 0;
+    for (let currentQuestion of this.questionsData()) {
+      total += (currentQuestion as any as Question).maxPoints;
+    }
+    return total;
+  });
+
   vettedScore = computed(() => {
     let total = 0;
     for (let currentQuestion of this.questionsData()) {

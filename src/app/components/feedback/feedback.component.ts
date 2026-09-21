@@ -56,15 +56,9 @@ export class FeedbackComponent implements OnInit {
   }
 
   showAnswer(index: string): string {
+    if (!index) return '';
+    
     if (this.laPreguntaActual.constructor.name === 'MultipleAnswerQuestion') {
-      const question = this.laPreguntaActual as any;
-      const correctAnswers = question.correctAnswers;
-      if (correctAnswers && Array.isArray(correctAnswers)) {
-        return correctAnswers
-          .map((isCorrect, idx) => isCorrect === 'true' || isCorrect === true ? this.currentQuestionOptions[idx]?.label : null)
-          .filter(label => label !== null)
-          .join(', ');
-      }
       try {
         const indices = JSON.parse(index);
         if (Array.isArray(indices)) {
@@ -75,9 +69,8 @@ export class FeedbackComponent implements OnInit {
         return indices.map(idx => this.currentQuestionOptions[parseInt(idx)]?.label || '').join(', ');
       }
     }
-    return this.currentQuestionOptions
-      .filter((value, index1) => index1 === parseInt(index))
-      .map(value => value.label)[0] || ''
+    
+    return this.currentQuestionOptions[parseInt(index)]?.label || '';
   }
 
   // questionChanged() {
