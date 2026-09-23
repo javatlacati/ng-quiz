@@ -12,6 +12,7 @@ export class OneExampleGenerationStrategy implements QuestionGenerationStrategy 
       questionText: '',
       answer: '',
       explanation: '',
+      vetted: true,
       correctChoiceIdx: 0,
       multipleAnswerCorrect: false,
       difficulty: 'Easy',
@@ -23,7 +24,7 @@ export class OneExampleGenerationStrategy implements QuestionGenerationStrategy 
   }
 
   generateQuestion(questionGenerationModel: QuestionFormModel): Question {
-    const question = new OneExampleQuestion('v')
+    const question = new OneExampleQuestion(questionGenerationModel.vetted ? 'v' : 'n')
     question.text = questionGenerationModel.questionText;
     question.answer = questionGenerationModel.answer;
     question.category = questionGenerationModel.category;
@@ -33,7 +34,7 @@ export class OneExampleGenerationStrategy implements QuestionGenerationStrategy 
   }
 
   generateEnunciate(currentQuestion: OneExampleQuestion, difficulty: number, correctChoiceIdx: number): string {
-    return `${this.questionTypeAbreviation}@@v@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${currentQuestion.choices.join('@@')}`.replace(/\\n/g, ' ')
+    return `${this.questionTypeAbreviation}@@${currentQuestion.vettedOrTrial}@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${currentQuestion.choices.join('@@')}`.replace(/\\n/g, ' ')
   }
 
 }

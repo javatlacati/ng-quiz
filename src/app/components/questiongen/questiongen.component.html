@@ -37,6 +37,9 @@
         <textarea matInput [formField]="formQuestionGeneration.explanation"
                   placeholder="Escriba su explicacion"></textarea>
       </mat-form-field>
+      <mat-checkbox [formField]="formQuestionGeneration.vetted">
+        Examined
+      </mat-checkbox>
       @if ('FillBlankQuestion' === this.questionGenerationModel().questionType) {
         <div>
           Respuesta:

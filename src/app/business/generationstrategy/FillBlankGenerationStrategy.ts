@@ -12,6 +12,7 @@ export class FillBlankGenerationStrategy implements QuestionGenerationStrategy {
       questionText: '',
       answer: '',
       explanation: '',
+      vetted: true,
       correctChoiceIdx: 0,
       multipleAnswerCorrect: false,
       difficulty: 'Easy',
@@ -23,7 +24,7 @@ export class FillBlankGenerationStrategy implements QuestionGenerationStrategy {
   }
 
   generateQuestion(questionGenerationModel: QuestionFormModel): Question {
-    let question = new FillBlankQuestion('Y')
+    let question = new FillBlankQuestion(questionGenerationModel.vetted ? 'v' : 'n')
     question.text = questionGenerationModel.questionText;
     question.answer = questionGenerationModel.answer;
     question.category = questionGenerationModel.category;
@@ -32,7 +33,7 @@ export class FillBlankGenerationStrategy implements QuestionGenerationStrategy {
   }
 
   generateEnunciate(currentQuestion: FillBlankQuestion, difficulty: number): string {
-    return `${this.questionTypeAbreviation}@@v@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${currentQuestion.answer.split(' ').join('@@')}`.replace(/\n/g, ' ')
+    return `${this.questionTypeAbreviation}@@${currentQuestion.vettedOrTrial}@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${currentQuestion.answer.split(' ').join('@@')}`.replace(/\n/g, ' ')
   }
 
 }

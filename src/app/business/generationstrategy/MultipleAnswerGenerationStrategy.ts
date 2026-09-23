@@ -13,6 +13,7 @@ export class MultipleAnswerGenerationStrategy implements QuestionGenerationStrat
       answer: '',
       explanation: '',
       correctChoiceIdx: 0,
+      vetted: true,
       multipleAnswerCorrect: false,
       difficulty: 'Easy',
       category: 'default',
@@ -23,7 +24,7 @@ export class MultipleAnswerGenerationStrategy implements QuestionGenerationStrat
   }
 
   generateQuestion(questionGenerationModel: QuestionFormModel): Question {
-    const question = new MultipleAnswerQuestion('v')
+    const question = new MultipleAnswerQuestion(questionGenerationModel.vetted ? 'v' : 'n')
     question.text = questionGenerationModel.questionText;
     question.answer = questionGenerationModel.answer;
     question.category = questionGenerationModel.category;
@@ -34,7 +35,7 @@ export class MultipleAnswerGenerationStrategy implements QuestionGenerationStrat
   }
 
   generateEnunciate(currentQuestion: MultipleAnswerQuestion, difficulty: number, correctChoiceIdx: number): string {
-    return `${this.questionTypeAbreviation}@@v@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${currentQuestion.choices.join('@@')}@@${currentQuestion.correctAnswers.join('@@')}`.replace(/\n/g, ' ')
+    return `${this.questionTypeAbreviation}@@${currentQuestion.vettedOrTrial}@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${currentQuestion.choices.join('@@')}@@${currentQuestion.correctAnswers.join('@@')}`.replace(/\n/g, ' ')
   }
 
 }

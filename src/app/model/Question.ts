@@ -1,19 +1,8 @@
 import Difficulty from "./Difficulty";
 
 export default abstract class Question {
-  get vettedOrTrial(): string {
-    return this._vettedOrTrial;
-  }
   public static VETTED = "vetted";
   public static TRIAL = "trial";
-
-  protected _text: string = "";
-  protected _answer: string = "";
-  protected _explanation: string = "";
-  private _userAnswer: string = "";
-  private _vettedOrTrial: string;
-  protected _category: string;
-  protected _difficulty: Difficulty;
 
   /**
    * Constructs a question with empty question and answer
@@ -26,6 +15,12 @@ export default abstract class Question {
     this._difficulty = Difficulty.NORMAL;
   }
 
+  protected _text: string = "";
+
+  get text(): string {
+    return this._text;
+  }
+
   /**
    * Sets the question text.
    *
@@ -35,10 +30,18 @@ export default abstract class Question {
     this._text = questionText;
   }
 
+  protected _answer: string = "";
 
-  get text(): string {
-    return this._text;
-  }
+  abstract get answer(): string;
+
+  /**
+   * Sets the correct answer(s)
+   *
+   * @param answer answer text
+   */
+  abstract set answer(answer: string);
+
+  protected _explanation: string = "";
 
   get explanation(): string {
     return this._explanation;
@@ -47,6 +50,51 @@ export default abstract class Question {
   set explanation(explanation: string) {
     this._explanation = explanation;
   }
+
+  private _userAnswer: string = "";
+
+  get userAnswer(): string {
+    return this._userAnswer;
+  }
+
+  set userAnswer(value: string) {
+    this._userAnswer = value;
+  }
+
+  private _vettedOrTrial: string;
+
+  get vettedOrTrial(): string {
+    return this._vettedOrTrial;
+  }
+
+  set vettedOrTrial(vetted: boolean) {
+    this._vettedOrTrial = vetted + '';
+  }
+
+  protected _category: string;
+
+  get category(): string {
+    return this._category;
+  }
+
+  set category(category: string) {
+    this._category = category;
+  }
+
+  protected _difficulty: Difficulty;
+
+  get difficulty() {
+    return this._difficulty;
+  }
+
+  set difficulty(difficulty: Difficulty) {
+    this._difficulty = difficulty;
+  }
+
+  /**
+   * Maximum number of point that can be awarded by this question.
+   */
+  abstract get maxPoints(): number;
 
   /**
    * Show question Text
@@ -64,7 +112,7 @@ export default abstract class Question {
   abstract checkQuestionProvidingAnswer(answer: string): number;
 
   checkQuestion(): number {
-    if (this._userAnswer) {
+    if (this._userAnswer != '') {
       // if (this instanceof FillBlankQuestion) {
       //     if (this._userAnswer.toUpperCase() === this._answer) {
       //         return 1.0;
@@ -77,43 +125,4 @@ export default abstract class Question {
     }
     return 0.0;
   }
-
-
-  get userAnswer(): string {
-    return this._userAnswer;
-  }
-
-  set userAnswer(value: string) {
-        this._userAnswer = value;
-    }
-
-  /**
-   * Maximum number of point that can be awarded by this question.
-   */
-  abstract get maxPoints(): number;
-
-  get category(): string {
-    return this._category;
-  }
-
-    set category(category: string) {
-    this._category = category;
-  }
-
-  get difficulty() {
-    return this._difficulty;
-  }
-
-    set difficulty(difficulty: Difficulty) {
-    this._difficulty = difficulty;
-  }
-
-  /**
-   * Sets the correct answer(s)
-   *
-   * @param answer answer text
-   */
-  abstract set answer(answer: string);
-
-  abstract get answer(): string;
 }

@@ -12,6 +12,7 @@ export class MultipleChoiceGenerationStrategy implements QuestionGenerationStrat
       questionText: '',
       answer: '',
       explanation: '',
+      vetted: true,
       correctChoiceIdx: 0,
       multipleAnswerCorrect: false,
       difficulty: 'Easy',
@@ -26,6 +27,7 @@ export class MultipleChoiceGenerationStrategy implements QuestionGenerationStrat
     const question = new MultipleChoiceQuestion('v')
     question.text = questionGenerationModel.questionText;
     question.answer = questionGenerationModel.answer;
+    question.vettedOrTrial = questionGenerationModel.vetted
     question.category = questionGenerationModel.category;
     question.explanation = questionGenerationModel.explanation;
     question.choices = questionGenerationModel.choices;
@@ -33,7 +35,7 @@ export class MultipleChoiceGenerationStrategy implements QuestionGenerationStrat
   }
 
   generateEnunciate(currentQuestion: MultipleChoiceQuestion, difficulty: number, correctChoiceIdx: number): string {
-    return `${this.questionTypeAbreviation}@@v@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${correctChoiceIdx}@@${currentQuestion.choices.join('@@')}`.replace(/\n/g, ' ')
+    return `${this.questionTypeAbreviation}@@${currentQuestion.vettedOrTrial}@@${currentQuestion.explanation}@@${currentQuestion.category}@@${difficulty}@@${currentQuestion.text}@@${correctChoiceIdx}@@${currentQuestion.choices.join('@@')}`.replace(/\n/g, ' ')
   }
 
 }

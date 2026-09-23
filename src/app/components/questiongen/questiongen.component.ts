@@ -20,6 +20,7 @@ export interface QuestionFormModel {
   questionText: string;
   answer: string;
   explanation: string;
+  vetted: boolean;
   correctChoiceIdx: number;
   multipleAnswerCorrect: boolean;
   difficulty: string;
@@ -50,6 +51,7 @@ export class QuestiongenComponent {
     questionText: '',
     answer: '',
     explanation: '',
+    vetted: true,
     correctChoiceIdx: 0,
     multipleAnswerCorrect: false,
     difficulty: 'Easy',
