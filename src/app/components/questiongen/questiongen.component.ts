@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, signal, computed} from '@angular/core';
+import {Component, ChangeDetectionStrategy, signal, computed, inject} from '@angular/core';
 import Difficulty from "../../model/Difficulty";
 import {GenerationStrategyChooser} from "../../business/GenerationStrategyChooser";
 import {Optional} from "typescript-optional";
@@ -14,6 +14,7 @@ import {CdkCopyToClipboard} from '@angular/cdk/clipboard';
 import {MatIcon} from '@angular/material/icon';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {form, FormField, FormRoot} from "@angular/forms/signals";
+import {QuestionSerializationServiceService} from "../../services/question-serialization-service.service";
 
 export interface QuestionFormModel {
   questionType: string;
@@ -46,6 +47,8 @@ export class QuestiongenComponent {
   ];
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
 
+  questionSerializationService = inject(QuestionSerializationServiceService);
+
   questionGenerationModel = signal<QuestionFormModel>({
     questionType: 'FillBlankQuestion',
     questionText: '',
@@ -71,9 +74,7 @@ export class QuestiongenComponent {
       .orElseThrow(() => new Error('No generation strategy found'))
   })
   generateEnunciate = computed(() =>
-    Optional.ofNullable(this.currentGenerationStrategy())
-      .map(generationStrategy => generationStrategy.generateEnunciate(this.generatedCurrentQuestion(), this.mapDifficulty(this.questionGenerationModel().difficulty).valueOf(), this.questionGenerationModel().correctChoiceIdx))
-      .orElse("")
+    this.questionSerializationService.generateEnunciate(this.generatedCurrentQuestion(), this.mapDifficulty(this.questionGenerationModel().difficulty).valueOf(), this.questionGenerationModel().correctChoiceIdx)
   )
 
 
@@ -81,7 +82,7 @@ export class QuestiongenComponent {
   }
 
   mapDifficulty(aDifficulty: string): Difficulty {
-    // console.log(`mapping difficulty:${aDifficulty} of type ${aDifficulty.constructor.name}`)
+    console.debug(`mapping difficulty:${aDifficulty} of type ${aDifficulty.constructor.name}`)
     switch (aDifficulty.toUpperCase()) {
       case 'EASY':
         return Difficulty.EASY;
