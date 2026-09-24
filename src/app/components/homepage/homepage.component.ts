@@ -14,6 +14,7 @@ import {MatSelect, MatOption} from '@angular/material/select';
 import {MatButton} from '@angular/material/button';
 import {MatSlider, MatSliderThumb} from '@angular/material/slider';
 import {form, required, FieldTree, FormField, FormRoot, validate} from '@angular/forms/signals';
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 interface HomepageFormModel {
   questionSetSelectionCtrl: string[];
@@ -22,12 +23,19 @@ interface HomepageFormModel {
   questionNumberCtrl: number;
 }
 
+const initialValue: HomepageFormModel = {
+  questionSetSelectionCtrl: [],
+  categorySelectionCtrl: [],
+  difficultySelectionCtrl: [],
+  questionNumberCtrl: -1
+};
+
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb, FormField, FormRoot]
+  imports: [MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, MatStepLabel, MatFormField, MatSelect, MatOption, MatButton, MatStepperPrevious, MatLabel, MatSlider, MatSliderThumb, FormField, FormRoot, TranslatePipe]
 })
 export class HomepageComponent {
   @ViewChild(MatStepper) stepper!: MatStepper;
@@ -76,12 +84,7 @@ export class HomepageComponent {
 
   categories = signal<string[]>([]);
   questions = signal<Question[]>([]);
-  formModel = signal<HomepageFormModel>({
-    questionSetSelectionCtrl: [],
-    categorySelectionCtrl: [],
-    difficultySelectionCtrl: [],
-    questionNumberCtrl: -1
-  });
+  formModel = signal<HomepageFormModel>(initialValue);
   homepageForm: FieldTree<HomepageFormModel> = form(this.formModel, (form) => {
     required(form.questionSetSelectionCtrl);
     required(form.categorySelectionCtrl);
@@ -109,6 +112,7 @@ export class HomepageComponent {
   private router = inject(Router);
   private questionSubscription = inject(QuestionSubscription);
   private httpClient = inject(HttpClient);
+  public translateService = inject(TranslateService);
 
   myDisplayWithFn = (value: number) => {
     if (value >= 1000) {
@@ -263,6 +267,10 @@ export class HomepageComponent {
         this.homepageForm.difficultySelectionCtrl().value.set(this.questionDifficulties);
         break;
     }
+  }
+
+  protected resetQuestionSelection() {
+    this.formModel.set(initialValue);
   }
 
   private selectQuestionsToBePassed() {

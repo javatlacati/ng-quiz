@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, input} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, input, inject} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import Question from "../../../model/Question";
 import {MatSelect, MatOption} from "@angular/material/select";
@@ -6,12 +6,13 @@ import FillBlankQuestion from "../../../model/FillBlankQuestion";
 import {MatInput} from '@angular/material/input';
 import {MatFormField} from '@angular/material/form-field';
 import {FieldTree, FormField, FormRoot} from "@angular/forms/signals";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-quiz-question-form',
   templateUrl: './quiz-question-form.component.html',
   styleUrls: ['./quiz-question-form.component.scss'],
-  imports: [ReactiveFormsModule, MatSelect, MatOption, MatInput, MatFormField, FormRoot, FormField]
+  imports: [ReactiveFormsModule, MatSelect, MatOption, MatInput, MatFormField, FormRoot, FormField, TranslatePipe]
 })
 export class QuizQuestionFormComponent implements OnInit {
 
@@ -32,6 +33,8 @@ export class QuizQuestionFormComponent implements OnInit {
 
   @Input()
   completedQuiz: boolean = false;
+
+  public translateService = inject(TranslateService);
 
   constructor() {
   }

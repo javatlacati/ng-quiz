@@ -1,97 +1,127 @@
 <ng-container>
   <mat-card appearance="outlined">
-    <mat-card-title>Configure your exam session</mat-card-title>
+    <mat-card-title>{{ 'homepage.configure'|translate }}</mat-card-title>
     <mat-card-content>
       <form [formRoot]="homepageForm">
         <mat-stepper linear="true" #stepper (selectionChange)="stepClick($event)">
-          <mat-step label="step0" [stepControl]="homepageForm.questionSetSelectionCtrl" [completed]="homepageForm.questionSetSelectionCtrl().valid()">
-            <ng-template matStepLabel>Select The question set</ng-template>
+          <mat-step label="step0" [stepControl]="homepageForm.questionSetSelectionCtrl"
+                    [completed]="homepageForm.questionSetSelectionCtrl().valid()">
+            <ng-template matStepLabel>{{ 'homepage.questionset'|translate }}</ng-template>
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <mat-form-field appearance="fill" style="flex: 1;">
-                <mat-select id="questionSelection" placeholder="Select question set" multiple [formField]="homepageForm.questionSetSelectionCtrl"
-                            (selectionChange)="changeDatasets($event.value)" >
+                <mat-select id="questionSelection" [placeholder]="translateService.instant('homepage.questionset')"
+                            multiple
+                            [formField]="homepageForm.questionSetSelectionCtrl"
+                            (selectionChange)="changeDatasets($event.value)">
                   @for (aQuestion of questionSet; track aQuestion) {
                     <mat-option [value]="aQuestion.filename">
-                      {{aQuestion.displayValue}}
+                      {{ aQuestion.displayValue }}
                     </mat-option>
                   }
                 </mat-select>
               </mat-form-field>
               <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button mat-button (click)="selectAll('questionSetSelectionCtrl')">Select All</button>
-                <button mat-button (click)="clearSelection('questionSetSelectionCtrl')">Clear All</button>
+                <button mat-button
+                        (click)="selectAll('questionSetSelectionCtrl')">{{ 'homepage.selectall'|translate }}
+                </button>
+                <button mat-button
+                        (click)="clearSelection('questionSetSelectionCtrl')">{{ 'homepage.clearall'|translate }}
+                </button>
               </div>
             </div>
             <div>
-              <button id="step0btnNext" mat-button (click)="goToNextStep(0)" [disabled]="!questionSetModified()">Next</button>
+              <button id="step0btnNext" mat-button (click)="goToNextStep(0)"
+                      [disabled]="!questionSetModified()">{{ 'homepage.next'|translate }}
+              </button>
             </div>
           </mat-step>
-          <mat-step label="step1" [stepControl]="homepageForm.categorySelectionCtrl" [completed]="homepageForm.categorySelectionCtrl().valid()">
-            <ng-template matStepLabel>Select the categories</ng-template>
+          <mat-step label="step1" [stepControl]="homepageForm.categorySelectionCtrl"
+                    [completed]="homepageForm.categorySelectionCtrl().valid()">
+            <ng-template matStepLabel>{{ 'homepage.categories'|translate }}</ng-template>
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <mat-form-field appearance="fill" style="flex: 1;">
-                <mat-select id="categorySelection" placeholder="Select Item" multiple [formField]="homepageForm.categorySelectionCtrl"
+                <mat-select id="categorySelection" [placeholder]="translateService.instant('homepage.item')" multiple
+                            [formField]="homepageForm.categorySelectionCtrl"
                             (selectionChange)="changeCategory($event.value)">
                   @for (category of categories(); track category) {
                     <mat-option [value]="category">
-                      {{category}}
+                      {{ category }}
                     </mat-option>
                   }
                 </mat-select>
               </mat-form-field>
               <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button mat-button (click)="selectAll('categorySelectionCtrl')">Select All</button>
-                <button mat-button (click)="clearSelection('categorySelectionCtrl')">Clear All</button>
+                <button mat-button (click)="selectAll('categorySelectionCtrl')">{{ 'homepage.selectall'|translate }}
+                </button>
+                <button mat-button
+                        (click)="clearSelection('categorySelectionCtrl')">{{ 'homepage.clearall'|translate }}
+                </button>
               </div>
             </div>
             <div>
-              <button id="step1btnNext" mat-button (click)="goToNextStep(1)" [disabled]="!categoryModified()">Next</button>
+              <button id="step1btnNext" mat-button (click)="goToNextStep(1)"
+                      [disabled]="!categoryModified()">{{ 'homepage.next'|translate }}
+              </button>
             </div>
           </mat-step>
-          <mat-step label="step2" [stepControl]="homepageForm.difficultySelectionCtrl" [completed]="homepageForm.difficultySelectionCtrl().valid()">
-            <ng-template matStepLabel>Select The level of difficulty</ng-template>
+          <mat-step label="step2" [stepControl]="homepageForm.difficultySelectionCtrl"
+                    [completed]="homepageForm.difficultySelectionCtrl().valid()">
+            <ng-template matStepLabel>{{ 'homepage.difficulty'|translate }}</ng-template>
             <div style="display: flex; align-items: flex-start; gap: 12px;">
               <mat-form-field appearance="fill" style="flex: 1;">
-                <mat-select placeholder="Select Item" multiple [formField]="homepageForm.difficultySelectionCtrl"
+                <mat-select [placeholder]="translateService.instant('homepage.item')" multiple
+                            [formField]="homepageForm.difficultySelectionCtrl"
                             (selectionChange)="changeDifficulty($event.value)">
                   @for (difficulty of questionDifficulties; track difficulty) {
                     <mat-option [value]="difficulty">
-                      {{difficulty}}
-                  </mat-option>
+                      {{ difficulty }}
+                    </mat-option>
                   }
                 </mat-select>
               </mat-form-field>
               <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button mat-button (click)="selectAll('difficultySelectionCtrl')">Select All</button>
-                <button mat-button (click)="clearSelection('difficultySelectionCtrl')">Clear All</button>
+                <button mat-button (click)="selectAll('difficultySelectionCtrl')">{{ 'homepage.selectall'|translate }}
+                </button>
+                <button mat-button
+                        (click)="clearSelection('difficultySelectionCtrl')">{{ 'homepage.clearall'|translate }}
+                </button>
               </div>
             </div>
             <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button id="step2btnNext" mat-button (click)="goToNextStep(2)" [disabled]="!difficultyModified()">Next</button>
+              <button mat-button matStepperPrevious>{{ 'homepage.back'|translate }}</button>
+              <button id="step2btnNext" mat-button (click)="goToNextStep(2)"
+                      [disabled]="!difficultyModified()">{{ 'homepage.next'|translate }}
+              </button>
             </div>
           </mat-step>
-          <mat-step label="step3" [stepControl]="homepageForm.questionNumberCtrl" [completed]="homepageForm.questionNumberCtrl().valid()">
+          <mat-step label="step3" [stepControl]="homepageForm.questionNumberCtrl"
+                    [completed]="homepageForm.questionNumberCtrl().valid()">
             <div style="line-height: 80px;">
-              <ng-template matStepLabel>Define the max number of questions to be asked</ng-template>
+              <ng-template matStepLabel>{{ 'homepage.questions'|translate }}</ng-template>
               <mat-label>Number of questions</mat-label>
               <mat-slider [min]="-1" [step]="1"
                           [max]="calculateMaxQuestions()" showTickMarks discrete [displayWith]="myDisplayWithFn">
                 <input [formField]="homepageForm.questionNumberCtrl" matSliderThumb>
               </mat-slider>
-              <br />
-              {{homepageForm.questionNumberCtrl().value()}}
+              <br/>
+              {{ homepageForm.questionNumberCtrl().value() }}
             </div>
             <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button id="step3btnNext" mat-button (click)="goToNextStep(3)" [disabled]="!homepageForm.questionNumberCtrl().valid()">Next</button>
+              <button mat-button matStepperPrevious>{{ 'homepage.back'|translate }}</button>
+              <button id="step3btnNext" mat-button (click)="goToNextStep(3)"
+                      [disabled]="!homepageForm.questionNumberCtrl().valid()">{{ 'homepage.next'|translate }}
+              </button>
             </div>
           </mat-step>
           <mat-step label="Done">
-          <button id="goToQuiz" mat-flat-button color="primary" (click)="goToQuiz()">Proceed to Quiz</button>
+            <button id="goToQuiz" mat-flat-button color="primary"
+                    (click)="goToQuiz()">{{ 'homepage.toquiz'|translate }}
+            </button>
             <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button id="reset" mat-button (click)="stepper.reset()">Reset</button>
+              <button mat-button matStepperPrevious>{{ 'homepage.back'|translate }}</button>
+              <button id="reset" mat-button
+                      (click)="stepper.reset();resetQuestionSelection()">{{ 'homepage.reset'|translate }}
+              </button>
             </div>
           </mat-step>
         </mat-stepper>
@@ -100,7 +130,9 @@
   </mat-card>
   <mat-card appearance="outlined">
     <mat-card-content>
-      <button mat-button (click)="goToEditor()">Generar codigo para pregunta</button>
+      <button mat-button (click)="goToEditor()">{{ 'homepage.generatequestion'|translate }}Generar codigo para
+        pregunta
+      </button>
     </mat-card-content>
   </mat-card>
 </ng-container>

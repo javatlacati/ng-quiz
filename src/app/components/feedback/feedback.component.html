@@ -7,13 +7,13 @@
       </div>
       @if ('MultipleChoiceQuestion'===laPreguntaActual.constructor.name || 'MultipleAnswerQuestion'===laPreguntaActual.constructor.name) {
         <div>
-          You answered: <span [innerHTML]="showAnswer(laPreguntaActual.userAnswer)"></span>
+          {{ 'feedback.youAnswered'|translate }} <span [innerHTML]="showAnswer(laPreguntaActual.userAnswer)"></span>
         </div>
       }
       <br>
-        The correct answer was: <span [innerHTML]="showAnswer(laPreguntaActual.answer)"></span>
+        {{ 'feedback.correctAnswerWas'|translate }} <span [innerHTML]="showAnswer(laPreguntaActual.answer)"></span>
         @if (laPreguntaActual.explanation) {
-          <span><br>Explanation:<br>{{laPreguntaActual.explanation}}</span>
+          <span><br>{{ 'feedback.explanation'|translate }}<br>{{laPreguntaActual.explanation}}</span>
         }
       </mat-card-content>
       <mat-card-actions>

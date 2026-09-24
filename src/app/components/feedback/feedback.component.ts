@@ -1,19 +1,18 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, inject} from '@angular/core';
 import Question from "../../model/Question";
 import MultipleChoiceQuestion from "../../model/MultipleChoiceQuestion";
 import { PageEvent, MatPaginator } from "@angular/material/paginator";
-import {Validators} from "@angular/forms";
-import {Subscription} from "rxjs";
 import {QuestionSubscription} from "../../subscriptions/QuestionSubscription";
 import FillBlankQuestion from "../../model/FillBlankQuestion";
 import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-feedback',
     templateUrl: './feedback.component.html',
     styleUrls: ['./feedback.component.sass'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [MatCard, MatCardContent, MatCardActions, MatPaginator]
+    imports: [MatCard, MatCardContent, MatCardActions, MatPaginator, TranslatePipe]
 })
 export class FeedbackComponent implements OnInit {
 
@@ -21,6 +20,7 @@ export class FeedbackComponent implements OnInit {
   preguntaActual = 1
   laPreguntaActual: Question = new FillBlankQuestion("Yes");
   currentQuestionOptions: { label: string; value: number }[] = []
+  public translateService = inject(TranslateService);
 
   constructor(private questionSuubscription: QuestionSubscription) {
   }
@@ -57,7 +57,7 @@ export class FeedbackComponent implements OnInit {
 
   showAnswer(index: string): string {
     if (!index) return '';
-    
+
     if (this.laPreguntaActual.constructor.name === 'MultipleAnswerQuestion') {
       try {
         const indices = JSON.parse(index);
@@ -69,7 +69,7 @@ export class FeedbackComponent implements OnInit {
         return indices.map(idx => this.currentQuestionOptions[parseInt(idx)]?.label || '').join(', ');
       }
     }
-    
+
     return this.currentQuestionOptions[parseInt(index)]?.label || '';
   }
 

@@ -1,0 +1,69 @@
+{
+  "homepage": {
+    "configure": "Configure your exam session",
+    "questionset": "Select The question set",
+    "categories": "Select the categories",
+    "item": "Select Item",
+    "difficulty": "Select The level of difficulty",
+    "questions": "Define the max number of questions to be asked",
+    "selectall": "Select All",
+    "clearall": "Clear All",
+    "next": "Next",
+    "back": "Back",
+    "reset": "Reset",
+    "toquiz": "Proceed to Quiz",
+    "generatequestion": "Generate Question Code"
+  },
+  "questiongen": {
+    "difficulty": "Select The level of difficulty",
+    "explaination": "Explicacion:",
+    "category": "Nombre de la categoria",
+    "answer": "Respuesta:",
+    "addanswerchoice": "Add a new Answer choice:",
+    "add": "add",
+    "selecttype": "Select question type",
+    "statement": "Escriba su enunciado",
+    "copied": "copied to clipboard",
+    "item": "Select Item",
+    "writeexplanation": "Write explanation|Escriba su explicacion",
+    "answersinorder": "Escriba sus respuestas en Órden separadas por espacios",
+    "answerchoice": "answer choice",
+    "indexofanswer": "Index of the correct answer (starting from 0):",
+    "examined": "Examined"
+  },
+  "quiz": {
+    "goToResults": "Go to results",
+    "page": "page",
+    "of": "of",
+    "currentQuestion": "current question:",
+    "writeExample": "Escriba un ejemplo",
+    "writeAnswersInOrder": "Escriba sus respuestas en Órden separadas por espacios",
+    "unrecognizedQuestionType": "Tipo de pregunta no reconocido",
+    "selected": "Selected",
+    "category": "Category:",
+    "questionType": "Question type:"
+  },
+  "resultado": {
+    "title": "Resultados del cuestionario",
+    "totalPoints": "Puntos totales:",
+    "de": "de",
+    "huboTotalPreguntas": "Hubo un total de",
+    "preguntas": "preguntas.",
+    "respondidas": "Respondidas",
+    "paraCalificacion": "para calificación",
+    "sinContarParaCalificacion": "sin contar para calificación",
+    "hubo": "Hubo",
+    "preguntasObligatorias": "preguntas obligatorias.",
+    "recibioTotalPuntos": "Recibió un total de",
+    "puntosEnEllas": "puntos en ellas.",
+    "obligatoriasParaCalificacion": "obligatorias para calificación",
+    "obligatoriasSinContarParaCalificacion": "obligatorias sin contar para calificación",
+    "preguntasDePrueba": "preguntas de prueba.",
+    "revisarPreguntasFallidas": "Revisar preguntas fallidas"
+  },
+  "feedback": {
+    "youAnswered": "You answered:",
+    "correctAnswerWas": "The correct answer was:",
+    "explanation": "Explanation:"
+  }
+}

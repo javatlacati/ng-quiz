@@ -8,8 +8,7 @@
       >
         @if (this.questionsData().length === (this.currentQuestionIndex() + 1 || 0)) {
           <button id="goToResultsButton" [disabled]="!completedQuiz()"
-                  (click)="goToResults()">Go to
-            results
+                  (click)="goToResults()">{{ 'quiz.goToResults'|translate }}
           </button>
         }
       </app-quiz-question-form>
@@ -20,8 +19,8 @@
       </mat-paginator>
     </mat-card>
     <mat-card appearance="filled">
-      page {{ currentQuestionIndex() }} of {{ questionsData().length }}
-      current question: {{ JSON.stringify(currentQuestionAlv()) }}
+      {{ 'quiz.page'|translate }} {{ currentQuestionIndex() }} {{ 'quiz.of'|translate }} {{ questionsData().length }}
+<!--      {{ 'quiz.currentQuestion'|translate }} {{ JSON.stringify(currentQuestionAlv()) }}-->
     </mat-card>
   </ng-container>
 </div>

@@ -11,7 +11,7 @@
     }
     @case ('OneExampleQuestion') {
       <textarea matInput [formField]="formRoot.exampleCtrl"
-                placeholder="Escriba un ejemplo"
+                [placeholder]="translateService.instant('quiz.writeExample')"
                 (input)="mulAnswerSelectionChanged($event)"
       ></textarea>
     }
@@ -23,17 +23,17 @@
         }
       </mat-select>
       <br/>
-      Selected {{ formRoot.multipleAnswerCtrl().controlValue() }}
+      {{ 'quiz.selected'|translate }} {{ formRoot.multipleAnswerCtrl().controlValue() }}
     }
     @case ('FillBlankQuestion') {
       <mat-form-field appearance="fill">
           <textarea matInput [formField]="formRoot.fillBlankCtrl"
-                    placeholder="Escriba sus respuestas en Órden separadas por espacios"
+                    [placeholder]="translateService.instant('quiz.writeAnswersInOrder')"
                     (input)="mulAnswerSelectionChanged($event)"></textarea>
       </mat-form-field>
     }
     @default {
-      Tipo de pregunta no reconocido
+      {{ 'quiz.unrecognizedQuestionType'|translate }}
     }
   }
   <ng-content></ng-content>

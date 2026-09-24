@@ -1,22 +1,22 @@
 <mat-card appearance="outlined">
   <mat-card-header>
-    <h1>Resultados del cuestionario</h1>
+    <h1>{{ 'resultado.title'|translate }}</h1>
   </mat-card-header>
   <mat-card-content>
-    <b>Puntos totales:</b>{{score()}} de {{maxScore()}}<br>
-    Hubo un total de {{questionsData().length}} preguntas.<br>
-    Respondidas {{totalCorrect()}} para calificación<br>
-    Respondidas {{totalIncorrect()}} sin contar para calificación<br>
-    Hubo {{totalVetted()}} preguntas obligatorias.<br>
-    Recibió un total de {{vettedScore()}} puntos en ellas.<br>
-    Respondidas {{totalCorrectVetted()}} obligatorias para calificación<br>
-    Respondidas {{totalIncorrectVetted()}} obligatorias sin contar para calificación<br>
-    Hubo {{totalTrial()}} preguntas de prueba.<br>
-    Recibió un total de {{trialScore()}} puntos en ellas.<br>
-    Respondidas {{totalCorrectTrial()}} para calificación<br>
-    Respondidas {{totalIncorrectTrial()}} sin contar para calificación<br>
+    <b>{{ 'resultado.totalPoints'|translate }}</b>{{score()}} {{ 'resultado.de'|translate }} {{maxScore()}}<br>
+    {{ 'resultado.huboTotalPreguntas'|translate }} {{questionsData().length}} {{ 'resultado.preguntas'|translate }}<br>
+    {{ 'resultado.respondidas'|translate }} {{totalCorrect()}} {{ 'resultado.paraCalificacion'|translate }}<br>
+    {{ 'resultado.respondidas'|translate }} {{totalIncorrect()}} {{ 'resultado.sinContarParaCalificacion'|translate }}<br>
+    {{ 'resultado.hubo'|translate }} {{totalVetted()}} {{ 'resultado.preguntasObligatorias'|translate }}<br>
+    {{ 'resultado.recibioTotalPuntos'|translate }} {{vettedScore()}} {{ 'resultado.puntosEnEllas'|translate }}<br>
+    {{ 'resultado.respondidas'|translate }} {{totalCorrectVetted()}} {{ 'resultado.obligatoriasParaCalificacion'|translate }}<br>
+    {{ 'resultado.respondidas'|translate }} {{totalIncorrectVetted()}} {{ 'resultado.obligatoriasSinContarParaCalificacion'|translate }}<br>
+    {{ 'resultado.hubo'|translate }} {{totalTrial()}} {{ 'resultado.preguntasDePrueba'|translate }}<br>
+    {{ 'resultado.recibioTotalPuntos'|translate }} {{trialScore()}} {{ 'resultado.puntosEnEllas'|translate }}<br>
+    {{ 'resultado.respondidas'|translate }} {{totalCorrectTrial()}} {{ 'resultado.paraCalificacion'|translate }}<br>
+    {{ 'resultado.respondidas'|translate }} {{totalIncorrectTrial()}} {{ 'resultado.sinContarParaCalificacion'|translate }}<br>
     <div class="text-center">
-      <button mat-button (click)="goToFeedback()" [disabled]="totalIncorrect() === 0">Revisar preguntas fallidas</button>
+      <button mat-button (click)="goToFeedback()" [disabled]="totalIncorrect() === 0">{{ 'resultado.revisarPreguntasFallidas'|translate }}</button>
       <!--    TODO liga al home-->
       <!--    &nbsp;<router-link to="/">Home page</router-link>-->
     </div>
