@@ -1,0 +1,69 @@
+{
+  "homepage": {
+    "configure": "Configure su sesión de examen",
+    "questionset": "Seleccione el conjunto de preguntas",
+    "categories": "Seleccione las categorías",
+    "item": "Seleccione el elemento",
+    "difficulty": "Seleccione el nivel de dificultad",
+    "questions": "Defina el número máximo de preguntas a realizar",
+    "selectall": "Seleccionar todo",
+    "clearall": "Limpiar todo",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "reset": "Restablecer",
+    "toquiz": "Proceder al cuestionario",
+    "generatequestion": "Generar código de pregunta"
+  },
+  "questiongen": {
+    "difficulty": "Seleccione el nivel de dificultad",
+    "explaination": "Explicación:",
+    "category": "Nombre de la categoría",
+    "answer": "Respuesta:",
+    "addanswerchoice": "Agregar una nueva opción de respuesta:",
+    "add": "agregar",
+    "selecttype": "Seleccione el tipo de pregunta",
+    "statement": "Escriba su enunciado",
+    "copied": "copiado al portapapeles",
+    "item": "Seleccione el elemento",
+    "writeexplanation": "Escriba su explicación",
+    "answersinorder": "Escriba sus respuestas en orden separadas por espacios",
+    "answerchoice": "opción de respuesta",
+    "indexofanswer": "Índice de la respuesta correcta (comenzando desde 0):",
+    "examined": "Examinado"
+  },
+  "quiz": {
+    "goToResults": "Ir a resultados",
+    "page": "página",
+    "of": "de",
+    "currentQuestion": "pregunta actual:",
+    "writeExample": "Escriba un ejemplo",
+    "writeAnswersInOrder": "Escriba sus respuestas en orden separadas por espacios",
+    "unrecognizedQuestionType": "Tipo de pregunta no reconocido",
+    "selected": "Seleccionado",
+    "category": "Categoría:",
+    "questionType": "Tipo de pregunta:"
+  },
+  "resultado": {
+    "title": "Resultados del cuestionario",
+    "totalPoints": "Puntos totales:",
+    "de": "de",
+    "huboTotalPreguntas": "Hubo un total de",
+    "preguntas": "preguntas.",
+    "respondidas": "Respondidas",
+    "paraCalificacion": "para calificación",
+    "sinContarParaCalificacion": "sin contar para calificación",
+    "hubo": "Hubo",
+    "preguntasObligatorias": "preguntas obligatorias.",
+    "recibioTotalPuntos": "Recibió un total de",
+    "puntosEnEllas": "puntos en ellas.",
+    "obligatoriasParaCalificacion": "obligatorias para calificación",
+    "obligatoriasSinContarParaCalificacion": "obligatorias sin contar para calificación",
+    "preguntasDePrueba": "preguntas de prueba.",
+    "revisarPreguntasFallidas": "Revisar preguntas fallidas"
+  },
+  "feedback": {
+    "youAnswered": "Usted respondió:",
+    "correctAnswerWas": "La respuesta correcta era:",
+    "explanation": "Explicación:"
+  }
+}

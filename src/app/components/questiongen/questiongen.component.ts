@@ -15,6 +15,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {form, FormField, FormRoot} from "@angular/forms/signals";
 import {QuestionSerializationServiceService} from "../../services/question-serialization-service.service";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 export interface QuestionFormModel {
   questionType: string;
@@ -36,7 +37,7 @@ export interface QuestionFormModel {
   templateUrl: './questiongen.component.html',
   styleUrls: ['./questiongen.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MatCard, MatCardContent, MatSelect, MatOption, MatFormField, MatInput, ReactiveFormsModule, FormsModule, MatIconButton, MatTooltip, CdkCopyToClipboard, MatIcon, MatButton, MatCheckbox, FormField, FormRoot]
+  imports: [MatCard, MatCardContent, MatSelect, MatOption, MatFormField, MatInput, ReactiveFormsModule, FormsModule, MatIconButton, MatTooltip, CdkCopyToClipboard, MatIcon, MatButton, MatCheckbox, FormField, FormRoot, TranslatePipe]
 })
 export class QuestiongenComponent {
   questionTypes = [
@@ -48,6 +49,7 @@ export class QuestiongenComponent {
   questionDifficulties: string[] = ['Easy', 'Normal', 'Hard'];
 
   questionSerializationService = inject(QuestionSerializationServiceService);
+  public translateService = inject(TranslateService);
 
   questionGenerationModel = signal<QuestionFormModel>({
     questionType: 'FillBlankQuestion',
@@ -119,7 +121,7 @@ export class QuestiongenComponent {
   }
 
   showSnackbar() {
-    this._snackBar.open("copied to clipboard", "close", {
+    this._snackBar.open(this.translateService.instant('questiongen.clipboard'), "close", {
       duration: 1000, verticalPosition: "top"
     });
   }

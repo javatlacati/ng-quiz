@@ -1,6 +1,6 @@
 <mat-list>
-  <div class="overline mb-4">Category: {{currentQuestionAlv().category}}
-    <small>Question type: ({{currentQuestionAlv().constructor.name}})</small>
+  <div class="overline mb-4">{{ 'quiz.category'|translate }} {{currentQuestionAlv().category}}
+    <small>{{ 'quiz.questionType'|translate }} ({{currentQuestionAlv().constructor.name}})</small>
   </div>
   <div [innerHTML]="currentQuestionAlv().display()"></div>
 </mat-list>

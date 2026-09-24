@@ -11,12 +11,13 @@ import {QuizQuestionHeaderComponent} from './quiz-question-header/quiz-question-
 import {QuizQuestionFormComponent} from './quiz-question-form/quiz-question-form.component';
 import {FieldTree, form} from "@angular/forms/signals";
 import {OneExampleQuestion} from "../../model/OneExampleQuestion";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.sass'],
-  imports: [MatCard, QuizQuestionHeaderComponent, QuizQuestionFormComponent, MatPaginator]
+  imports: [MatCard, QuizQuestionHeaderComponent, QuizQuestionFormComponent, MatPaginator, TranslatePipe]
 })
 export class QuizComponent implements OnInit {
 
@@ -52,6 +53,7 @@ export class QuizComponent implements OnInit {
   })
   protected readonly JSON = JSON;
   private questionSubscription = inject(QuestionSubscription);
+  public translateService = inject(TranslateService);
   questionsData = this.questionSubscription.currentSharedQuestions;
   completedQuiz = computed(() => this.questionsData().every((aQuestion) => aQuestion.userAnswer != ''));
 

@@ -2,7 +2,7 @@
   <mat-card-content>
     <form [formRoot]="formQuestionGeneration">
       Select type:
-      <mat-select id="questionSelection" placeholder="Select question type"
+      <mat-select id="questionSelection" [placeholder]="translateService.instant('questiongen.selecttype')"
                   [formField]="formQuestionGeneration.questionType" (valueChange)="resetFields()">
         @for (questionType of questionTypes; track questionType) {
           <mat-option [value]="questionType.value">
@@ -14,16 +14,16 @@
       Enunciado:
       <mat-form-field>
         <textarea matInput [formField]="formQuestionGeneration.questionText"
-                  placeholder="Escriba su enunciado"></textarea>
+                  [placeholder]="translateService.instant('questiongen.statement')"></textarea>
       </mat-form-field>
       Categoria:
       <mat-form-field>
         <textarea matInput [formField]="formQuestionGeneration.category"
-                  placeholder="Nombre de la categoria"></textarea>
+                  [placeholder]="translateService.instant('questiongen.category')"></textarea>
       </mat-form-field>
-      Select The level of difficulty
+      {{ 'questiongen.difficulty'|translate }}
       <mat-form-field appearance="fill">
-        <mat-select placeholder="Select Item"
+        <mat-select [placeholder]="translateService.instant('questiongen.item')"
                     [formField]="formQuestionGeneration.difficulty">
           @for (difficulty of questionDifficulties; track difficulty) {
             <mat-option [value]="difficulty">
@@ -32,20 +32,20 @@
           }
         </mat-select>
       </mat-form-field>
-      Explicacion:
+      {{ 'questiongen.explaination'|translate }}
       <mat-form-field>
         <textarea matInput [formField]="formQuestionGeneration.explanation"
-                  placeholder="Escriba su explicacion"></textarea>
+                  [placeholder]="translateService.instant('questiongen.writeexplanation')"></textarea>
       </mat-form-field>
       <mat-checkbox [formField]="formQuestionGeneration.vetted">
-        Examined
+        {{ 'questiongen.examined'|translate }}
       </mat-checkbox>
       @if ('FillBlankQuestion' === this.questionGenerationModel().questionType) {
         <div>
-          Respuesta:
+          {{ 'questiongen.answer'|translate }}
           <mat-form-field appearance="fill">
             <textarea matInput [formField]="formQuestionGeneration.answer"
-                      placeholder="Escriba sus respuestas en Órden separadas por espacios"></textarea>
+                      [placeholder]="translateService.instant('questiongen.answersinorder')"></textarea>
           </mat-form-field>
           <hr>
           <div class="code-section row">
@@ -62,12 +62,12 @@
       }
       @if ('OneExampleQuestion' === this.questionGenerationModel().questionType) {
         <div>
-          Add a new Answer choice:
+          {{ 'questiongen.addanswerchoice'|translate }}
           <mat-form-field>
               <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
-                        placeholder="answer choice"></textarea>
+                        [placeholder]="translateService.instant('questiongen.answerchoice')"></textarea>
           </mat-form-field>
-          <button mat-button (click)="addAnswerChoice()">add</button>
+          <button mat-button (click)="addAnswerChoice()">{{ 'questiongen.add'|translate }}</button>
           <div class="code-section row">
             <p class="col-11 overflow-auto">{{ generateEnunciate() }}</p>
             <div class="col align-self-end">
@@ -84,17 +84,17 @@
       }
       @if ('MultipleChoiceQuestion' === this.questionGenerationModel().questionType) {
         <div>
-          Index of the correct answer (starting from 0):
+          {{ 'questiongen.indexofanswer'|translate }}
           <mat-form-field>
             <input type="number" matInput inputmode="numeric" [formField]="formQuestionGeneration.correctChoiceIdx"
                    placeholder="answer index"/>
           </mat-form-field>
-          Add a new Answer choice:
+          {{ 'questiongen.addanswerchoice'|translate }}
           <mat-form-field>
               <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
-                        placeholder="answer choice"></textarea>
+                        [placeholder]="translateService.instant('questiongen.answerchoice')"></textarea>
           </mat-form-field>
-          <button mat-button (click)="addAnswerChoice()">add</button>
+          <button mat-button (click)="addAnswerChoice()">{{ 'questiongen.addanswerchoice'|translate }}</button>
           <div class="code-section row">
             <p class="col-11 overflow-auto">{{ generateEnunciate() }}</p>
             <div class="col align-self-end">
@@ -111,7 +111,7 @@
       }
       @if ('MultipleAnswerQuestion' === this.questionGenerationModel().questionType) {
         <div>
-          Add a new Answer choice:
+          {{ 'questiongen.addanswerchoice'|translate }}
           <mat-form-field>
               <textarea matInput [formField]="formQuestionGeneration.optionToBeAdded"
                         placeholder="answer choice"></textarea>
@@ -119,7 +119,9 @@
           <mat-checkbox [formField]="formQuestionGeneration.multipleAnswerCorrect">
             correct
           </mat-checkbox>
-          <button mat-button (click)="this.questionGenerationModel().optionToBeAdded.trim().length > 0 && addAnswerChoice()">add</button>
+          <button mat-button
+                  (click)="this.questionGenerationModel().optionToBeAdded.trim().length > 0 && addAnswerChoice()">{{ 'questiongen.addanswerchoice'|translate }}
+          </button>
           <div class="code-section row">
             <p class="col-11 overflow-auto">{{ generateEnunciate() }}</p>
             <div class="col align-self-end">

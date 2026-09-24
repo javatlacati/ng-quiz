@@ -8,17 +8,19 @@ import {Router} from "@angular/router";
 import {OneExampleQuestion} from "../../model/OneExampleQuestion";
 import {MatCard, MatCardHeader, MatCardContent} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-resultado',
   templateUrl: './resultado.component.html',
   styleUrls: ['./resultado.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardHeader, MatCardContent, MatButton]
+  imports: [MatCard, MatCardHeader, MatCardContent, MatButton, TranslatePipe]
 })
 export class ResultadoComponent {
   private questionSubscription = inject(QuestionSubscription);
   private router = inject(Router);
+  public translateService = inject(TranslateService);
 
   questionsData = this.questionSubscription.currentSharedQuestions;
 
