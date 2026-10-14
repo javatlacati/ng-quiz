@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@angular/build": "^22.1.8",
-    "@angular/cli": "^22.1.8",
+    "@angular/cli": "^22.2.2",
     "@angular/compiler-cli": "^22.1.7",
     "@cypress/schematic": "^1.6.0",
     "@types/jasmine": "~3.8.0",
